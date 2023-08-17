@@ -1,8 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Cron, CronExpression } from '@nestjs/schedule'
+import { Cron } from '@nestjs/schedule'
 import { Asset, AssetAttribute, Identity, IdentityProvider, User } from '@prisma/client'
 import { parseAttributes } from '@pubkey-link/api/asset/util'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
+import { env } from 'node:process'
 import { ApiDiscordBotService } from './api-discord-bot.service'
 
 type IdentityAssets = { identity: Identity; assets: Asset[] }
@@ -15,7 +16,7 @@ export class ApiDiscordSyncServerRolesService {
 
   constructor(private readonly core: ApiCoreService, private readonly bot: ApiDiscordBotService) {}
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(env['SYNC_ALL_DISCORD_SERVER_ROLES'] as string)
   async syncAllDiscordServerRoles() {
     // We are only interested in servers that are connected to the bot
     const connectedServers = await this.bot.client.guilds.fetch()

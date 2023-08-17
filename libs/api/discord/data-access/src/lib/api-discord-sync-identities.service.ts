@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Cron, CronExpression } from '@nestjs/schedule'
+import { Cron } from '@nestjs/schedule'
 import { IdentityProvider } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
+import { env } from 'node:process'
 import { ApiDiscordBotService } from './api-discord-bot.service'
 
 @Injectable()
@@ -10,7 +11,7 @@ export class ApiDiscordSyncIdentitiesService {
 
   constructor(private readonly core: ApiCoreService, private readonly bot: ApiDiscordBotService) {}
 
-  @Cron(CronExpression.EVERY_2_HOURS)
+  @Cron(env['SYNC_DISCORD_IDENTITIES'] as string)
   async syncDiscordIdentities() {
     const identities = await this.core.data.identity.findMany({
       where: { provider: IdentityProvider.Discord },

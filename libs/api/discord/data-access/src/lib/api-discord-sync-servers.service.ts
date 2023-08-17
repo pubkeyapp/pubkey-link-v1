@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Cron, CronExpression } from '@nestjs/schedule'
+import { Cron } from '@nestjs/schedule'
 import { Prisma } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
+import { env } from 'node:process'
 import { ApiDiscordBotService } from './api-discord-bot.service'
 
 @Injectable()
@@ -10,8 +11,8 @@ export class ApiDiscordSyncServersService {
 
   constructor(private readonly core: ApiCoreService, private readonly bot: ApiDiscordBotService) {}
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
-  async syncServers() {
+  @Cron(env['SYNC_BOT_SERVERS'] as string)
+  async syncBotServers() {
     const [botServers, databaseServers] = await Promise.all([
       this.bot.getBotServers(),
       this.core.data.discordServer.findMany(),

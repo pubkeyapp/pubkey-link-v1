@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { Cron, CronExpression } from '@nestjs/schedule'
+import { Cron } from '@nestjs/schedule'
+import { env } from 'node:process'
 import { ApiIdentityAdminService } from './api-identity-admin.service'
 import { ApiIdentityQueueService } from './api-identity-queue.service'
 import { ApiIdentityUserService } from './api-identity-user.service'
@@ -12,8 +13,8 @@ export class ApiIdentityService {
     readonly queue: ApiIdentityQueueService,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
-  async syncIdentities() {
+  @Cron(env['SYNC_SOLANA_IDENTITIES'] as string)
+  async syncSolanaIdentities() {
     await this.queue.scheduleIdentitiesSyncMany({ provider: 'Solana' })
   }
 }
