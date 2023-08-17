@@ -1,0 +1,233 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Asset {
+  id                String            @id @default(cuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @default(now()) @updatedAt
+  account           String
+  attributes        Json?
+  attributeMap      Json?
+  network           NetworkType
+  image             String?
+  metadata          Json?
+  owner             String
+  raw               Json?
+  rawHash           String?
+  name              String
+  symbol            String?
+  collection        Collection        @relation(fields: [collectionAccount, network], references: [account, network])
+  collectionAccount String
+  identity          Identity?         @relation(fields: [identityProvider, identityId], references: [provider, providerId])
+  identityProvider  IdentityProvider?
+  identityId        String?
+
+  @@unique([account, network])
+  @@index([owner])
+}
+
+model AssetAttribute {
+  id           String            @id @default(cuid())
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @default(now()) @updatedAt
+  key          String
+  value        String
+  count        Int?
+  combos       CollectionCombo[]
+  collection   Collection        @relation(fields: [collectionId], references: [id])
+  collectionId String
+
+  @@unique([key, value, collectionId])
+}
+
+model Collection {
+  id         String                 @id @default(cuid())
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @default(now()) @updatedAt
+  account    String
+  name       String?
+  assets     Asset[]
+  assetCount Int                    @default(0)
+  Network    Network?               @relation(fields: [network], references: [type])
+  network    NetworkType
+  attributes AssetAttribute[]
+  combos     CollectionCombo[]
+  conditions DiscordRoleCondition[]
+
+  @@unique([account, network])
+}
+
+model CollectionCombo {
+  id                String                 @id @default(cuid())
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @default(now()) @updatedAt
+  name              String
+  description       String?
+  attributes        AssetAttribute[]
+  collection        Collection             @relation(fields: [collectionAccount, network], references: [account, network])
+  collectionAccount String
+  conditions        DiscordRoleCondition[]
+  Network           Network                @relation(fields: [network], references: [type])
+  network           NetworkType
+
+  @@unique([name, collectionAccount, network])
+}
+
+model DiscordServer {
+  id          String        @id @default(cuid())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+  name        String
+  icon        String?
+  botChannel  String?
+  permissions String?
+  enabled     Boolean       @default(false)
+  features    String[]
+  // a Discord bot will never be the owner of a Discord Server, but we add it so the model is consistent with the discord api
+  owner       Boolean       @default(false)
+  roles       DiscordRole[]
+}
+
+model DiscordRole {
+  id          String                 @id @default(cuid())
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @default(now()) @updatedAt
+  name        String
+  color       Int
+  hoist       Boolean
+  position    Int
+  permissions String
+  managed     Boolean
+  mentionable Boolean
+  server      DiscordServer          @relation(fields: [serverId], references: [id])
+  serverId    String
+  conditions  DiscordRoleCondition[]
+}
+
+model DiscordRoleCondition {
+  id                String            @id @default(cuid())
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @default(now()) @updatedAt
+  role              DiscordRole       @relation(fields: [roleId], references: [id])
+  roleId            String
+  collectionsAmount Int               @default(1)
+  collections       Collection[]
+  combosAmount      Int               @default(1)
+  combos            CollectionCombo[]
+}
+
+model Email {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  default   Boolean  @default(false)
+  email     String   @unique
+  private   Boolean  @default(false)
+  verified  Boolean  @default(false)
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   String
+}
+
+model Identity {
+  id           String              @id @default(cuid())
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @default(now()) @updatedAt
+  provider     IdentityProvider
+  providerId   String
+  name         String?
+  accessToken  String?
+  refreshToken String?
+  profile      Json?
+  verified     Boolean             @default(false)
+  owner        User                @relation(fields: [ownerId], references: [id])
+  ownerId      String
+  assets       Asset[]
+  challenges   IdentityChallenge[]
+
+  @@unique([provider, providerId])
+}
+
+model IdentityChallenge {
+  id         String           @id @default(cuid())
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @default(now()) @updatedAt
+  challenge  String           @unique
+  signature  String?
+  ip         String
+  userAgent  String
+  verified   Boolean          @default(false)
+  identity   Identity         @relation(fields: [provider, providerId], references: [provider, providerId])
+  provider   IdentityProvider
+  providerId String
+}
+
+enum IdentityProvider {
+  Discord
+  Solana
+}
+
+model Network {
+  id        String      @id @default(cuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  type      NetworkType @unique
+  name      String      @unique
+  endpoint  String
+
+  collections     Collection[]
+  CollectionCombo CollectionCombo[]
+  tokens          NetworkToken[]
+}
+
+model NetworkToken {
+  id        String      @id @default(cuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  address   String
+  decimals  Int
+  name      String
+  price     Float?
+  priceDate DateTime?
+  symbol    String
+  Network   Network     @relation(fields: [network], references: [type])
+  network   NetworkType
+
+  @@unique([network, address])
+}
+
+enum NetworkType {
+  SolanaDevnet
+  SolanaMainnet
+}
+
+model User {
+  id         String     @id @default(cuid())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  avatarUrl  String?
+  developer  Boolean    @default(false)
+  name       String?
+  password   String?
+  role       UserRole   @default(User)
+  status     UserStatus @default(Created)
+  username   String     @unique
+  identities Identity[]
+  emails     Email[]
+}
+
+enum UserRole {
+  Admin
+  User
+}
+
+enum UserStatus {
+  Active
+  Created
+  Inactive
+}

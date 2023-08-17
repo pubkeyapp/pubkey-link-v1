@@ -1,0 +1,16 @@
+{
+  "name": "web-discord-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/discord/feature/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/web/discord/feature/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+fragment NetworkDetails on Network {
+  createdAt
+  endpoint
+  id
+  name
+  type
+  updatedAt
+}
+
+fragment NetworkTokenDetails on NetworkToken {
+  id
+  createdAt
+  updatedAt
+  address
+  decimals
+  name
+  price
+  priceDate
+  symbol
+  network
+}
+
+query adminFindNetworks($input: AdminFindNetworksInput!) {
+  count: adminFindNetworksCount(input: $input) {
+    ...PagingDetails
+  }
+  items: adminFindNetworks(input: $input) {
+    ...NetworkDetails
+  }
+}
+
+query adminGetNetwork($networkId: String!) {
+  item: adminGetNetwork(networkId: $networkId) {
+    ...NetworkDetails
+    collections {
+      ...CollectionDetails
+    }
+    tokens {
+      ...NetworkTokenDetails
+    }
+  }
+}
+
+mutation adminCreateNetwork($input: AdminCreateNetworkInput!) {
+  created: adminCreateNetwork(input: $input) {
+    ...NetworkDetails
+  }
+}
+
+mutation adminCreateNetworkToken($input: AdminCreateNetworkTokenInput!) {
+  created: adminCreateNetworkToken(input: $input) {
+    ...NetworkTokenDetails
+  }
+}
+
+mutation adminUpdateNetwork($networkId: String!, $input: AdminUpdateNetworkInput!) {
+  updated: adminUpdateNetwork(networkId: $networkId, input: $input) {
+    ...NetworkDetails
+  }
+}
+
+mutation adminDeleteNetwork($networkId: String!) {
+  deleted: adminDeleteNetwork(networkId: $networkId)
+}
+
+mutation adminDeleteNetworkToken($networkTokenId: String!) {
+  deleted: adminDeleteNetworkToken(networkTokenId: $networkTokenId)
+}

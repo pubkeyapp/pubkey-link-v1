@@ -1,0 +1,16 @@
+{
+  "name": "web-collection-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/collection/feature/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/web/collection/feature/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

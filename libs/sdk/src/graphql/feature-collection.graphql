@@ -1,0 +1,68 @@
+fragment CollectionDetails on Collection {
+  createdAt
+  account
+  id
+  name
+  network
+  updatedAt
+  assetCount
+  combos {
+    ...CollectionComboDetails
+  }
+}
+
+query adminFindCollections($input: AdminFindCollectionsInput!) {
+  count: adminFindCollectionsCount(input: $input) {
+    ...PagingDetails
+  }
+  items: adminFindCollections(input: $input) {
+    ...CollectionDetails
+  }
+}
+
+query adminGetCollection($collectionId: String!) {
+  item: adminGetCollection(collectionId: $collectionId) {
+    ...CollectionDetails
+    attributes {
+      ...AssetAttributeDetails
+    }
+  }
+}
+
+mutation adminCreateCollection($input: AdminCreateCollectionInput!) {
+  created: adminCreateCollection(input: $input) {
+    ...CollectionDetails
+  }
+}
+
+mutation adminUpdateCollection($collectionId: String!, $input: AdminUpdateCollectionInput!) {
+  updated: adminUpdateCollection(collectionId: $collectionId, input: $input) {
+    ...CollectionDetails
+  }
+}
+
+mutation adminDeleteCollection($collectionId: String!) {
+  deleted: adminDeleteCollection(collectionId: $collectionId)
+}
+
+mutation adminSyncCollection($collectionId: String!) {
+  synced: adminSyncCollection(collectionId: $collectionId)
+}
+mutation adminSyncCollections {
+  synced: adminSyncCollections
+}
+
+query userFindCollections($input: UserFindCollectionsInput!) {
+  count: userFindCollectionsCount(input: $input) {
+    ...PagingDetails
+  }
+  items: userFindCollections(input: $input) {
+    ...CollectionDetails
+  }
+}
+
+query userGetCollection($collectionId: String!) {
+  item: userGetCollection(collectionId: $collectionId) {
+    ...CollectionDetails
+  }
+}

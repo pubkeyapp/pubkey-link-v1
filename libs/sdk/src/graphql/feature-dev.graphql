@@ -1,0 +1,7 @@
+query adminDevCheckAccount($type: NetworkType!, $address: String!) {
+  result: adminDevCheckAccount(type: $type, address: $address)
+}
+
+query adminDevCheckIdentity($provider: IdentityProvider!, $providerId: String!) {
+  result: adminDevCheckIdentity(provider: $provider, providerId: $providerId)
+}

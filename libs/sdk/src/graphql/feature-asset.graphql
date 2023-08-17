@@ -1,0 +1,84 @@
+fragment AssetDetails on Asset {
+  account
+  attributeMap
+  attributes {
+    ...AssetAttributeDetails
+  }
+  createdAt
+  id
+  image
+  owner
+  metadata
+  name
+  network
+  symbol
+  updatedAt
+  raw
+}
+
+fragment AssetAttributeDetails on AssetAttribute {
+  id
+  createdAt
+  updatedAt
+  key
+  value
+  count
+}
+
+query adminFindAssets($input: AdminFindAssetsInput!) {
+  count: adminFindAssetsCount(input: $input) {
+    ...PagingDetails
+  }
+  items: adminFindAssets(input: $input) {
+    ...AssetDetails
+    identity {
+      ...IdentityDetails
+      owner {
+        ...UserDetails
+      }
+    }
+  }
+}
+
+query adminGetAsset($assetId: String!) {
+  item: adminGetAsset(assetId: $assetId) {
+    ...AssetDetails
+  }
+}
+
+mutation adminDeleteAsset($assetId: String!) {
+  deleted: adminDeleteAsset(assetId: $assetId)
+}
+
+query userFindAssets($input: UserFindAssetsInput!) {
+  count: userFindAssetsCount(input: $input) {
+    ...PagingDetails
+  }
+  items: userFindAssets(input: $input) {
+    ...AssetDetails
+    collection {
+      ...CollectionDetails
+    }
+    identity {
+      ...IdentityDetails
+      owner {
+        ...UserDetails
+      }
+    }
+  }
+}
+
+query userGetAsset($assetId: String!) {
+  item: userGetAsset(assetId: $assetId) {
+    ...AssetDetails
+    collection {
+      ...CollectionDetails
+    }
+    identity {
+      ...IdentityDetails
+      owner {
+        ...UserDetails
+      }
+    }
+  }
+}

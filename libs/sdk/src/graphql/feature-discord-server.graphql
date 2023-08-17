@@ -1,0 +1,73 @@
+fragment DiscordServerChannelDetails on DiscordServerChannel {
+  id
+  name
+  type
+}
+fragment DiscordServerDetails on DiscordServer {
+  features
+  icon
+  iconUrl
+  id
+  name
+  owner
+  enabled
+  botChannel
+  permissions
+  serverUrl
+}
+
+query adminGetBotInviteUrl {
+  url: adminGetBotInviteUrl
+}
+
+query adminGetDiscordServer($serverId: String!) {
+  item: adminGetDiscordServer(serverId: $serverId) {
+    ...DiscordServerDetails
+    roles {
+      ...DiscordRoleDetails
+    }
+  }
+}
+
+query adminGetDiscordServerChannels($serverId: String!) {
+  items: adminGetDiscordServerChannels(serverId: $serverId) {
+    ...DiscordServerChannelDetails
+  }
+}
+
+query adminFindDiscordServers($input: AdminFindDiscordServersInput!) {
+  count: adminFindDiscordServersCount(input: $input) {
+    ...PagingDetails
+  }
+  items: adminFindDiscordServers(input: $input) {
+    ...DiscordServerDetails
+  }
+}
+
+mutation adminTestDiscordServerBotChannel($serverId: String!) {
+  adminTestDiscordServerBotChannel(serverId: $serverId)
+}
+
+mutation adminUpdateDiscordServer($serverId: String!, $input: AdminUpdateDiscordServerInput!) {
+  updated: adminUpdateDiscordServer(serverId: $serverId, input: $input) {
+    ...DiscordServerDetails
+  }
+}
+
+query userGetDiscordServers {
+  items: userGetDiscordServers {
+    ...DiscordServerDetails
+    roles {
+      ...DiscordRoleDetails
+      conditions {
+        ...DiscordRoleConditionDetails
+        collections {
+          ...CollectionDetails
+        }
+        combos {
+          ...CollectionComboDetails
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+fragment DiscordRoleConditionDetails on DiscordRoleCondition {
+  id
+  collectionsAmount
+  collections {
+    ...CollectionDetails
+    combos {
+      ...CollectionComboDetails
+    }
+  }
+  combosAmount
+  combos {
+    ...CollectionComboDetails
+  }
+}
+
+fragment DiscordRoleDetails on DiscordRole {
+  id
+  name
+  permissions
+  color
+  hoist
+  position
+  managed
+  mentionable
+  serverId
+  conditions {
+    ...DiscordRoleConditionDetails
+  }
+}
+
+mutation adminSyncDiscordRoles($serverId: String!) {
+  adminSyncDiscordRoles(serverId: $serverId)
+}

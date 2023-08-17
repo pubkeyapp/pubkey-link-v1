@@ -1,0 +1,7 @@
+export * from './lib/api-collection-data-access.module'
+export * from './lib/api-collection.service'
+export * from './lib/dto/admin-create-collection.input'
+export * from './lib/dto/admin-find-collections.input'
+export * from './lib/dto/admin-update-collection.input'
+export * from './lib/dto/user-find-collections.input'
+export * from './lib/entity/collection.entity'

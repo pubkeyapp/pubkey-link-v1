@@ -1,0 +1,560 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AdminCreateCollectionComboInput {
+  collectionId: String!
+  description: String
+  name: String!
+}
+
+input AdminCreateCollectionInput {
+  account: String!
+  name: String
+  network: NetworkType
+}
+
+input AdminCreateEmailInput {
+  email: String!
+  ownerId: String!
+}
+
+input AdminCreateIdentityInput {
+  ownerId: String!
+  provider: IdentityProvider!
+  providerId: String!
+}
+
+input AdminCreateNetworkInput {
+  endpoint: String!
+  name: String!
+  type: NetworkType
+}
+
+input AdminCreateNetworkTokenInput {
+  address: String!
+  decimals: Int
+  network: NetworkType
+  symbol: String!
+}
+
+input AdminCreateUserInput {
+  password: String
+  username: String!
+}
+
+input AdminFindAssetsInput {
+  collectionAccount: String
+  network: NetworkType
+  search: String
+  skip: Int = 0
+  take: Int = 10
+}
+
+input AdminFindCollectionCombosInput {
+  collectionId: String!
+  network: NetworkType
+  search: String
+  skip: Int = 0
+  take: Int = 10
+}
+
+input AdminFindCollectionsInput {
+  network: NetworkType
+  search: String
+  skip: Int = 0
+  take: Int = 10
+}
+
+input AdminFindDiscordServersInput {
+  search: String
+  skip: Int = 0
+  take: Int = 10
+}
+
+input AdminFindEmailsInput {
+  ownerId: String!
+}
+
+input AdminFindIdentitiesInput {
+  ownerId: String
+  provider: IdentityProvider
+}
+
+input AdminFindNetworksInput {
+  search: String
+  skip: Int = 0
+  take: Int = 10
+  type: NetworkType
+}
+
+input AdminFindUsersInput {
+  role: UserRole
+  search: String
+  skip: Int = 0
+  status: UserStatus
+  take: Int = 10
+}
+
+input AdminUpdateCollectionComboInput {
+  description: String
+  name: String
+}
+
+input AdminUpdateCollectionInput {
+  account: String!
+  name: String!
+}
+
+input AdminUpdateDiscordServerInput {
+  botChannel: String
+}
+
+input AdminUpdateEmailInput {
+  default: Boolean
+  email: String
+  private: Boolean
+  verified: Boolean
+}
+
+input AdminUpdateNetworkInput {
+  endpoint: String!
+  name: String!
+}
+
+input AdminUpdateUserInput {
+  avatarUrl: String
+  developer: Boolean
+  name: String
+  role: UserRole
+  status: UserStatus
+  username: String
+}
+
+type AppConfig {
+  authDiscordEnabled: Boolean!
+  authPasswordEnabled: Boolean!
+  authRegisterEnabled: Boolean!
+}
+
+type Asset {
+  account: String
+  attributeMap: JSON
+  attributes: [AssetAttribute!]
+  collection: Collection
+  createdAt: DateTime!
+  id: String!
+  identity: Identity
+  image: String
+  metadata: JSON
+  name: String!
+  network: NetworkType
+  owner: String
+  raw: JSON
+  symbol: String
+  updatedAt: DateTime!
+}
+
+type AssetAttribute {
+  count: Int
+  createdAt: DateTime
+  id: String
+  key: String!
+  updatedAt: DateTime
+  value: String!
+}
+
+input AssetAttributeInput {
+  count: Int
+  key: String!
+  value: String!
+}
+
+type Collection {
+  account: String
+  assetCount: Int
+  attributes: [AssetAttribute!]
+  combos: [CollectionCombo!]
+  createdAt: DateTime!
+  id: String!
+  name: String!
+  network: NetworkType
+  updatedAt: DateTime!
+}
+
+type CollectionCombo {
+  attributes: [AssetAttribute!]
+  collectionAccount: String
+  createdAt: DateTime!
+  description: String
+  id: String!
+  name: String!
+  network: NetworkType
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DiscordRole {
+  color: Float
+  conditions: [DiscordRoleCondition!]
+  hoist: Boolean
+  id: String
+  managed: Boolean
+  mentionable: Boolean
+  name: String
+  permissions: Float
+  position: Float
+  serverId: String
+}
+
+type DiscordRoleCondition {
+  collections: [Collection!]
+  collectionsAmount: Int
+  combos: [CollectionCombo!]
+  combosAmount: Int
+  createdAt: DateTime
+  id: String
+  updatedAt: DateTime
+}
+
+type DiscordServer {
+  botChannel: String
+  enabled: Boolean!
+  features: [String!]
+  icon: String
+  iconUrl: String
+  id: String!
+  name: String
+  owner: Boolean
+  permissions: Float
+  roles: [DiscordRole!]
+  serverUrl: String
+}
+
+type DiscordServerChannel {
+  id: String!
+  name: String!
+  type: String!
+}
+
+type Email {
+  createdAt: DateTime!
+  default: Boolean
+  email: String!
+  id: String!
+  private: Boolean
+  updatedAt: DateTime!
+  verified: Boolean
+}
+
+type Identity {
+  challenges: [IdentityChallenge!]
+  createdAt: DateTime!
+  expired: Boolean
+  id: String!
+  name: String
+  owner: User
+  profile: JSON
+  provider: IdentityProvider!
+  providerId: String!
+  updatedAt: DateTime!
+  verified: Boolean
+}
+
+type IdentityChallenge {
+  challenge: String!
+  createdAt: DateTime!
+  id: String!
+  ip: String!
+  provider: IdentityProvider!
+  providerId: String!
+  signature: String
+  updatedAt: DateTime!
+  userAgent: String!
+  verified: Boolean!
+}
+
+enum IdentityProvider {
+  Discord
+  Solana
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type Job {
+  attemptsMade: Int
+  data: JSON
+  duration: Int
+  failedReason: String
+  finishedOn: DateTime
+  id: String
+  name: String
+  opts: JSON
+  processedOn: DateTime
+  returnvalue: JSON
+  stacktrace: [String!]
+  timestamp: DateTime
+}
+
+enum JobStatus {
+  active
+  completed
+  delayed
+  failed
+  paused
+  waiting
+}
+
+input LinkIdentityInput {
+  provider: IdentityProvider!
+  providerId: String!
+}
+
+input LoginInput {
+  password: String!
+  username: String!
+}
+
+type Mutation {
+  adminAddCollectionComboAttribute(collectionComboId: String!, input: AssetAttributeInput!): CollectionCombo
+  adminAddDiscordRoleConditionCollection(collectionId: String!, conditionId: String!): Boolean
+  adminAddDiscordRoleConditionCombo(comboId: String!, conditionId: String!): Boolean
+  adminCleanQueue(type: QueueType!): Boolean
+  adminCreateCollection(input: AdminCreateCollectionInput!): Collection
+  adminCreateCollectionCombo(input: AdminCreateCollectionComboInput!): CollectionCombo
+  adminCreateDiscordRoleCondition(roleId: String!): Boolean
+  adminCreateEmail(input: AdminCreateEmailInput!): Email
+  adminCreateIdentity(input: AdminCreateIdentityInput!): Identity
+  adminCreateNetwork(input: AdminCreateNetworkInput!): Network
+  adminCreateNetworkToken(input: AdminCreateNetworkTokenInput!): NetworkToken
+  adminCreateUser(input: AdminCreateUserInput!): User
+  adminDeleteAsset(assetId: String!): Boolean
+  adminDeleteCollection(collectionId: String!): Boolean
+  adminDeleteCollectionCombo(collectionComboId: String!): Boolean
+  adminDeleteDiscordRoleCondition(conditionId: String!): Boolean
+  adminDeleteEmail(emailId: String!): Boolean
+  adminDeleteIdentity(identityId: String!): Boolean
+  adminDeleteNetwork(networkId: String!): Boolean
+  adminDeleteNetworkToken(networkTokenId: String!): Boolean
+  adminDeleteQueueJob(jobId: String!, type: QueueType!): Boolean
+  adminDeleteUser(userId: String!): Boolean
+  adminPauseQueue(type: QueueType!): Boolean
+  adminRemoveCollectionComboAttribute(assetAttributeId: String!, collectionComboId: String!): CollectionCombo
+  adminRemoveDiscordRoleConditionCollection(collectionId: String!, conditionId: String!): Boolean
+  adminRemoveDiscordRoleConditionCombo(comboId: String!, conditionId: String!): Boolean
+  adminResumeQueue(type: QueueType!): Boolean
+  adminSyncCollection(collectionId: String!): Boolean
+  adminSyncCollections: Boolean
+  adminSyncDiscordRoles(serverId: String!): Boolean
+  adminTestDiscordServerBotChannel(serverId: String!): Boolean
+  adminUpdateCollection(collectionId: String!, input: AdminUpdateCollectionInput!): Collection
+  adminUpdateCollectionCombo(collectionComboId: String!, input: AdminUpdateCollectionComboInput!): CollectionCombo
+  adminUpdateDiscordServer(input: AdminUpdateDiscordServerInput!, serverId: String!): DiscordServer
+  adminUpdateEmail(emailId: String!, input: AdminUpdateEmailInput!): Email
+  adminUpdateNetwork(input: AdminUpdateNetworkInput!, networkId: String!): Network
+  adminUpdateUser(input: AdminUpdateUserInput!, userId: String!): User
+  login(input: LoginInput!): User
+  logout: Boolean
+  register(input: RegisterInput!): User
+  userDeleteIdentity(identityId: String!): Boolean
+  userLinkIdentity(input: LinkIdentityInput!): Identity
+  userUpdateUser(input: UserUpdateUserInput!): User
+  userVerifyIdentityChallenge(input: VerifyIdentityChallengeInput!): IdentityChallenge
+}
+
+type Network {
+  collections: [Collection!]
+  createdAt: DateTime!
+  endpoint: String
+  id: String!
+  name: String!
+  tokens: [NetworkToken!]
+  type: NetworkType
+  updatedAt: DateTime!
+}
+
+type NetworkToken {
+  address: String!
+  createdAt: DateTime!
+  decimals: Int
+  id: String!
+  name: String!
+  network: NetworkType
+  price: Int
+  priceDate: DateTime
+  symbol: String!
+  updatedAt: DateTime!
+}
+
+enum NetworkType {
+  SolanaDevnet
+  SolanaMainnet
+}
+
+type Paging {
+  count: Int
+  skip: Int
+  take: Int
+  total: Int
+}
+
+type Query {
+  adminDevCheckAccount(address: String!, type: NetworkType!): JSON
+  adminDevCheckIdentity(provider: IdentityProvider!, providerId: String!): JSON
+  adminFindAssets(input: AdminFindAssetsInput!): [Asset!]
+  adminFindAssetsCount(input: AdminFindAssetsInput!): Paging
+  adminFindCollectionCombos(input: AdminFindCollectionCombosInput!): [CollectionCombo!]
+  adminFindCollectionCombosCount(input: AdminFindCollectionCombosInput!): Paging
+  adminFindCollections(input: AdminFindCollectionsInput!): [Collection!]
+  adminFindCollectionsCount(input: AdminFindCollectionsInput!): Paging
+  adminFindDiscordServers(input: AdminFindDiscordServersInput!): [DiscordServer!]
+  adminFindDiscordServersCount(input: AdminFindDiscordServersInput!): Paging
+  adminFindEmails(input: AdminFindEmailsInput!): [Email!]
+  adminFindIdentities(input: AdminFindIdentitiesInput!): [Identity!]
+  adminFindNetworks(input: AdminFindNetworksInput!): [Network!]
+  adminFindNetworksCount(input: AdminFindNetworksInput!): Paging
+  adminFindUsers(input: AdminFindUsersInput!): [User!]
+  adminFindUsersCount(input: AdminFindUsersInput!): Paging
+  adminGetAsset(assetId: String!): Asset
+  adminGetBotInviteUrl: String
+  adminGetCollection(collectionId: String!): Collection
+  adminGetCollectionCombo(collectionComboId: String!): CollectionCombo
+  adminGetDiscordServer(serverId: String!): DiscordServer
+  adminGetDiscordServerChannels(serverId: String!): [DiscordServerChannel!]
+  adminGetNetwork(networkId: String!): Network
+  adminGetQueue(type: QueueType!): Queue
+  adminGetQueueJobs(statuses: [JobStatus!]!, type: QueueType!): [Job!]
+  adminGetQueues: [Queue!]
+  adminGetUser(userId: String!): User
+  appConfig: AppConfig!
+  me: User
+  uptime: Float!
+  userFindAssets(input: UserFindAssetsInput!): [Asset!]
+  userFindAssetsCount(input: UserFindAssetsInput!): Paging
+  userFindCollections(input: UserFindCollectionsInput!): [Collection!]
+  userFindCollectionsCount(input: UserFindCollectionsInput!): Paging
+  userFindIdentities: [Identity!]
+  userFindUsers(input: UserFindUsersInput!): [User!]
+  userFindUsersCount(input: UserFindUsersInput!): Paging
+  userGetAsset(assetId: String!): Asset
+  userGetCollection(collectionId: String!): Collection
+  userGetDiscordServers: [DiscordServer!]
+  userGetUserByUsername(username: String!): User
+  userRequestIdentityChallenge(input: RequestIdentityChallengeInput!): IdentityChallenge
+}
+
+type Queue {
+  count: QueueCount
+  info: JSON
+  isPaused: Boolean
+  name: String!
+  type: QueueType!
+}
+
+type QueueCount {
+  active: Int
+  completed: Int
+  delayed: Int
+  failed: Int
+  paused: Int
+  waiting: Int
+}
+
+enum QueueType {
+  AssetSyncMany
+  AssetUpsertMany
+  CollectionSyncMany
+  CollectionSyncOne
+  IdentitySyncMany
+  IdentitySyncOne
+}
+
+input RegisterInput {
+  password: String!
+  username: String!
+}
+
+input RequestIdentityChallengeInput {
+  provider: IdentityProvider!
+  providerId: String!
+}
+
+type User {
+  allowDm: Boolean
+  avatarUrl: String
+  createdAt: DateTime
+  description: String
+  devStack: String
+  devType: String
+  devYears: String
+  developer: Boolean
+  discordUrl: String
+  githubUrl: String
+  id: String!
+  language: String
+  location: String
+  name: String
+  profileUrl: String
+  role: UserRole
+  status: UserStatus
+  telegramUrl: String
+  twitterUrl: String
+  updatedAt: DateTime
+  username: String
+  verified: Boolean
+  websiteUrl: String
+}
+
+input UserFindAssetsInput {
+  attributes: [AssetAttributeInput!]
+  collectionAccount: String
+  network: NetworkType
+  ownerId: String
+  search: String
+  skip: Int = 0
+  take: Int = 10
+}
+
+input UserFindCollectionsInput {
+  network: NetworkType
+  search: String
+  skip: Int = 0
+  take: Int = 10
+}
+
+input UserFindUsersInput {
+  search: String
+  skip: Int = 0
+  take: Int = 10
+}
+
+enum UserRole {
+  Admin
+  User
+}
+
+enum UserStatus {
+  Active
+  Created
+  Inactive
+}
+
+input UserUpdateUserInput {
+  avatarUrl: String
+  developer: Boolean
+  name: String
+}
+
+input VerifyIdentityChallengeInput {
+  challenge: String!
+  provider: IdentityProvider!
+  providerId: String!
+  signature: String!
+}

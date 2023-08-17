@@ -1,0 +1,16 @@
+{
+  "name": "web-queue-ui",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/queue/ui/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/web/queue/ui/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

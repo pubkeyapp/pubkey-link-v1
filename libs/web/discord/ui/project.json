@@ -1,0 +1,16 @@
+{
+  "name": "web-discord-ui",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/discord/ui/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/web/discord/ui/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

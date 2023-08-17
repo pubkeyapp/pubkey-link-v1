@@ -1,0 +1,81 @@
+fragment CollectionComboDetails on CollectionCombo {
+  createdAt
+  id
+  name
+  network
+  collectionAccount
+  updatedAt
+  attributes {
+    ...AssetAttributeDetails
+  }
+}
+
+query adminFindCollectionCombos($input: AdminFindCollectionCombosInput!) {
+  count: adminFindCollectionCombosCount(input: $input) {
+    ...PagingDetails
+  }
+  items: adminFindCollectionCombos(input: $input) {
+    ...CollectionComboDetails
+  }
+}
+
+query adminGetCollectionCombo($collectionComboId: String!) {
+  item: adminGetCollectionCombo(collectionComboId: $collectionComboId) {
+    ...CollectionComboDetails
+  }
+}
+
+mutation adminCreateCollectionCombo($input: AdminCreateCollectionComboInput!) {
+  created: adminCreateCollectionCombo(input: $input) {
+    ...CollectionComboDetails
+  }
+}
+
+mutation adminUpdateCollectionCombo($collectionComboId: String!, $input: AdminUpdateCollectionComboInput!) {
+  updated: adminUpdateCollectionCombo(collectionComboId: $collectionComboId, input: $input) {
+    ...CollectionComboDetails
+  }
+}
+
+mutation adminDeleteCollectionCombo($collectionComboId: String!) {
+  deleted: adminDeleteCollectionCombo(collectionComboId: $collectionComboId)
+}
+
+mutation adminAddCollectionComboAttribute($collectionComboId: String!, $input: AssetAttributeInput!) {
+  added: adminAddCollectionComboAttribute(collectionComboId: $collectionComboId, input: $input) {
+    ...CollectionComboDetails
+  }
+}
+
+mutation adminRemoveCollectionComboAttribute($collectionComboId: String!, $assetAttributeId: String!) {
+  removed: adminRemoveCollectionComboAttribute(
+    collectionComboId: $collectionComboId
+    assetAttributeId: $assetAttributeId
+  ) {
+    ...CollectionComboDetails
+  }
+}
+
+mutation adminCreateDiscordRoleCondition($roleId: String!) {
+  added: adminCreateDiscordRoleCondition(roleId: $roleId)
+}
+
+mutation adminDeleteDiscordRoleCondition($conditionId: String!) {
+  added: adminDeleteDiscordRoleCondition(conditionId: $conditionId)
+}
+
+mutation adminAddDiscordRoleConditionCollection($conditionId: String!, $collectionId: String!) {
+  added: adminAddDiscordRoleConditionCollection(conditionId: $conditionId, collectionId: $collectionId)
+}
+
+mutation adminAddDiscordRoleConditionCombo($conditionId: String!, $comboId: String!) {
+  added: adminAddDiscordRoleConditionCombo(conditionId: $conditionId, comboId: $comboId)
+}
+
+mutation adminRemoveDiscordRoleConditionCollection($conditionId: String!, $collectionId: String!) {
+  added: adminRemoveDiscordRoleConditionCollection(conditionId: $conditionId, collectionId: $collectionId)
+}
+
+mutation adminRemoveDiscordRoleConditionCombo($conditionId: String!, $comboId: String!) {
+  added: adminRemoveDiscordRoleConditionCombo(conditionId: $conditionId, comboId: $comboId)
+}
