@@ -4,6 +4,7 @@ import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { getAttributeMap, GetCollectionAssetsOptions, HeliusClient } from '@pubkey-link/api/network/util'
 import { DAS } from 'helius-sdk'
 import { ApiNetworkAdminService } from './api-network-admin.service'
+import { convertNetworkType } from './helpers/convert-network-type'
 import { initializeNetworkAssetMap } from './helpers/initialize-network-asset-map'
 
 @Injectable()
@@ -29,14 +30,13 @@ export class ApiNetworkService {
       }
       const client = new HeliusClient({
         apiKey: this.core.config.heliusApiKey as string,
-        type,
+        cluster: convertNetworkType(type),
       })
       this.clients.set(type, client)
     }
     return this.clients.get(type)
   }
 
-  // Retrieves the assets owned by a specific account in collections on multiple clusters
   async getOwnedAssets({
     collectionMap,
     ownerAccount,

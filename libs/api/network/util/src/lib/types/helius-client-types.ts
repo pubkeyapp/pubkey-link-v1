@@ -1,4 +1,4 @@
-import { NetworkType } from '@prisma/client'
+import { Cluster } from '@solana/web3.js'
 import { DAS } from 'helius-sdk'
 
 export interface AssetCount {
@@ -10,7 +10,7 @@ export interface AssetCount {
 
 export interface HeliusClientConfig {
   apiKey: string
-  type: NetworkType
+  cluster: Cluster
 }
 
 export interface GetAssetsByGroupOptions {

@@ -1,25 +1,24 @@
 import { Logger } from '@nestjs/common'
 import { AssetSortBy, AssetSortDirection, DAS, Helius } from 'helius-sdk'
-import { convertNetworkType } from './helpers/convert-network-type'
 import {
+  AssetCount,
   GetAllAssetsByOwnerOptions,
   GetAssetsByGroupOptions,
   GetAssetsByOwnerOptions,
   GetCollectionAssetsByOwnerOptions,
   GetCollectionAssetsOptions,
-  AssetCount,
   HeliusClientConfig,
-} from './types/asset-count'
+} from './types/helius-client-types'
 
 export class HeliusClient {
   private readonly logger: Logger
   private readonly client: Helius
 
   constructor(private readonly config: HeliusClientConfig) {
-    this.client = new Helius(config.apiKey, convertNetworkType(config.type))
-    this.logger = new Logger(HeliusClient.name + ` (${config.type})`)
+    this.client = new Helius(config.apiKey, config.cluster)
+    this.logger = new Logger(HeliusClient.name + `|${config.cluster}`)
     this.ensureConnection().then((version) => {
-      this.logger.verbose(`Connected to Network ${this.config.type}, running version ${version['solana-core']}`)
+      this.logger.verbose(`Connected to Cluster ${config.cluster}, running version ${version['solana-core']}`)
     })
   }
 
@@ -127,7 +126,7 @@ export class HeliusClient {
     try {
       return this.client.connection.getVersion()
     } catch (error) {
-      this.logger.error(`Failed to connect to Network ${this.config.type}`, error)
+      this.logger.error(`Failed to connect to Network ${this.config.cluster}`, error)
       throw error
     }
   }
