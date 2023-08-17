@@ -1,7 +1,7 @@
 import { NetworkType } from '@prisma/client'
 import { DAS } from 'helius-sdk'
 
-export interface HeliusClientTypes {
+export interface AssetCount {
   total: number
   created: number
   skipped: number
@@ -34,5 +34,5 @@ export interface GetCollectionAssetsByOwnerOptions {
 }
 export interface GetCollectionAssetsOptions {
   account: string
-  cb: (items: DAS.GetAssetResponse[]) => Promise<HeliusClientTypes>
+  cb: (items: DAS.GetAssetResponse[]) => Promise<AssetCount>
 }

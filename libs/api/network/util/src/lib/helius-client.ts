@@ -7,9 +7,9 @@ import {
   GetAssetsByOwnerOptions,
   GetCollectionAssetsByOwnerOptions,
   GetCollectionAssetsOptions,
-  HeliusClientTypes,
+  AssetCount,
   HeliusClientConfig,
-} from './types/helius-client-types'
+} from './types/asset-count'
 
 export class HeliusClient {
   private readonly logger: Logger
@@ -30,7 +30,7 @@ export class HeliusClient {
       downloadMs: 0,
       processingMs: 0,
     }
-    const count: HeliusClientTypes = {
+    const count: AssetCount = {
       total: 0,
       created: 0,
       skipped: 0,

@@ -4,7 +4,7 @@ import { Asset as PrismaAsset, Collection, NetworkType, Prisma } from '@prisma/c
 import { ApiAssetService, AssetAttribute } from '@pubkey-link/api/asset/data-access'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { ApiNetworkService } from '@pubkey-link/api/network/data-access'
-import { HeliusClientTypes } from '@pubkey-link/api/network/util'
+import { AssetCount } from '@pubkey-link/api/network/util'
 import { ApiQueueService, QueueType } from '@pubkey-link/api/queue/data-access'
 import { Job, Queue } from 'bullmq'
 import { DAS } from 'helius-sdk'
@@ -116,10 +116,10 @@ export class ApiCollectionQueueService implements OnModuleInit {
     network: NetworkType
     collectionAccount: string
     items: DAS.GetAssetResponse[]
-  }): Promise<HeliusClientTypes> {
+  }): Promise<AssetCount> {
     const tag = `handleAssets: ${network} => ${collectionAccount}`
     const time = Date.now()
-    const count: HeliusClientTypes = {
+    const count: AssetCount = {
       total: 0,
       created: 0,
       skipped: 0,
