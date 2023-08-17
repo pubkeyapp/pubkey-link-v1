@@ -117,7 +117,7 @@ export function UiHeader({ opened, links, close, toggle }: UiHeaderProps) {
     <Header height={{ base: 50, md: 70 }} className={classes.root}>
       <Container className={classes.header}>
         <Group>
-          <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
+          {links.length ? <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" /> : null}
           <Anchor component={Link} to="/dashboard" replace underline={false}>
             <Group spacing="xs">
               <PubKeyLogo size={28} />
