@@ -7,7 +7,6 @@ import {
   AdminUpdateDiscordServerInput,
   ApiDiscordServerService,
   DiscordServer,
-  DiscordServerChannel,
 } from '@pubkey-link/api/discord-server/data-access'
 import { User } from '@pubkey-link/api/user/data-access'
 

@@ -1,6 +1,6 @@
 import { NetworkType } from '@pubkey-link/sdk'
 import { useUserCollections } from '@pubkey-link/web/collection/data-access'
-import { WebProfileUiAssetAttributes, WebProfileUiAssets } from '@pubkey-link/web/profile/ui'
+import { WebProfileUiAssetAttributes } from '@pubkey-link/web/profile/ui'
 import { UiAlert, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
 
 export function WebCollectionUiDashboard() {

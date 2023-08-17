@@ -47,7 +47,7 @@ export function AdminUiCollectionComboTable({
                       <Group>
                         <Code>{attr.value}</Code>
                         <Tooltip label={'Delete attribute from combo'} position="left" withArrow>
-                          <ActionIcon color="red" onClick={() => removeAssetAttribute(item.id, attr.id!)}>
+                          <ActionIcon color="red" onClick={() => removeAssetAttribute(item.id, attr.id as string)}>
                             <IconTrash size={16} />
                           </ActionIcon>
                         </Tooltip>

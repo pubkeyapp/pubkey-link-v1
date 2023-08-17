@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
+import { JobType } from 'bullmq'
 import { ApiQueueService } from './api-queue.service'
 import { JobStatus } from './entity/job-status.enum'
 import { Job } from './entity/job.entity'
@@ -24,7 +25,7 @@ export class ApiQueueAdminService {
     await this.core.ensureUserAdmin(adminId)
     const queue = this.queue.queues.get(type)
     const jobs = await queue.getJobs(
-      statuses.map((status) => status.toLowerCase() as any),
+      statuses.map((status) => status.toLowerCase() as JobType),
       0,
       100,
     )

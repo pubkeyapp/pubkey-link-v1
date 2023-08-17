@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 export default function WebAuthRegisterFeature() {
-  const { register, user, appConfig, appConfigLoading } = useWebAuth()
+  const { register, appConfig, appConfigLoading } = useWebAuth()
 
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)

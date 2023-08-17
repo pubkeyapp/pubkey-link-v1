@@ -1,4 +1,4 @@
-import { Avatar, Button, Group, Menu, rem, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Avatar, Button, Group, Menu, rem, useMantineColorScheme } from '@mantine/core'
 import { UserRole } from '@pubkey-link/sdk'
 import { useWebAuth } from '@pubkey-link/web/auth/data-access'
 import {

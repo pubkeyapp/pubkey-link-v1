@@ -43,9 +43,9 @@ export class ApiAssetQueueService implements OnModuleInit {
   }
 
   async processAssetSyncManyJob(job: Job<AssetSyncManyQueueData, void, string>) {
-    const tag = `processAssetSyncManyJob ${job.id} ->`
-    await this.debugLog(`${tag} processing ${job.data.assets.length} assets...`, true)
     const { type: network, identity } = job.data
+    const tag = `processAssetSyncManyJob ${job.id}: [${identity?.providerId}] ->`
+    await this.debugLog(`${tag} processing ${job.data.assets.length} assets...`, true)
 
     await this.debugLog(`${tag} getting owned assets...`)
     const owned = await this.getOwnedAssets({ networkType: network, providerId: identity.providerId })
