@@ -12,7 +12,7 @@ const config: CodegenConfig = {
         'typescript-graphql-request',
         {
           add: {
-            content: '// @ts-nocheck',
+            content: [`// eslint-disable-next-line @typescript-eslint/ban-ts-comment`, '// @ts-nocheck'],
           },
         },
       ],

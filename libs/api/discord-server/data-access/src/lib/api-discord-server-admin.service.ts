@@ -139,7 +139,7 @@ export class ApiDiscordServerAdminService {
   async syncDiscordRoles(adminId: string, serverId: string) {
     await this.core.ensureUserAdmin(adminId)
 
-    throw new Error('Not implemented')
+    throw new Error(`Not implemented, ${serverId}`)
   }
 
   async updateDiscordServer(
