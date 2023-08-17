@@ -3,7 +3,8 @@ import { Logger, OnModuleInit } from '@nestjs/common'
 import { Asset as PrismaAsset, Collection, NetworkType, Prisma } from '@prisma/client'
 import { ApiAssetService, AssetAttribute } from '@pubkey-link/api/asset/data-access'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
-import { ApiNetworkService, HandleAssetCount } from '@pubkey-link/api/network/data-access'
+import { ApiNetworkService } from '@pubkey-link/api/network/data-access'
+import { HeliusClientTypes } from '@pubkey-link/api/network/util'
 import { ApiQueueService, QueueType } from '@pubkey-link/api/queue/data-access'
 import { Job, Queue } from 'bullmq'
 import { DAS } from 'helius-sdk'
@@ -75,40 +76,36 @@ export class ApiCollectionQueueService implements OnModuleInit {
       timeInAttributes: 0,
     }
 
-    await this.network.getCollectionAssets(collection.network, collection.id, collection.account, async (items) => {
-      console.timeLog(tag, `fetched ${items.length} assets`)
-      const time = Date.now()
-      const { total, updated, skipped, created } = await this.handleAssets({
-        network: collection.network,
-        collectionAccount: collection.account,
-        items,
-      })
-      console.timeLog(tag, `handled ${items.length} assets`)
+    await this.network.getCollectionAssets(collection.network, {
+      account: collection.account,
+      cb: async (items) => {
+        console.timeLog(tag, `fetched ${items.length} assets`)
+        const time = Date.now()
+        const { total, updated, skipped, created } = await this.handleAssets({
+          network: collection.network,
+          collectionAccount: collection.account,
+          items,
+        })
+        console.timeLog(tag, `handled ${items.length} assets`)
 
-      totalCount.total = totalCount.total + total
-      totalCount.created = totalCount.created + created
-      totalCount.updated = totalCount.updated + updated
-      totalCount.skipped = totalCount.skipped + skipped
-      totalCount.timeInAssets = totalCount.timeInAssets + (Date.now() - time)
+        totalCount.total = totalCount.total + total
+        totalCount.created = totalCount.created + created
+        totalCount.updated = totalCount.updated + updated
+        totalCount.skipped = totalCount.skipped + skipped
+        totalCount.timeInAssets = totalCount.timeInAssets + (Date.now() - time)
 
-      return {
-        total: totalCount.total,
-        created: totalCount.created,
-        updated: totalCount.updated,
-        skipped: totalCount.skipped,
-      }
+        return {
+          total: totalCount.total,
+          created: totalCount.created,
+          updated: totalCount.updated,
+          skipped: totalCount.skipped,
+        }
+      },
     })
     console.timeEnd(tag)
     this.logger.verbose(
       `${tag} done, total: ${totalCount.total}, created: ${totalCount.created}, updated: ${totalCount.updated}, skipped: ${totalCount.skipped}, time: ${totalCount.timeInAssets}ms`,
     )
-  }
-
-  async syncCollectionOld(collection: Collection) {
-    const startTime = Date.now()
-    const { account: collectionAccount, network } = collection
-    const tag = `syncCollection: ${network} => ${collectionAccount}`
-    console.time(tag)
   }
 
   private async handleAssets({
@@ -119,10 +116,10 @@ export class ApiCollectionQueueService implements OnModuleInit {
     network: NetworkType
     collectionAccount: string
     items: DAS.GetAssetResponse[]
-  }): Promise<HandleAssetCount> {
+  }): Promise<HeliusClientTypes> {
     const tag = `handleAssets: ${network} => ${collectionAccount}`
     const time = Date.now()
-    const count: HandleAssetCount = {
+    const count: HeliusClientTypes = {
       total: 0,
       created: 0,
       skipped: 0,

@@ -1,14 +1,13 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { Logger } from '@nestjs/common'
-import { Identity } from '@prisma/client'
-import { CollectionMap } from '@pubkey-link/api/core/data-access'
+import { Identity, NetworkType } from '@prisma/client'
 import { QueueType } from '@pubkey-link/api/queue/data-access'
 import { Job } from 'bullmq'
 import { ApiIdentityQueueService } from '../api-identity-queue.service'
 
 export interface IdentitySyncOneQueueData {
   identity: Identity
-  collectionMap: CollectionMap
+  collectionMap: Record<NetworkType, string[]>
 }
 
 @Processor(QueueType.IdentitySyncOne)

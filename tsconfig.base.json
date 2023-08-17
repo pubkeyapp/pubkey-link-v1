@@ -38,6 +38,7 @@
       "@pubkey-link/api/identity/feature": ["libs/api/identity/feature/src/index.ts"],
       "@pubkey-link/api/network/data-access": ["libs/api/network/data-access/src/index.ts"],
       "@pubkey-link/api/network/feature": ["libs/api/network/feature/src/index.ts"],
+      "@pubkey-link/api/network/util": ["libs/api/network/util/src/index.ts"],
       "@pubkey-link/api/queue/data-access": ["libs/api/queue/data-access/src/index.ts"],
       "@pubkey-link/api/queue/feature": ["libs/api/queue/feature/src/index.ts"],
       "@pubkey-link/api/user/data-access": ["libs/api/user/data-access/src/index.ts"],
