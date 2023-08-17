@@ -13,6 +13,10 @@ export class ApiDiscordSyncServersService {
 
   @Cron(env['SYNC_BOT_SERVERS'] as string)
   async syncBotServers() {
+    if (!this.core.config.syncActive) {
+      this.logger.verbose(`syncBotServers: syncActive is false, skipping`)
+      return
+    }
     const [botServers, databaseServers] = await Promise.all([
       this.bot.getBotServers(),
       this.core.data.discordServer.findMany(),

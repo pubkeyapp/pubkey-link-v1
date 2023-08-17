@@ -150,6 +150,10 @@ export class ApiCoreConfigService {
     return this.service.get('redisUrl')
   }
 
+  get syncActive() {
+    return this.service.get<boolean>('syncActive')
+  }
+
   get syncDryRun() {
     return this.service.get<boolean>('syncDryRun')
   }

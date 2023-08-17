@@ -18,6 +18,10 @@ export class ApiDiscordSyncServerRolesService {
 
   @Cron(env['SYNC_ALL_DISCORD_SERVER_ROLES'] as string)
   async syncAllDiscordServerRoles() {
+    if (!this.core.config.syncActive) {
+      this.logger.verbose(`syncAllDiscordServerRoles: syncActive is false, skipping`)
+      return
+    }
     // We are only interested in servers that are connected to the bot
     const connectedServers = await this.bot.client.guilds.fetch()
     // Get the ids of the connected servers

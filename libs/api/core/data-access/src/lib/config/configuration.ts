@@ -39,6 +39,7 @@ export interface ApiCoreConfig {
   logLevel: string
   port: number
   redisUrl: string
+  syncActive: boolean
   syncDryRun: boolean
   webUrl: string
 }
@@ -68,6 +69,7 @@ export const configuration = (): ApiCoreConfig => ({
   logLevel: process.env['LOG_LEVEL'] as string,
   port: parseInt(process.env['PORT'] as string, 10) || 3000,
   redisUrl: process.env['REDIS_URL'] as string,
+  syncActive: process.env['SYNC_ACTIVE'] === 'true',
   syncDryRun: process.env['SYNC_DRY_RUN'] === 'true',
   webUrl: WEB_URL,
 })

@@ -29,6 +29,7 @@ export const validationSchema = Joi.object({
   NODE_ENV: Joi.string().valid('development', 'production', 'test', 'provision').default('development'),
   PORT: Joi.number().default(3000),
   REDIS_URL: Joi.string().required(),
+  SYNC_ACTIVE: Joi.boolean().default(true),
   SYNC_ALL_DISCORD_SERVER_ROLES: Joi.string().default(CronExpression.EVERY_10_MINUTES),
   SYNC_BOT_SERVERS: Joi.string().default(CronExpression.EVERY_5_MINUTES),
   SYNC_DRY_RUN: Joi.boolean().default(false),

@@ -13,6 +13,10 @@ export class ApiDiscordSyncIdentitiesService {
 
   @Cron(env['SYNC_DISCORD_IDENTITIES'] as string)
   async syncDiscordIdentities() {
+    if (!this.core.config.syncActive) {
+      this.logger.verbose(`syncDiscordIdentities: syncActive is false, skipping`)
+      return
+    }
     const identities = await this.core.data.identity.findMany({
       where: { provider: IdentityProvider.Discord },
       include: { owner: true },
