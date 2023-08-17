@@ -32,7 +32,7 @@ export class FindSolanaIdentityCommand {
 
     if (!found) {
       return interaction.reply({
-        content: `No ${provider} identity found for <@${address}>.`,
+        content: `No ${provider} identity found for ${address}.`,
       })
     }
 

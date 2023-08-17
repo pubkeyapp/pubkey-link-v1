@@ -40,6 +40,7 @@ export interface ApiCoreConfig {
   port: number
   redisUrl: string
   syncActive: boolean
+  syncDebug: boolean
   syncDryRun: boolean
   webUrl: string
 }
@@ -70,6 +71,7 @@ export const configuration = (): ApiCoreConfig => ({
   port: parseInt(process.env['PORT'] as string, 10) || 3000,
   redisUrl: process.env['REDIS_URL'] as string,
   syncActive: process.env['SYNC_ACTIVE'] === 'true',
+  syncDebug: process.env['SYNC_DEBUG'] === 'true',
   syncDryRun: process.env['SYNC_DRY_RUN'] === 'true',
   webUrl: WEB_URL,
 })

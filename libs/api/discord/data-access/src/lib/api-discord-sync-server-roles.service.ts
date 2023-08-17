@@ -72,10 +72,9 @@ export class ApiDiscordSyncServerRolesService {
 
     // Bail if there are no members
     if (!filteredProviderIds.length) {
-      this.logger.warn(
+      await this.debugLog(
         `${tag} => [${server.name}] -> No members found to sync (found ${discordMemberIds.length} members and ${identityProviderIds.length} identities)`,
       )
-      await this.bot.sendCommandChannel(`${tag} -> No members found to sync for server ${server.name}`)
       return
     }
 
@@ -95,33 +94,23 @@ export class ApiDiscordSyncServerRolesService {
 
     // Bail if there are no roles
     if (!filteredRoles.length) {
-      this.logger.warn(`${tag} => [${server.name}] -> No roles found to sync`)
-      await this.bot.sendCommandChannel(`${tag} -> No roles found to sync for server ${server.name}`)
+      await this.debugLog(`${tag} => [${server.name}] -> No roles found to sync for server ${server.name}`)
       return
     }
-
-    await this.bot.sendCommandChannel(
-      `${tag} 👀 -> Syncing ${filteredProviderIds.length} members with ${filteredRoles?.length} roles`,
-    )
 
     for (const filteredProviderId of filteredProviderIds) {
       const discordMember = discordMemberIds.find((m) => m === filteredProviderId)
       if (!discordMember) {
-        await this.bot.sendCommandChannel(`${tag} 👀 -> Member ${filteredProviderId} not found`)
+        await this.debugLog(`${tag} 👀 -> Member ${filteredProviderId} not found`)
       } else {
         const roles = filteredRoles.map((r) => r.name)
-        await this.bot.sendCommandChannel(
-          `${tag} 👀 -> Member ${JSON.stringify(discordMember, null, 2)} found: ${roles.join(', ')} `,
-        )
+        await this.debugLog(`${tag} 👀 -> Member ${JSON.stringify(discordMember, null, 2)} found: ${roles.join(', ')} `)
       }
     }
 
-    this.logger.verbose(
-      `${tag} => [${server.name}] -> Syncing ${filteredProviderIds.length} members with ${filteredRoles.length} roles`,
-    )
-
-    await this.bot.sendCommandChannel(
-      `${tag} -> Syncing ${filteredProviderIds.length} members with ${filteredRoles.length} roles`,
+    await this.debugLog(
+      `${tag} -> Syncing ${filteredProviderIds.length} members with ${filteredRoles?.length} roles`,
+      true,
     )
 
     // Loop through the roles
@@ -131,15 +120,11 @@ export class ApiDiscordSyncServerRolesService {
 
       if (!filtered.length) {
         // No conditions with collections or combos
-        this.logger.verbose(`${tag} => [${role.name}] -> No conditions with collections or combos`)
-        await this.bot.sendCommandChannel(`${tag} -> No conditions with collections or combos for role ${role.name}`)
+        await this.debugLog(`${tag} -> No conditions with collections or combos for role ${role.name}`)
         continue
       }
 
-      this.logger.verbose(
-        `${tag} => [${role.name}] -> Syncing role, ${filtered.length} conditions with collections or combos`,
-      )
-      await this.bot.sendCommandChannel(
+      await this.debugLog(
         `${tag} -> Syncing role ${role.name}, ${filtered.length} conditions with collections or combos`,
       )
 
@@ -155,50 +140,37 @@ export class ApiDiscordSyncServerRolesService {
         // If there are combos, we need to get the assets with the attributes
         if (combos.length) {
           for (const combo of combos) {
-            this.logger.debug(`${tag} => [${role.name}]   -> Syncing combo ${combo.id}`)
             const result = await this.getAssetsWithAttributes(combo.attributes, solanaAccountIds)
             found = found.concat(result as AssetWithIdentity[])
-            this.logger.debug(`${tag} => [${role.name}]   -> Found ${found.length} assets`)
-            await this.bot.sendCommandChannel(`${tag} COMBO  -> Found ${found.length} assets for combo ${combo.id}`)
+            await this.debugLog(`${tag} => [${role.name}]   -> Syncing combo ${combo.id}, found ${found.length} assets`)
           }
           // If there are no combos, we can just get the assets with the collections
         } else {
           for (const collection of collections) {
-            this.logger.debug(`${tag} => [${role.name}]   -> Syncing collection ${collection.account}`)
             const result = await this.getAssetsWithCollection(collection.account, solanaAccountIds)
             found = found.concat(result)
-            this.logger.debug(`${tag} => [${role.name}]   -> Found ${found.length} assets`)
-            await this.bot.sendCommandChannel(
-              `${tag} COLLECTION -> Found ${found.length} assets for collection ${collection.account}`,
+            await this.debugLog(
+              `${tag} => [${role.name}]   -> Syncing collection ${collection.account}, found ${found.length} assets`,
             )
           }
         }
 
         if (!found.length) {
-          this.logger.debug(`${tag} => [${role.name}]   -> No assets found, skipping`)
-          await this.bot.sendCommandChannel(`${tag} -> No assets found for role ${role.name}`)
+          await this.debugLog(`${tag} => [${role.name}]   -> No assets found, skipping`)
           continue
         }
 
-        this.logger.verbose(`${tag} => [${role.name}]   -> Found ${found.length} assets to sync`)
-        await this.bot.sendCommandChannel(`${tag} -> Found ${found.length} assets to sync for role ${role.name}`)
-
         const assetsByOwner: IdentityAssets[] = []
-        this.logger.verbose(`${tag} => [${role.name}]   -> Found ${found.length} assets, grouping by owner`)
-        await this.bot.sendCommandChannel(
-          `${tag} -> Found ${found.length} assets, grouping by owner for role ${role.name}`,
-        )
+
+        await this.debugLog(`${tag} => [${role.name}]   -> Found ${found.length} assets, grouping by owner`)
 
         for (const asset of found) {
           const discordIdentity = asset.identity?.owner.identities.find(
             (i) => i.provider === IdentityProvider.Discord && filteredProviderIds.includes(i.providerId),
           )
           if (!discordIdentity) {
-            this.logger.verbose(
+            await this.debugLog(
               `${tag} => [${role.name}]   -> Owner of Asset ${asset.id} has no discord identity, or is not in the server ${server.name}, skipping`,
-            )
-            await this.bot.sendCommandChannel(
-              `Owner of Asset ${asset.id} has no discord identity, or is not in the server ${server.name}, skipping`,
             )
             continue
           }
@@ -211,13 +183,20 @@ export class ApiDiscordSyncServerRolesService {
         }
 
         for (const owner of assetsByOwner) {
-          this.logger.verbose(
-            `${tag} => [${role.name}]   -> Owner ${owner.identity.id} has ${owner.assets.length} assets`,
+          await this.debugLog(
+            `${tag} => [${role.name}]   -> Owner ${owner.identity.providerId} has ${owner.assets.length} assets`,
           )
           await this.bot.addRoleToUser(server, role, owner.identity.providerId)
         }
       }
     }
+    await this.debugLog(`${tag} => [${server.name}] -> Sync complete`, true)
+  }
+
+  private async debugLog(message: string, always = false) {
+    if (!this.core.config.syncDebug && !always) return
+    this.logger.debug(message)
+    await this.bot.sendCommandChannel(`\`DEBUG: ${new Date().toISOString()} ${message}\``)
   }
 
   private getAssetsWithAttributes(attributes: AssetAttribute[], providerIds: string[]): Promise<AssetWithIdentity[]> {

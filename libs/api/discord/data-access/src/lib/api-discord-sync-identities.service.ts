@@ -13,10 +13,12 @@ export class ApiDiscordSyncIdentitiesService {
 
   @Cron(env['SYNC_DISCORD_IDENTITIES'] as string)
   async syncDiscordIdentities() {
+    const tag = `syncDiscordIdentities`
     if (!this.core.config.syncActive) {
-      this.logger.verbose(`syncDiscordIdentities: syncActive is false, skipping`)
+      this.logger.verbose(`${tag}: syncActive is false, skipping`)
       return
     }
+    await this.debugLog(`${tag} processing...`, true)
     const identities = await this.core.data.identity.findMany({
       where: { provider: IdentityProvider.Discord },
       include: { owner: true },
@@ -30,10 +32,7 @@ export class ApiDiscordSyncIdentitiesService {
             where: { id: identity.id },
             data: { verified: false },
           })
-          this.logger.verbose(`Unverified Discord Identity ${identity.providerId} (${identity.owner?.username})`)
-          await this.bot.sendCommandChannel(
-            `Unverified Discord Identity ${identity.providerId} (${identity.owner?.username})`,
-          )
+          await this.debugLog(`Unverified Discord Identity ${identity.providerId} (${identity.owner?.username})`)
         }
         continue
       }
@@ -49,7 +48,14 @@ export class ApiDiscordSyncIdentitiesService {
         },
       })
       this.logger.verbose(`Synced Discord Identity ${identity.providerId} (${user.username})`)
-      await this.bot.sendCommandChannel(`Synced Discord Identity ${identity.providerId} (${user.username})`)
+      await this.debugLog(`Synced Discord Identity ${identity.providerId} (${user.username})`)
     }
+    await this.debugLog(`${tag} done`, true)
+  }
+
+  private async debugLog(message: string, always = false) {
+    if (!this.core.config.syncDebug && !always) return
+    this.logger.debug(message)
+    await this.bot.sendCommandChannel(`\`DEBUG: ${new Date().toISOString()} ${message}\``)
   }
 }

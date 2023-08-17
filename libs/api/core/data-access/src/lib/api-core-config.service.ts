@@ -154,6 +154,10 @@ export class ApiCoreConfigService {
     return this.service.get<boolean>('syncActive')
   }
 
+  get syncDebug() {
+    return this.service.get<boolean>('syncDebug')
+  }
+
   get syncDryRun() {
     return this.service.get<boolean>('syncDryRun')
   }

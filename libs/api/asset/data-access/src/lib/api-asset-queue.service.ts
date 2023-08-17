@@ -43,31 +43,28 @@ export class ApiAssetQueueService implements OnModuleInit {
   }
 
   async processAssetSyncManyJob(job: Job<AssetSyncManyQueueData, void, string>) {
-    const tag = `AssetSyncManyJob ${job.id} ->`
-    this.logger.verbose(`${tag} processing ${job.data.assets.length} assets...`)
+    const tag = `processAssetSyncManyJob ${job.id} ->`
+    await this.debugLog(`${tag} processing ${job.data.assets.length} assets...`, true)
     const { type: network, identity } = job.data
 
-    this.logger.verbose(`${tag} getting owned assets...`)
+    await this.debugLog(`${tag} getting owned assets...`)
     const owned = await this.getOwnedAssets({ networkType: network, providerId: identity.providerId })
 
-    this.logger.verbose(`${tag} found ${owned.length} owned assets...`)
+    await this.debugLog(`${tag} found ${owned.length} owned assets...`)
     const toCreate = job.data.assets.filter((asset) => !owned.find((a) => a.account === asset.account))
     const toDisconnect = owned.filter((asset) => !job.data.assets.find((a) => a.account === asset.account))
 
     if (!toCreate.length && !toDisconnect.length) {
-      this.logger.debug(`${tag} nothing to do, exiting...`)
+      await this.debugLog(`${tag} nothing to do, exiting...`, true)
       return
     }
 
-    this.logger.verbose(
+    await this.debugLog(
       `processAssetSyncManyJob: Found ${owned.length} owned assets. ${toCreate.length} to connect and ${toDisconnect.length} to disconnect`,
-    )
-    await this.discord.bot.sendCommandChannel(
-      `${network} ${identity.providerId}: Found ${owned.length} owned assets. ${toCreate.length} to connect and ${toDisconnect.length} to disconnect`,
     )
 
     for (const { account, network, owner } of toDisconnect) {
-      this.logger.verbose(
+      await this.debugLog(
         `disconnecting ${account} on ${network}, owner changed from ${identity.providerId} to ${owner}`,
       )
       await this.core.data.asset.update({
@@ -80,6 +77,7 @@ export class ApiAssetQueueService implements OnModuleInit {
       await this.scheduleAssetUpsertMany({ assets: toCreate, network: network })
       this.logger.verbose(`Scheduled ${toCreate.length} assets to be created on ${network}`)
     }
+    await this.debugLog(`${tag} created ${toCreate.length} assets, disconnected ${toDisconnect.length} assets`, true)
   }
 
   private async getOwnedAssets(param: { providerId: string; networkType: NetworkType }) {
@@ -93,20 +91,20 @@ export class ApiAssetQueueService implements OnModuleInit {
 
   async processAssetUpsertManyJob(job: Job<AssetUpsertManyQueueData, void, string>) {
     const tag = `AssetCreateManyJob ${job.id} ->`
-    this.logger.verbose(`${tag} processing with ${job.data.assets.length} assets...`)
+    await this.debugLog(`${tag} processing with ${job.data.assets.length} assets...`)
     let count = 0
     let errors = 0
     for (const data of job.data.assets) {
       count++
       if (count % 100 === 0) {
-        this.logger.verbose(`${tag} processed ${count}/${job.data.assets.length} assets`)
+        await this.debugLog(`${tag} processed ${count}/${job.data.assets.length} assets`)
       }
 
       const network = data?.collection?.connect?.account_network?.network
       if (!network) {
         throw new Error('No network')
       }
-      this.logger.verbose(`${tag} upserting asset ${data.account} on ${network}`)
+      await this.debugLog(`${tag} upserting asset ${data.account} on ${network}`)
       await this.core.data.asset
         .upsert({
           where: { account_network: { account: data.account, network } },
@@ -118,12 +116,19 @@ export class ApiAssetQueueService implements OnModuleInit {
           errors++
         })
     }
-    this.logger.verbose(`${tag} processed, ${errors} errors`)
+    await this.debugLog(`${tag} processed, ${errors} errors`)
+
     if (errors) {
       await this.discord.bot.sendCommandChannel(`Error creating ${errors} assets, check logs`)
       throw new Error('Error creating assets')
     }
     await this.updateAssetCounts()
+  }
+
+  private async debugLog(message: string, always = false) {
+    if (!this.core.config.syncDebug && !always) return
+    this.logger.debug(message)
+    await this.discord.bot.sendCommandChannel(`\`DEBUG: ${new Date().toISOString()} ${message}\``)
   }
 
   private async updateAssetCounts() {
