@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { IdentityProvider, NetworkType, UserRole, UserStatus } from '@prisma/client'
-import { CollectionMap } from '@pubkey-link/api/network/data-access'
 import { hasher } from 'node-object-hash'
 import { ApiCoreConfigService } from './api-core-config.service'
 import { ApiCoreDataService } from './api-core-data.service'
+import { CollectionMap } from './entity/collection-map'
 
 @Injectable()
 export class ApiCoreService {

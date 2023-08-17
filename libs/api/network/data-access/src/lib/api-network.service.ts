@@ -1,11 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Identity, NetworkType, Prisma } from '@prisma/client'
-import { ApiCoreService } from '@pubkey-link/api/core/data-access'
+import { ApiCoreService, CollectionMap } from '@pubkey-link/api/core/data-access'
 import { AssetSortBy, AssetSortDirection, DAS, Helius } from 'helius-sdk'
 import { ApiNetworkAdminService } from './api-network-admin.service'
 import { convertNetworkType } from './helpers/convert-network-type'
-
-export type CollectionMap = Record<NetworkType, string[]>
 
 export interface HandleAssetCount {
   total: number
