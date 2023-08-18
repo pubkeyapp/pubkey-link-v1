@@ -49,10 +49,7 @@ export class ApiDiscordAdminService {
 
     try {
       this.logger.verbose(`Sending test message to server ${server.name} triggered by ${admin.username}`)
-      await this.bot.sendChannel(
-        server.botChannel,
-        `Test message for server ${server.name} triggered by ${admin.username}`,
-      )
+      await this.bot.announceInServer(server, `Test message for server ${server.name} triggered by ${admin.username}`)
     } catch (error) {
       this.logger.error(`Error sending test message to server ${server.name} triggered by ${admin.username}: ${error}`)
       throw error

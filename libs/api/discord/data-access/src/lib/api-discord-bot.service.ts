@@ -1,8 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { DiscordRole, DiscordServer } from '@prisma/client'
+import { DiscordServer } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { ActivityType, Client, Guild, GuildMember, REST } from 'discord.js'
 import { Context, ContextOf, On, Once } from 'necord'
+import { DiscordGuild } from './entity/discord-guild'
+import { UserRoleChanges } from './entity/user-role-types'
 
 @Injectable()
 export class ApiDiscordBotService {
@@ -29,85 +31,52 @@ export class ApiDiscordBotService {
     this.logger.warn(message)
   }
 
-  async addRoleToUser(server: DiscordServer, role: DiscordRole, providerId: string) {
-    const tag = `addRoleToUser [${server.name}] => [${role.name}] ->`
-    this.logger.verbose(`${tag} Fetching discord guild member, id: ${providerId}`)
+  async syncUserRoles(
+    server: DiscordServer,
+    changes: UserRoleChanges[],
+    { roleMap, userMap }: { roleMap: Record<string, string>; userMap: Record<string, string> },
+  ) {
+    const tag = `syncUserRoles [${server.name}] =>`
 
-    const member = await this.client.guilds.cache.get(server.id)?.members.fetch(providerId)
+    for (const { toAdd, toRemove, userId } of changes) {
+      const member = await this.client.guilds.cache.get(server.id)?.members.fetch(userId)
 
-    if (!member) {
-      this.logger.warn(`${tag} Discord guild member not found, skipping`)
+      if (!member) {
+        await this.debugLog(`${tag} Discord guild member not found, skipping`, true)
+        return
+      }
+
+      for (const roleId of toAdd) {
+        await member?.roles.add(roleId)
+        const message = `${tag} Added role ${roleMap[roleId]} to user ${userMap[userId]}`
+        await Promise.all([this.debugLog(message, true), this.announceInServer(server, message)])
+      }
+
+      for (const roleId of toRemove) {
+        await member?.roles.remove(roleId)
+        const message = `${tag} Removed role ${roleMap[roleId]} from user ${userMap[userId]}`
+        await Promise.all([this.debugLog(message, true), this.announceInServer(server, message)])
+      }
+    }
+  }
+
+  async debugLog(message: string, always = false) {
+    if (!this.core.config.syncDebug && !always) return
+    this.logger.debug(message)
+    await this.sendCommandChannel(`\`${new Date().toISOString()}${always ? '' : ' DEBUG'}: ${message}\``)
+  }
+
+  async announceInServer(server: DiscordServer, content: string) {
+    if (!server.botChannel) {
       return
     }
-
-    const roles = member?.roles.cache.map((r) => r.id) ?? []
-
-    if (roles.includes(role.id)) {
-      this.logger.debug(`${tag} User ${member?.user.username} already has role, skipping`)
-      return
-    }
-
-    this.logger.verbose(`${tag} Adding role to user ${member?.user?.username}`)
-
-    if (this.core.config.syncDryRun) {
-      this.logger.log(`${tag} Skipping because of syncDryRun`)
-      await this.sendCommandChannel(
-        `In server \`${server.name}\`, user \`${member.user.username}\` received role \`${role.name}\` (dry run).`,
-      )
-      return
-    }
-    await member?.roles.add(role.id)
-
-    this.logger.verbose(`${tag} Role added to user ${member?.user?.username}`)
-
-    if (server.botChannel) {
-      await this.sendChannel(server.botChannel, `Role <@&${role.id}> added to user <@${member?.user?.id}>`)
-    }
-
-    if (this.core.config.discordBotCommandId !== server.botChannel) {
-      await this.sendCommandChannel(
-        `In server \`${server.name}\`, user \`${member.user.username}\` received role \`${role.name}\`.`,
-      )
-    }
+    await this.sendChannel(server.botChannel, content)
   }
 
-  ensureCommandChannel() {
-    const channelId = this.core.config.discordBotCommandId as string
-    return this.ensureChannel(channelId)
-  }
-
-  ensureChannel(channelId: string) {
-    const found = this.client.channels.cache.get(channelId)
-
-    if (!found) {
-      throw new Error('Channel not found')
-    }
-    return found
-  }
-
-  private async ensureDiscordGuild(guildId: string) {
-    const fetched = await this.client.guilds.fetch(guildId)
-    if (!fetched) {
-      throw new Error(`Could not fetch guild with id ${guildId}`)
-    }
-    return fetched
-  }
-
-  async sendCommandChannel(content: string) {
-    await this.sendChannel(this.core.config.discordBotCommandId as string, content)
-  }
-
-  async sendChannel(channelId: string, content: string) {
-    const channel = this.ensureChannel(channelId)
-    if (channel.isTextBased()) {
-      await channel.send({ content })
-    }
-  }
-
-  async getDiscordGuildMemberIds(guildId: string) {
+  async getDiscordGuildMembers(guildId: string) {
     const guild = await this.ensureDiscordGuild(guildId)
     const members = await this.getEachMember(guild)
-    return members.map((member) => member.user.id)
+    return members.map((member) => member)
   }
 
   async getBotServers(): Promise<DiscordGuild[]> {
@@ -122,10 +91,52 @@ export class ApiDiscordBotService {
     return server as DiscordGuild
   }
 
-  async getBotServerRoles(serverId: string): Promise<DiscordGuildRole[]> {
-    const roles = await this.rest.get(`/guilds/${serverId}/roles`)
+  async getInviteUrl(userId: string) {
+    await this.core.ensureUserAdmin(userId)
+    if (!this.client?.user) {
+      throw new Error('Client not ready')
+    }
+    return this.inviteUrl()
+  }
 
-    return roles as DiscordGuildRole[]
+  inviteUrl() {
+    if (!this.client?.user) {
+      throw new Error('Client not ready')
+    }
+    return `https://discord.com/api/oauth2/authorize?client_id=${this.client.user.id}&permissions=${this.core.config.discordBotPermissions}&scope=bot%20applications.commands`
+  }
+
+  private ensureChannel(channelId: string) {
+    const found = this.client.channels.cache.get(channelId)
+
+    if (!found) {
+      throw new Error('Channel not found')
+    }
+    return found
+  }
+
+  private ensureCommandChannel() {
+    const channelId = this.core.config.discordBotCommandId as string
+    return this.ensureChannel(channelId)
+  }
+
+  private async ensureDiscordGuild(guildId: string) {
+    const fetched = await this.client.guilds.fetch(guildId)
+    if (!fetched) {
+      throw new Error(`Could not fetch guild with id ${guildId}`)
+    }
+    return fetched
+  }
+
+  private sendCommandChannel(content: string) {
+    return this.sendChannel(this.core.config.discordBotCommandId as string, content)
+  }
+
+  private async sendChannel(channelId: string, content: string) {
+    const channel = this.ensureChannel(channelId)
+    if (channel.isTextBased()) {
+      await channel.send({ content })
+    }
   }
 
   private async getEachMember(guild: Guild): Promise<GuildMember[]> {
@@ -154,49 +165,4 @@ export class ApiDiscordBotService {
 
     return result
   }
-
-  async getInviteUrl(userId: string) {
-    await this.core.ensureUserAdmin(userId)
-    if (!this.client?.user) {
-      throw new Error('Client not ready')
-    }
-    return this.inviteUrl()
-  }
-
-  inviteUrl() {
-    if (!this.client?.user) {
-      throw new Error('Client not ready')
-    }
-    return `https://discord.com/api/oauth2/authorize?client_id=${this.client.user.id}&permissions=${this.core.config.discordBotPermissions}&scope=bot%20applications.commands`
-  }
-}
-
-export interface DiscordGuild {
-  id: string
-  name: string
-  icon: string
-  description: string
-  owner_id: string
-  region: string
-  roles: DiscordGuildRole[]
-}
-
-export interface DiscordGuildRole {
-  id: string
-  name: string
-  description?: string
-  permissions: string
-  position: number
-  color: number
-  hoist: boolean
-  managed: boolean
-  mentionable: boolean
-  icon?: string
-  unicode_emoji?: string
-  flags: number
-  tags?: DiscordGuildRoleTag
-}
-
-export interface DiscordGuildRoleTag {
-  bot_id: string
 }

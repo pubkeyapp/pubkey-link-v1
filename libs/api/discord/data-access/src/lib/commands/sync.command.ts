@@ -25,19 +25,16 @@ export class SyncCommand {
 
     await interaction.reply(`⏱️ Syncing guild ${guildId}...`)
 
-    await this.discord.bot.sendCommandChannel(`⏱️ Syncing guild ${guildId}... identities...`)
-    // await this.identity.syncIdentities()
-
-    await this.discord.bot.sendCommandChannel(`⏱️ Syncing guild ${guildId}... server...`)
+    await this.discord.bot.debugLog(`⏱️ Syncing guild ${guildId}... server...`, true)
     await this.discord.syncServers.syncServer(guildId)
 
-    await this.discord.bot.sendCommandChannel(`⏱️ Syncing guild ${guildId}... Discord server roles...`)
+    await this.discord.bot.debugLog(`⏱️ Syncing guild ${guildId}... Discord server roles...`, true)
     await this.discord.syncServerRoles.syncDiscordServerRoles(guildId)
 
-    await this.discord.bot.sendCommandChannel(`⏱️ Syncing guild ${guildId}... Discord identities...`)
+    await this.discord.bot.debugLog(`⏱️ Syncing guild ${guildId}... Discord identities...`, true)
     await this.discord.syncIdentities.syncDiscordIdentities()
 
-    await this.discord.bot.sendCommandChannel(`✅  Synced guild ${guildId}!`)
+    await this.discord.bot.debugLog(`✅  Synced guild ${guildId}!`, true)
     return
   }
 }

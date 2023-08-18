@@ -45,26 +45,26 @@ export class ApiAssetQueueService implements OnModuleInit {
   async processAssetSyncManyJob(job: Job<AssetSyncManyQueueData, void, string>) {
     const { type: network, identity } = job.data
     const tag = `processAssetSyncManyJob ${job.id}: [${identity?.providerId}] ->`
-    await this.debugLog(`${tag} processing ${job.data.assets.length} assets...`, true)
+    await this.discord.bot.debugLog(`${tag} processing ${job.data.assets.length} assets...`, true)
 
-    await this.debugLog(`${tag} getting owned assets...`)
+    await this.discord.bot.debugLog(`${tag} getting owned assets...`)
     const owned = await this.getOwnedAssets({ networkType: network, providerId: identity.providerId })
 
-    await this.debugLog(`${tag} found ${owned.length} owned assets...`)
+    await this.discord.bot.debugLog(`${tag} found ${owned.length} owned assets...`)
     const toCreate = job.data.assets.filter((asset) => !owned.find((a) => a.account === asset.account))
     const toDisconnect = owned.filter((asset) => !job.data.assets.find((a) => a.account === asset.account))
 
     if (!toCreate.length && !toDisconnect.length) {
-      await this.debugLog(`${tag} nothing to do, exiting...`, true)
+      await this.discord.bot.debugLog(`${tag} nothing to do, exiting...`, true)
       return
     }
 
-    await this.debugLog(
+    await this.discord.bot.debugLog(
       `processAssetSyncManyJob: Found ${owned.length} owned assets. ${toCreate.length} to connect and ${toDisconnect.length} to disconnect`,
     )
 
     for (const { account, network, owner } of toDisconnect) {
-      await this.debugLog(
+      await this.discord.bot.debugLog(
         `disconnecting ${account} on ${network}, owner changed from ${identity.providerId} to ${owner}`,
       )
       await this.core.data.asset.update({
@@ -77,7 +77,10 @@ export class ApiAssetQueueService implements OnModuleInit {
       await this.scheduleAssetUpsertMany({ assets: toCreate, network: network })
       this.logger.verbose(`Scheduled ${toCreate.length} assets to be created on ${network}`)
     }
-    await this.debugLog(`${tag} created ${toCreate.length} assets, disconnected ${toDisconnect.length} assets`, true)
+    await this.discord.bot.debugLog(
+      `${tag} created ${toCreate.length} assets, disconnected ${toDisconnect.length} assets`,
+      true,
+    )
   }
 
   private async getOwnedAssets(param: { providerId: string; networkType: NetworkType }) {
@@ -91,20 +94,20 @@ export class ApiAssetQueueService implements OnModuleInit {
 
   async processAssetUpsertManyJob(job: Job<AssetUpsertManyQueueData, void, string>) {
     const tag = `AssetCreateManyJob ${job.id} ->`
-    await this.debugLog(`${tag} processing with ${job.data.assets.length} assets...`)
+    await this.discord.bot.debugLog(`${tag} processing with ${job.data.assets.length} assets...`)
     let count = 0
     let errors = 0
     for (const data of job.data.assets) {
       count++
       if (count % 100 === 0) {
-        await this.debugLog(`${tag} processed ${count}/${job.data.assets.length} assets`)
+        await this.discord.bot.debugLog(`${tag} processed ${count}/${job.data.assets.length} assets`)
       }
 
       const network = data?.collection?.connect?.account_network?.network
       if (!network) {
         throw new Error('No network')
       }
-      await this.debugLog(`${tag} upserting asset ${data.account} on ${network}`)
+      await this.discord.bot.debugLog(`${tag} upserting asset ${data.account} on ${network}`)
       await this.core.data.asset
         .upsert({
           where: { account_network: { account: data.account, network } },
@@ -116,19 +119,13 @@ export class ApiAssetQueueService implements OnModuleInit {
           errors++
         })
     }
-    await this.debugLog(`${tag} processed, ${errors} errors`)
+    await this.discord.bot.debugLog(`${tag} processed, ${errors} errors`)
 
     if (errors) {
-      await this.discord.bot.sendCommandChannel(`Error creating ${errors} assets, check logs`)
+      await this.discord.bot.debugLog(`Error creating ${errors} assets, check logs`, true)
       throw new Error('Error creating assets')
     }
     await this.updateAssetCounts()
-  }
-
-  private async debugLog(message: string, always = false) {
-    if (!this.core.config.syncDebug && !always) return
-    this.logger.debug(message)
-    await this.discord.bot.sendCommandChannel(`\`${new Date().toISOString()}${always ? '' : ' DEBUG'}: ${message}\``)
   }
 
   private async updateAssetCounts() {

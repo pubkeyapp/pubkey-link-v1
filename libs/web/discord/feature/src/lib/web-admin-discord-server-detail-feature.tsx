@@ -1,23 +1,14 @@
 import { Button, Group } from '@mantine/core'
-import { DiscordServer } from '@pubkey-link/sdk'
 import { useAdminGetDiscordServer } from '@pubkey-link/web/discord/data-access'
-import { AuthUiDiscordServerUpdateForm, DiscordUiServerAvatar, DiscordUiServerTitle } from '@pubkey-link/web/discord/ui'
+import { DiscordUiServerAvatar, DiscordUiServerTitle } from '@pubkey-link/web/discord/ui'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
-import {
-  UiAdminPage,
-  UiAlert,
-  UiBack,
-  UiCard,
-  UiDebugModal,
-  UiLoader,
-  UiStack,
-  UiTabRoutes,
-} from '@pubkey-link/web/ui/core'
+import { UiAdminPage, UiAlert, UiBack, UiDebugModal, UiLoader, UiTabRoutes } from '@pubkey-link/web/ui/core'
 import { showNotificationError, showNotificationSuccess } from '@pubkey-link/web/ui/notifications'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { DiscordServerDetailTabConditions } from './discord-server-detail-tab-conditions'
 import { DiscordServerDetailTabRoles } from './discord-server-detail-tab-roles'
+import { DiscordServerDetailTabSettings } from './discord-server-detail-tab-settings'
 
 export function WebAdminDiscordServerDetailFeature() {
   const { serverId } = useParams() as { serverId: string }
@@ -60,9 +51,30 @@ export function WebAdminDiscordServerDetailFeature() {
       }
       leftAction={<UiBack />}
       rightAction={
-        <Button disabled={!server?.enabled} loading={syncing} onClick={() => syncRoles()}>
-          Sync Roles
-        </Button>
+        <Group>
+          <UiDebugModal data={server} />
+          <Button
+            disabled={!server?.botChannel}
+            onClick={() =>
+              sdk
+                .adminTestDiscordServerBotChannel({ serverId: server?.id as string })
+                .then(() => {
+                  showNotificationSuccess('Test sent')
+                  return true
+                })
+                .catch((err) => {
+                  console.error(err)
+                  showNotificationError('An error occurred')
+                  return false
+                })
+            }
+          >
+            Test Bot Channel
+          </Button>
+          <Button disabled={!server?.enabled} loading={syncing} onClick={() => syncRoles()}>
+            Sync Roles
+          </Button>
+        </Group>
       }
     >
       {server?.enabled ? (
@@ -97,54 +109,5 @@ export function WebAdminDiscordServerDetailFeature() {
         />
       )}
     </UiAdminPage>
-  )
-}
-
-function DiscordServerDetailTabSettings({ refresh, server }: { server: DiscordServer; refresh: () => void }) {
-  const sdk = useWebSdk()
-
-  return (
-    <UiStack>
-      <UiCard>
-        <AuthUiDiscordServerUpdateForm
-          item={server}
-          submit={(input) =>
-            sdk
-              .adminUpdateDiscordServer({ serverId: server.id, input })
-              .then(() => {
-                showNotificationSuccess('Updated')
-                refresh()
-                return true
-              })
-              .catch((err) => {
-                console.error(err)
-                showNotificationError('An error occurred')
-                return false
-              })
-          }
-        >
-          <UiDebugModal data={server} />
-          <Button
-            disabled={!server.botChannel}
-            onClick={() =>
-              sdk
-                .adminTestDiscordServerBotChannel({ serverId: server.id })
-                .then(() => {
-                  showNotificationSuccess('Test sent')
-                  refresh()
-                  return true
-                })
-                .catch((err) => {
-                  console.error(err)
-                  showNotificationError('An error occurred')
-                  return false
-                })
-            }
-          >
-            Test Bot Channel
-          </Button>
-        </AuthUiDiscordServerUpdateForm>
-      </UiCard>
-    </UiStack>
   )
 }
