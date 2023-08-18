@@ -11,6 +11,7 @@ fragment DiscordServerDetails on DiscordServer {
   name
   owner
   enabled
+  enableSync
   botChannel
   permissions
   serverUrl

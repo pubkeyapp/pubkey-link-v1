@@ -6,8 +6,8 @@ import { env } from 'node:process'
 import { ApiDiscordBotService } from './api-discord-bot.service'
 
 @Injectable()
-export class ApiDiscordSyncServersService {
-  private readonly logger = new Logger(ApiDiscordSyncServersService.name)
+export class ApiDiscordSyncBotServersService {
+  private readonly logger = new Logger(ApiDiscordSyncBotServersService.name)
 
   constructor(private readonly core: ApiCoreService, private readonly bot: ApiDiscordBotService) {}
 
@@ -23,7 +23,10 @@ export class ApiDiscordSyncServersService {
     ])
 
     const botServerIds = botServers.map((server) => server.id)
-    const activeServerIds = databaseServers.filter((server) => server.enabled).map((server) => server.id)
+    const activeServerIds = databaseServers
+      .filter((server) => server.enabled)
+      .filter((server) => server.enableSync)
+      .map((server) => server.id)
     for (const databaseServer of databaseServers) {
       const isEnabled = databaseServer.enabled
 

@@ -5,7 +5,7 @@ import { ApiDiscordAdminService } from './api-discord-admin.service'
 import { ApiDiscordBotService } from './api-discord-bot.service'
 import { ApiDiscordSyncIdentitiesService } from './api-discord-sync-identities.service'
 import { ApiDiscordSyncServerRolesService } from './api-discord-sync-server-roles.service'
-import { ApiDiscordSyncServersService } from './api-discord-sync-servers.service'
+import { ApiDiscordSyncBotServersService } from './api-discord-sync-bot-servers.service'
 import { ApiDiscordService } from './api-discord.service'
 import { commands } from './commands'
 
@@ -29,7 +29,7 @@ import { commands } from './commands'
     ApiDiscordBotService,
     ApiDiscordSyncIdentitiesService,
     ApiDiscordSyncServerRolesService,
-    ApiDiscordSyncServersService,
+    ApiDiscordSyncBotServersService,
   ],
   exports: [ApiDiscordService],
 })

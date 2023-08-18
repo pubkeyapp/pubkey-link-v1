@@ -58,6 +58,11 @@ export class ApiDiscordSyncServerRolesService {
       return
     }
 
+    if (!server.enableSync) {
+      this.logger.verbose(`SyncDiscordRoles => [${server.name}] Sync is disabled for this server`)
+      return
+    }
+
     // Loop through the servers
     const tag = `SyncDiscordRoles [${server.name}]`
 

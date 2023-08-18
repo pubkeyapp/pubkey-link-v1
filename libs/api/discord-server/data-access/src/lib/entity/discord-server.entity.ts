@@ -17,6 +17,8 @@ export class DiscordServer {
   permissions?: number
   @Field()
   enabled!: boolean
+  @Field()
+  enableSync!: boolean
   @Field(() => [String], { nullable: true })
   features!: string[]
   @Field(() => [DiscordRole], { nullable: true })

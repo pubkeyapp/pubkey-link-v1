@@ -1,7 +1,7 @@
 import { Button, Group } from '@mantine/core'
 import { AdminUpdateDiscordServerInput, DiscordServer } from '@pubkey-link/sdk'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
-import { formFieldSelect, UiForm, UiFormField, UiLoader } from '@pubkey-link/web/ui/core'
+import { formFieldCheckbox, formFieldSelect, UiForm, UiFormField, UiLoader } from '@pubkey-link/web/ui/core'
 import { useQuery } from '@tanstack/react-query'
 import { ReactNode, useMemo } from 'react'
 
@@ -33,7 +33,8 @@ function useAdminDiscordServerChannels(serverId: string) {
 export function AuthUiDiscordServerUpdateForm({ children, item, submit }: AuthUiDiscordServerUpdateFormProps) {
   const { query, options } = useAdminDiscordServerChannels(item.id)
   const model: AdminUpdateDiscordServerInput = {
-    botChannel: item.botChannel ?? '',
+    botChannel: item.botChannel,
+    enableSync: item.enableSync,
   }
 
   const fields: UiFormField<AdminUpdateDiscordServerInput>[] = [
@@ -41,6 +42,10 @@ export function AuthUiDiscordServerUpdateForm({ children, item, submit }: AuthUi
       label: 'Bot Channel',
       description: 'Channel in this server where the bot will log events',
       options,
+    }),
+    formFieldCheckbox('enableSync', {
+      label: 'Enable Sync',
+      description: 'Enable syncing of roles in this server',
     }),
   ]
 

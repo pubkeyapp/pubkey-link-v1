@@ -88,6 +88,7 @@ model DiscordServer {
   botChannel  String?
   permissions String?
   enabled     Boolean       @default(false)
+  enableSync  Boolean       @default(true)
   features    String[]
   // a Discord bot will never be the owner of a Discord Server, but we add it so the model is consistent with the discord api
   owner       Boolean       @default(false)

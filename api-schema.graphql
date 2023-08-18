@@ -108,6 +108,7 @@ input AdminUpdateCollectionInput {
 
 input AdminUpdateDiscordServerInput {
   botChannel: String
+  enableSync: Boolean
 }
 
 input AdminUpdateEmailInput {
@@ -223,6 +224,7 @@ type DiscordRoleCondition {
 
 type DiscordServer {
   botChannel: String
+  enableSync: Boolean!
   enabled: Boolean!
   features: [String!]
   icon: String
