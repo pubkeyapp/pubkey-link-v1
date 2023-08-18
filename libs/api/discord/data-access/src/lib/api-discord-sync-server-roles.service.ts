@@ -201,7 +201,7 @@ export class ApiDiscordSyncServerRolesService {
   private async debugLog(message: string, always = false) {
     if (!this.core.config.syncDebug && !always) return
     this.logger.debug(message)
-    await this.bot.sendCommandChannel(`\`DEBUG: ${new Date().toISOString()} ${message}\``)
+    await this.bot.sendCommandChannel(`\`${new Date().toISOString()}${always ? '' : ' DEBUG'}: ${message}\``)
   }
 
   private getAssetsWithAttributes(attributes: AssetAttribute[], providerIds: string[]): Promise<AssetWithIdentity[]> {
