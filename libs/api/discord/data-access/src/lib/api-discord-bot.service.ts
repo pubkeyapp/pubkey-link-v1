@@ -50,7 +50,7 @@ export class ApiDiscordBotService {
         await member?.roles.add(roleId)
         await Promise.all([
           this.debugLog(`${tag} Added role ${roleMap[roleId]} to user ${userMap[userId]}`, true),
-          this.announceInServer(server, `${tag} Added role <@&${roleId}> to user <@${userId}>`),
+          this.announceInServer(server, `🥳 Role <@&${roleId}> added to user <@${userId}>`),
         ])
       }
 
@@ -58,7 +58,7 @@ export class ApiDiscordBotService {
         await member?.roles.remove(roleId)
         await Promise.all([
           this.debugLog(`${tag} Removed role ${roleMap[roleId]} from user ${userMap[userId]}`, true),
-          this.announceInServer(server, `${tag} Removed role <@&${roleId}> from user <@${userId}>`),
+          this.announceInServer(server, `😭 Role <@&${roleId}> removed from user <@${userId}>`),
         ])
       }
     }
