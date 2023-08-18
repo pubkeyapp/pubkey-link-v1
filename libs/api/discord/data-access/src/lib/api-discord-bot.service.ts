@@ -48,14 +48,18 @@ export class ApiDiscordBotService {
 
       for (const roleId of toAdd) {
         await member?.roles.add(roleId)
-        const message = `${tag} Added role ${roleMap[roleId]} to user ${userMap[userId]}`
-        await Promise.all([this.debugLog(message, true), this.announceInServer(server, message)])
+        await Promise.all([
+          this.debugLog(`${tag} Added role ${roleMap[roleId]} to user ${userMap[userId]}`, true),
+          this.announceInServer(server, `${tag} Added role <@&${roleId}> to user <@${userId}>`),
+        ])
       }
 
       for (const roleId of toRemove) {
         await member?.roles.remove(roleId)
-        const message = `${tag} Removed role ${roleMap[roleId]} from user ${userMap[userId]}`
-        await Promise.all([this.debugLog(message, true), this.announceInServer(server, message)])
+        await Promise.all([
+          this.debugLog(`${tag} Removed role ${roleMap[roleId]} from user ${userMap[userId]}`, true),
+          this.announceInServer(server, `${tag} Removed role <@&${roleId}> from user <@${userId}>`),
+        ])
       }
     }
   }
