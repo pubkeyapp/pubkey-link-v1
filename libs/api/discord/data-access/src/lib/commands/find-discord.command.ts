@@ -20,8 +20,9 @@ export class FindDiscordIdentityCommand {
   @SlashCommand({ name: 'find-discord', description: 'Find Discord identity on PubKey' })
   async collections(@Context() [interaction]: SlashCommandContext, @Options() { user }: FindDiscordIdentityDto) {
     const provider = IdentityProvider.Discord
+    user = user ?? interaction.user
 
-    const found = await this.core.getUserByProviderId(IdentityProvider.Discord, interaction.user.id)
+    const found = await this.core.getUserByProviderId(IdentityProvider.Discord, user.id)
 
     if (!found) {
       return interaction.reply({
