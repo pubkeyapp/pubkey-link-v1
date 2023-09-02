@@ -3,6 +3,7 @@ import { WebDevAdminRoutes } from '@pubkey-link/web/dev/feature'
 import { WebAdminDiscordServerRoutes } from '@pubkey-link/web/discord/feature'
 import { WebAdminNetworkRoutes } from '@pubkey-link/web/network/feature'
 import { WebAdminQueueRoutes } from '@pubkey-link/web/queue/feature'
+import { WebAdminReportRoutes } from '@pubkey-link/web/report/feature'
 import { UiContainer, UiDashboard, UiNotFound } from '@pubkey-link/web/ui/core'
 import { WebAdminUserRoutes } from '@pubkey-link/web/user/feature'
 import {
@@ -10,6 +11,7 @@ import {
   IconBug,
   IconLayoutCollage,
   IconNetwork,
+  IconReport,
   IconStackPush,
   IconUsers,
 } from '@tabler/icons-react'
@@ -29,6 +31,7 @@ export default function WebAdminRoutes() {
               { label: 'Discord Servers', icon: IconBrandDiscord, link: '/admin/discord-servers' },
               { label: 'Networks', icon: IconNetwork, link: '/admin/networks' },
               { label: 'Queues', icon: IconStackPush, link: '/admin/queues' },
+              { label: 'Reports', icon: IconReport, link: '/admin/reports' },
               { label: 'Users', icon: IconUsers, link: '/admin/users' },
             ]}
           />
@@ -40,6 +43,7 @@ export default function WebAdminRoutes() {
     { path: 'discord-servers/*', element: <WebAdminDiscordServerRoutes /> },
     { path: 'networks/*', element: <WebAdminNetworkRoutes /> },
     { path: 'queues/*', element: <WebAdminQueueRoutes /> },
+    { path: 'reports/*', element: <WebAdminReportRoutes /> },
     { path: 'users/*', element: <WebAdminUserRoutes /> },
     { path: '*', element: <UiNotFound /> },
   ])

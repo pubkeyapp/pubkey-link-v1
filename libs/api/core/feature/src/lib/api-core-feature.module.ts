@@ -11,6 +11,7 @@ import { ApiEmailFeatureModule } from '@pubkey-link/api/email/feature'
 import { ApiIdentityFeatureModule } from '@pubkey-link/api/identity/feature'
 import { ApiNetworkFeatureModule } from '@pubkey-link/api/network/feature'
 import { ApiQueueFeatureModule } from '@pubkey-link/api/queue/feature'
+import { ApiReportFeatureModule } from '@pubkey-link/api/report/feature'
 import { ApiUserFeatureModule } from '@pubkey-link/api/user/feature'
 import { ApiCoreController } from './api-core.controller'
 import { ApiCoreResolver } from './api-core.resolver'
@@ -28,6 +29,7 @@ const imports = [
   ApiIdentityFeatureModule,
   ApiNetworkFeatureModule,
   ApiQueueFeatureModule,
+  ApiReportFeatureModule,
   ApiUserFeatureModule,
 ]
 

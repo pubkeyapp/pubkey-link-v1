@@ -4,8 +4,19 @@ import { useQuery } from '@tanstack/react-query'
 
 export function useAdminFindDiscordServers({ input }: { input: AdminFindDiscordServersInput }) {
   const sdk = useWebSdk()
-  return useQuery({
+  const query = useQuery({
     queryKey: ['admin', 'discord-servers', 'find', { input }],
     queryFn: () => sdk.adminFindDiscordServers({ input }).then((res) => res.data),
   })
+  const servers = query.data?.items ?? []
+  const serverOptions = servers.map((server) => ({
+    label: `${server.name}`,
+    value: `${server.id}`,
+  }))
+
+  return {
+    servers,
+    serverOptions,
+    query,
+  }
 }

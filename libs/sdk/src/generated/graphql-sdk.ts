@@ -1,9 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+import { print } from 'graphql'
 import { GraphQLClient } from 'graphql-request'
 import * as Dom from 'graphql-request/dist/types.dom'
-import { print } from 'graphql'
 import gql from 'graphql-tag'
+
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -644,6 +645,7 @@ export type Query = {
   adminGetQueueJobs?: Maybe<Array<Job>>
   adminGetQueues?: Maybe<Array<Queue>>
   adminGetUser?: Maybe<User>
+  adminReportDiscordMemberWallets?: Maybe<Scalars['JSON']>
   appConfig: AppConfig
   me?: Maybe<User>
   uptime: Scalars['Float']
@@ -762,6 +764,10 @@ export type QueryAdminGetQueueJobsArgs = {
 
 export type QueryAdminGetUserArgs = {
   userId: Scalars['String']
+}
+
+export type QueryAdminReportDiscordMemberWalletsArgs = {
+  serverId: Scalars['String']
 }
 
 export type QueryUserFindAssetsArgs = {
@@ -2842,6 +2848,12 @@ export type AdminResumeQueueMutationVariables = Exact<{
 
 export type AdminResumeQueueMutation = { __typename?: 'Mutation'; resumed?: boolean | null }
 
+export type AdminReportDiscordMemberWalletsQueryVariables = Exact<{
+  serverId: Scalars['String']
+}>
+
+export type AdminReportDiscordMemberWalletsQuery = { __typename?: 'Query'; report?: any | null }
+
 export type UserDetailsFragment = {
   __typename?: 'User'
   allowDm?: boolean | null
@@ -3887,6 +3899,11 @@ export const AdminResumeQueueDocument = gql`
     resumed: adminResumeQueue(type: $type)
   }
 `
+export const AdminReportDiscordMemberWalletsDocument = gql`
+  query adminReportDiscordMemberWallets($serverId: String!) {
+    report: adminReportDiscordMemberWallets(serverId: $serverId)
+  }
+`
 export const AdminFindUsersDocument = gql`
   query adminFindUsers($input: AdminFindUsersInput!) {
     count: adminFindUsersCount(input: $input) {
@@ -4033,6 +4050,7 @@ const AdminCleanQueueDocumentString = print(AdminCleanQueueDocument)
 const AdminDeleteQueueJobDocumentString = print(AdminDeleteQueueJobDocument)
 const AdminPauseQueueDocumentString = print(AdminPauseQueueDocument)
 const AdminResumeQueueDocumentString = print(AdminResumeQueueDocument)
+const AdminReportDiscordMemberWalletsDocumentString = print(AdminReportDiscordMemberWalletsDocument)
 const AdminFindUsersDocumentString = print(AdminFindUsersDocument)
 const AdminGetUserDocumentString = print(AdminGetUserDocument)
 const AdminCreateUserDocumentString = print(AdminCreateUserDocument)
@@ -5059,6 +5077,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
           }),
         'adminResumeQueue',
         'mutation',
+      )
+    },
+    adminReportDiscordMemberWallets(
+      variables: AdminReportDiscordMemberWalletsQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<{ data: AdminReportDiscordMemberWalletsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminReportDiscordMemberWalletsQuery>(
+            AdminReportDiscordMemberWalletsDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders },
+          ),
+        'adminReportDiscordMemberWallets',
+        'query',
       )
     },
     adminFindUsers(

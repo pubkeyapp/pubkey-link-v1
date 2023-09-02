@@ -1,0 +1,3 @@
+query adminReportDiscordMemberWallets($serverId: String!) {
+  report: adminReportDiscordMemberWallets(serverId: $serverId)
+}

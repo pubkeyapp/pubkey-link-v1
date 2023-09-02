@@ -5,7 +5,7 @@ import { DiscordUiServerGrid } from '@pubkey-link/web/discord/ui'
 import { UiAdminPage, UiBack, UiCopy, UiGroup, UiLoader, UiStack, UiWarn } from '@pubkey-link/web/ui/core'
 
 export function WebAdminDiscordServerListFeature() {
-  const query = useAdminFindDiscordServers({ input: { take: 100 } })
+  const { query } = useAdminFindDiscordServers({ input: { take: 100 } })
   return (
     <UiAdminPage title="Discord Servers" leftAction={<UiBack />} rightAction={<InviteButton />}>
       {query.isLoading ? (
