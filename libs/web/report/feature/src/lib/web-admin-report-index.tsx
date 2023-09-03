@@ -3,7 +3,7 @@ import { DiscordServer } from '@pubkey-link/sdk'
 import { useAdminCollections } from '@pubkey-link/web/collection/data-access'
 import { useAdminFindDiscordServers } from '@pubkey-link/web/discord/data-access'
 import { useAdminReportDiscordMemberWallets } from '@pubkey-link/web/report/data-access'
-import { UiAdminPage, UiBack, UiDebug, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
+import { UiAdminPage, UiAlert, UiBack, UiDebug, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
 import { useState } from 'react'
 
 export function WebAdminReportIndex() {
@@ -46,7 +46,6 @@ export function WebAdminReportIndex() {
             setCollectionAccount(item)
           }}
         />
-        <UiDebug data={collectionOptions} open />
         {server && report && collectionAccount ? (
           <WebAdminReport server={server} report={report} collectionAccount={collectionAccount} />
         ) : null}
@@ -66,9 +65,11 @@ export function WebAdminReport({
 }) {
   const { query } = useAdminReportDiscordMemberWallets({ serverId: server.id, collectionAccount })
 
-  return (
-    <UiStack>
-      <UiStack>{query.isLoading ? <UiLoader /> : <UiDebug data={query.data} open />}</UiStack>
-    </UiStack>
+  return query.isLoading ? (
+    <UiLoader />
+  ) : query.data?.report ? (
+    <UiDebug data={query.data.report} open />
+  ) : (
+    <UiAlert message="No data found" />
   )
 }
