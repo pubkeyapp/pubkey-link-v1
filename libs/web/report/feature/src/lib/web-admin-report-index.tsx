@@ -1,5 +1,6 @@
 import { Select } from '@mantine/core'
 import { DiscordServer } from '@pubkey-link/sdk'
+import { useAdminCollections } from '@pubkey-link/web/collection/data-access'
 import { useAdminFindDiscordServers } from '@pubkey-link/web/discord/data-access'
 import { useAdminReportDiscordMemberWallets } from '@pubkey-link/web/report/data-access'
 import { UiAdminPage, UiBack, UiDebug, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
@@ -7,8 +8,10 @@ import { useState } from 'react'
 
 export function WebAdminReportIndex() {
   const { serverOptions, servers } = useAdminFindDiscordServers({ input: {} })
+  const { collectionOptions } = useAdminCollections()
   const [server, setServer] = useState<DiscordServer | undefined>(undefined)
   const [report, setReport] = useState<string | undefined>()
+  const [collectionAccount, setCollectionAccount] = useState<string | undefined>()
 
   return (
     <UiAdminPage leftAction={<UiBack />} title="Reports">
@@ -33,14 +36,35 @@ export function WebAdminReportIndex() {
             setReport(item)
           }}
         />
-        {server && report ? <WebAdminReport server={server} report={report} /> : null}
+        <Select
+          label="Collection"
+          placeholder="Select collection"
+          data={collectionOptions ?? []}
+          value={collectionAccount}
+          onChange={(item) => {
+            if (!item) return
+            setCollectionAccount(item)
+          }}
+        />
+        <UiDebug data={collectionOptions} open />
+        {server && report && collectionAccount ? (
+          <WebAdminReport server={server} report={report} collectionAccount={collectionAccount} />
+        ) : null}
       </UiStack>
     </UiAdminPage>
   )
 }
 
-export function WebAdminReport({ server, report }: { server: DiscordServer; report: string }) {
-  const { query } = useAdminReportDiscordMemberWallets({ serverId: server.id })
+export function WebAdminReport({
+  server,
+  report,
+  collectionAccount,
+}: {
+  server: DiscordServer
+  report: string
+  collectionAccount: string
+}) {
+  const { query } = useAdminReportDiscordMemberWallets({ serverId: server.id, collectionAccount })
 
   return (
     <UiStack>

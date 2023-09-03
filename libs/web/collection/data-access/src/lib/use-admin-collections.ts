@@ -19,8 +19,13 @@ export function useAdminCollections() {
     sdk.adminFindCollections({ input }).then((res) => res.data),
   )
   const total = query.data?.count?.total ?? 0
+  const items = query.data?.items ?? []
 
   return {
+    collectionOptions: items.map((item) => ({
+      label: item.name,
+      value: item.account ?? '',
+    })),
     createCollection: (input: AdminCreateCollectionInput) =>
       sdk
         .adminCreateCollection({ input })

@@ -2,21 +2,22 @@ import { Injectable } from '@nestjs/common'
 import { IdentityProvider } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { ApiDiscordService } from '@pubkey-link/api/discord/data-access'
+import { AdminReportDiscordMemberWalletsInput } from './dto/admin-report-discord-member-wallets.input'
 
 @Injectable()
 export class ApiReportAdminService {
   constructor(private readonly core: ApiCoreService, private readonly discord: ApiDiscordService) {}
 
-  async reportDiscordMemberWallets(userId: string, serverId: string) {
+  async reportDiscordMemberWallets(userId: string, input: AdminReportDiscordMemberWalletsInput) {
     await this.core.ensureUserAdmin(userId)
     const server = await this.core.data.discordServer.findUnique({
-      where: { id: serverId },
+      where: { id: input.serverId },
     })
     if (!server) {
       throw new Error(`Server not found`)
     }
 
-    const members = await this.discord.bot.getDiscordGuildMembers(serverId)
+    const members = await this.discord.bot.getDiscordGuildMembers(input.serverId)
 
     const memberInfo = members
       .map(({ user }) => ({ id: user.id, username: user.username }))
@@ -41,6 +42,9 @@ export class ApiReportAdminService {
             provider: true,
             providerId: true,
             assets: {
+              where: {
+                collectionAccount: input.collectionAccount ? { equals: input.collectionAccount } : undefined,
+              },
               select: {
                 account: true,
                 attributeMap: true,

@@ -96,6 +96,11 @@ input AdminFindUsersInput {
   take: Int = 10
 }
 
+input AdminReportDiscordMemberWalletsInput {
+  collectionAccount: String!
+  serverId: String!
+}
+
 input AdminUpdateCollectionComboInput {
   description: String
   name: String
@@ -435,7 +440,7 @@ type Query {
   adminGetQueueJobs(statuses: [JobStatus!]!, type: QueueType!): [Job!]
   adminGetQueues: [Queue!]
   adminGetUser(userId: String!): User
-  adminReportDiscordMemberWallets(serverId: String!): JSON
+  adminReportDiscordMemberWallets(input: AdminReportDiscordMemberWalletsInput!): JSON
   appConfig: AppConfig!
   me: User
   uptime: Float!

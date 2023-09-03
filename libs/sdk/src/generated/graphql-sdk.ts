@@ -117,6 +117,11 @@ export type AdminFindUsersInput = {
   take?: InputMaybe<Scalars['Int']>
 }
 
+export type AdminReportDiscordMemberWalletsInput = {
+  collectionAccount: Scalars['String']
+  serverId: Scalars['String']
+}
+
 export type AdminUpdateCollectionComboInput = {
   description?: InputMaybe<Scalars['String']>
   name?: InputMaybe<Scalars['String']>
@@ -767,7 +772,7 @@ export type QueryAdminGetUserArgs = {
 }
 
 export type QueryAdminReportDiscordMemberWalletsArgs = {
-  serverId: Scalars['String']
+  input: AdminReportDiscordMemberWalletsInput
 }
 
 export type QueryUserFindAssetsArgs = {
@@ -2849,7 +2854,7 @@ export type AdminResumeQueueMutationVariables = Exact<{
 export type AdminResumeQueueMutation = { __typename?: 'Mutation'; resumed?: boolean | null }
 
 export type AdminReportDiscordMemberWalletsQueryVariables = Exact<{
-  serverId: Scalars['String']
+  input: AdminReportDiscordMemberWalletsInput
 }>
 
 export type AdminReportDiscordMemberWalletsQuery = { __typename?: 'Query'; report?: any | null }
@@ -3900,8 +3905,8 @@ export const AdminResumeQueueDocument = gql`
   }
 `
 export const AdminReportDiscordMemberWalletsDocument = gql`
-  query adminReportDiscordMemberWallets($serverId: String!) {
-    report: adminReportDiscordMemberWallets(serverId: $serverId)
+  query adminReportDiscordMemberWallets($input: AdminReportDiscordMemberWalletsInput!) {
+    report: adminReportDiscordMemberWallets(input: $input)
   }
 `
 export const AdminFindUsersDocument = gql`
