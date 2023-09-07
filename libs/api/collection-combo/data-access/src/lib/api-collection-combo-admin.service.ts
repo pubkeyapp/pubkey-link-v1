@@ -1,13 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { CollectionCombo as PrismaCollectionCombo } from '@prisma/client'
 import { AssetAttributeInput } from '@pubkey-link/api/asset/data-access'
-import { ApiCoreService, Paging } from '@pubkey-link/api/core/data-access'
+import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { ApiNetworkService } from '@pubkey-link/api/network/data-access'
 
 import { AdminCreateCollectionComboInput } from './dto/admin-create-collection-combo.input'
-import { AdminFindCollectionCombosInput } from './dto/admin-find-collection-combos.input'
+import { AdminFindManyCollectionComboInput } from './dto/admin-find-many-collection-combo-input'
 import { AdminUpdateCollectionComboInput } from './dto/admin-update-collection-combo.input'
-import { parseAdminFindCollectionCombosInput } from './helpers/parse-admin-find-collection-combos.input'
+import { CollectionComboPaging } from './entity/collection-combo-paging'
+import { getAdminFindCollectionComboWhereInput } from './helpers/get-admin-find-collection-combo-where-input'
 
 @Injectable()
 export class ApiCollectionComboAdminService {
@@ -52,28 +53,22 @@ export class ApiCollectionComboAdminService {
     return true
   }
 
-  async findCollectionCombos(adminId: string, input: AdminFindCollectionCombosInput): Promise<PrismaCollectionCombo[]> {
+  async findManyCollectionCombo(
+    adminId: string,
+    input: AdminFindManyCollectionComboInput,
+  ): Promise<CollectionComboPaging> {
     await this.core.ensureUserAdmin(adminId)
-
-    const { where, orderBy, take, skip, include } = parseAdminFindCollectionCombosInput(input)
-    const items = await this.core.data.collectionCombo.findMany({ where, orderBy, take, skip, include })
-
-    return items ?? []
+    return this.core.data.collectionCombo
+      .paginate({
+        where: getAdminFindCollectionComboWhereInput(input),
+        orderBy: { updatedAt: 'desc' },
+        include: { attributes: true },
+      })
+      .withPages({ limit: input.limit, page: input.page })
+      .then(([data, meta]) => ({ data, meta }))
   }
 
-  async findCollectionCombosCount(adminId: string, input: AdminFindCollectionCombosInput): Promise<Paging> {
-    await this.core.ensureUserAdmin(adminId)
-
-    const { where, orderBy, take, skip } = parseAdminFindCollectionCombosInput(input)
-    const [count, total] = await Promise.all([
-      this.core.data.collectionCombo.count({ where, orderBy, take, skip }),
-      this.core.data.collectionCombo.count({ where, orderBy }),
-    ])
-
-    return { count, skip, take, total }
-  }
-
-  async getCollectionCombo(adminId: string, collectionComboId: string) {
+  async findOneCollectionCombo(adminId: string, collectionComboId: string) {
     await this.core.ensureUserAdmin(adminId)
     const found = await this.core.data.collectionCombo.findUnique({
       where: { id: collectionComboId },
@@ -106,7 +101,7 @@ export class ApiCollectionComboAdminService {
   }
 
   async addCollectionComboAttribute(adminId: string, collectionComboId: string, input: AssetAttributeInput) {
-    const found = await this.getCollectionCombo(adminId, collectionComboId)
+    const found = await this.findOneCollectionCombo(adminId, collectionComboId)
     const foundAttribute = await this.core.data.assetAttribute.findFirst({
       where: {
         collection: { account: found.collectionAccount, network: found.network },
@@ -134,7 +129,7 @@ export class ApiCollectionComboAdminService {
   }
 
   async removeCollectionComboAttribute(adminId: string, collectionComboId: string, assetAttributeId: string) {
-    const found = await this.getCollectionCombo(adminId, collectionComboId)
+    const found = await this.findOneCollectionCombo(adminId, collectionComboId)
     const exists = found.attributes.find((a) => a.id === assetAttributeId)
     if (!exists) {
       throw new Error(`CollectionCombo ${collectionComboId} attribute ${assetAttributeId} does not exist`)

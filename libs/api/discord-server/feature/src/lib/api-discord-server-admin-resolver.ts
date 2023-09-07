@@ -1,12 +1,12 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { ApiAuthGraphqlGuard, CtxUser } from '@pubkey-link/api/auth/data-access'
-import { Paging } from '@pubkey-link/api/core/data-access'
 import {
-  AdminFindDiscordServersInput,
+  AdminFindManyDiscordServerInput,
   AdminUpdateDiscordServerInput,
   ApiDiscordServerService,
   DiscordServer,
+  DiscordServerPaging,
 } from '@pubkey-link/api/discord-server/data-access'
 import { User } from '@pubkey-link/api/user/data-access'
 
@@ -15,19 +15,14 @@ import { User } from '@pubkey-link/api/user/data-access'
 export class ApiDiscordServerAdminResolver {
   constructor(private readonly service: ApiDiscordServerService) {}
 
-  @Query(() => [DiscordServer], { nullable: true })
-  adminFindDiscordServers(@CtxUser() user: User, @Args('input') input: AdminFindDiscordServersInput) {
-    return this.service.admin.findDiscordServers(user.id, input)
-  }
-
-  @Query(() => Paging, { nullable: true })
-  adminFindDiscordServersCount(@CtxUser() user: DiscordServer, @Args('input') input: AdminFindDiscordServersInput) {
-    return this.service.admin.findDiscordServersCount(user.id, input)
+  @Query(() => DiscordServerPaging)
+  adminFindManyDiscordServer(@CtxUser() user: User, @Args('input') input: AdminFindManyDiscordServerInput) {
+    return this.service.admin.findManyDiscordServer(user.id, input)
   }
 
   @Query(() => DiscordServer, { nullable: true })
-  adminGetDiscordServer(@CtxUser() user: User, @Args('serverId') serverId: string) {
-    return this.service.admin.getDiscordServer(user.id, serverId)
+  adminFindOneDiscordServer(@CtxUser() user: User, @Args('serverId') serverId: string) {
+    return this.service.admin.findOneDiscordServer(user.id, serverId)
   }
 
   @Mutation(() => DiscordServer, { nullable: true })

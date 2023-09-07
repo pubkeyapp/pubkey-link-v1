@@ -1,2 +1,2 @@
-export * from './lib/use-user-profile'
-export * from './lib/use-user-profiles'
+export * from './lib/use-user-find-one-user'
+export * from './lib/use-user-find-many-user'

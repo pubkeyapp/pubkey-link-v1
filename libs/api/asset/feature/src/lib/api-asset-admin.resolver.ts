@@ -1,8 +1,7 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { AdminFindManyAssetInput, ApiAssetService, Asset, AssetPaging } from '@pubkey-link/api/asset/data-access'
 import { ApiAuthGraphqlGuard, CtxUser } from '@pubkey-link/api/auth/data-access'
-import { Paging } from '@pubkey-link/api/core/data-access'
-import { AdminFindAssetsInput, ApiAssetService, Asset } from '@pubkey-link/api/asset/data-access'
 import { User } from '@pubkey-link/api/user/data-access'
 
 @Resolver()
@@ -15,18 +14,13 @@ export class ApiAssetAdminResolver {
     return this.service.admin.deleteAsset(user.id, assetId)
   }
 
-  @Query(() => [Asset], { nullable: true })
-  adminFindAssets(@CtxUser() user: User, @Args('input') input: AdminFindAssetsInput) {
-    return this.service.admin.findAssets(user.id, input)
-  }
-
-  @Query(() => Paging, { nullable: true })
-  adminFindAssetsCount(@CtxUser() user: Asset, @Args('input') input: AdminFindAssetsInput) {
-    return this.service.admin.findAssetsCount(user.id, input)
+  @Query(() => AssetPaging)
+  adminFindManyAsset(@CtxUser() user: User, @Args('input') input: AdminFindManyAssetInput) {
+    return this.service.admin.findManyAsset(user.id, input)
   }
 
   @Query(() => Asset, { nullable: true })
-  adminGetAsset(@CtxUser() user: User, @Args('assetId') assetId: string) {
-    return this.service.admin.getAsset(user.id, assetId)
+  adminFindOneAsset(@CtxUser() user: User, @Args('assetId') assetId: string) {
+    return this.service.admin.findOneAsset(user.id, assetId)
   }
 }

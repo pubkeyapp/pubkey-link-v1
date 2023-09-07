@@ -53,7 +53,7 @@ export class ApiDiscordSyncBotServersService {
 
     this.logger.verbose(`Syncing server ${server.name}`)
 
-    await this.core.data.upsertDiscordServer(server)
+    await this.core.upsertDiscordServer(server)
 
     const formatted: Prisma.DiscordRoleCreateWithoutServerInput[] = server.roles.map((role) => {
       return {
@@ -67,6 +67,6 @@ export class ApiDiscordSyncBotServersService {
         mentionable: role.mentionable,
       }
     })
-    await this.core.data.upsertDiscordRoles(server.id, formatted)
+    await this.core.upsertDiscordRoles(server.id, formatted)
   }
 }

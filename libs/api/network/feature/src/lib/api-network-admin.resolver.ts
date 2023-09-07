@@ -1,14 +1,14 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { ApiAuthGraphqlGuard, CtxUser } from '@pubkey-link/api/auth/data-access'
-import { Paging } from '@pubkey-link/api/core/data-access'
 import {
   AdminCreateNetworkInput,
   AdminCreateNetworkTokenInput,
-  AdminFindNetworksInput,
+  AdminFindManyNetworkInput,
   AdminUpdateNetworkInput,
   ApiNetworkService,
   Network,
+  NetworkPaging,
   NetworkToken,
 } from '@pubkey-link/api/network/data-access'
 import { User } from '@pubkey-link/api/user/data-access'
@@ -36,19 +36,14 @@ export class ApiNetworkAdminResolver {
     return this.service.admin.deleteNetworkToken(user.id, networkTokenId)
   }
 
-  @Query(() => [Network], { nullable: true })
-  adminFindNetworks(@CtxUser() user: User, @Args('input') input: AdminFindNetworksInput) {
-    return this.service.admin.findNetworks(user.id, input)
-  }
-
-  @Query(() => Paging, { nullable: true })
-  adminFindNetworksCount(@CtxUser() user: Network, @Args('input') input: AdminFindNetworksInput) {
-    return this.service.admin.findNetworksCount(user.id, input)
+  @Query(() => NetworkPaging)
+  adminFindManyNetwork(@CtxUser() user: User, @Args('input') input: AdminFindManyNetworkInput) {
+    return this.service.admin.findManyNetwork(user.id, input)
   }
 
   @Query(() => Network, { nullable: true })
-  adminGetNetwork(@CtxUser() user: User, @Args('networkId') networkId: string) {
-    return this.service.admin.getNetwork(user.id, networkId)
+  adminFindOneNetwork(@CtxUser() user: User, @Args('networkId') networkId: string) {
+    return this.service.admin.findOneNetwork(user.id, networkId)
   }
 
   @Mutation(() => Network, { nullable: true })

@@ -1,17 +1,17 @@
 import { Button, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { useAdminFindDiscordServers, useAdminGetBotInviteUrl } from '@pubkey-link/web/discord/data-access'
+import { useAdminFindManyDiscordServer, useAdminGetBotInviteUrl } from '@pubkey-link/web/discord/data-access'
 import { DiscordUiServerGrid } from '@pubkey-link/web/discord/ui'
 import { UiAdminPage, UiBack, UiCopy, UiGroup, UiLoader, UiStack, UiWarn } from '@pubkey-link/web/ui/core'
 
 export function WebAdminDiscordServerListFeature() {
-  const { query } = useAdminFindDiscordServers({ input: { take: 100 } })
+  const { query, items } = useAdminFindManyDiscordServer({ input: { limit: 100 } })
   return (
     <UiAdminPage title="Discord Servers" leftAction={<UiBack />} rightAction={<InviteButton />}>
       {query.isLoading ? (
         <UiLoader />
-      ) : query.data?.items?.length ? (
-        <DiscordUiServerGrid items={query.data?.items ?? []} link="/admin/discord-servers/" />
+      ) : items?.length ? (
+        <DiscordUiServerGrid items={items} link="/admin/discord-servers/" />
       ) : (
         <UiWarn message={'No servers found'} />
       )}

@@ -1,2 +1,2 @@
-export * from './lib/use-admin-network'
-export * from './lib/use-admin-networks'
+export * from './lib/use-admin-find-one-network'
+export * from './lib/use-admin-find-many-network'

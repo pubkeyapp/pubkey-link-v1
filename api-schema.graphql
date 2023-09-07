@@ -43,57 +43,57 @@ input AdminCreateUserInput {
   username: String!
 }
 
-input AdminFindAssetsInput {
-  collectionAccount: String
-  network: NetworkType
-  search: String
-  skip: Int = 0
-  take: Int = 10
-}
-
-input AdminFindCollectionCombosInput {
-  collectionId: String!
-  network: NetworkType
-  search: String
-  skip: Int = 0
-  take: Int = 10
-}
-
-input AdminFindCollectionsInput {
-  network: NetworkType
-  search: String
-  skip: Int = 0
-  take: Int = 10
-}
-
-input AdminFindDiscordServersInput {
-  search: String
-  skip: Int = 0
-  take: Int = 10
-}
-
 input AdminFindEmailsInput {
   ownerId: String!
 }
 
-input AdminFindIdentitiesInput {
+input AdminFindManyAssetInput {
+  collectionAccount: String
+  limit: Int = 10
+  network: NetworkType
+  page: Int = 1
+  search: String
+}
+
+input AdminFindManyCollectionComboInput {
+  collectionId: String!
+  limit: Int = 10
+  network: NetworkType
+  page: Int = 1
+  search: String
+}
+
+input AdminFindManyCollectionInput {
+  limit: Int = 10
+  network: NetworkType
+  page: Int = 1
+  search: String
+}
+
+input AdminFindManyDiscordServerInput {
+  limit: Int = 10
+  page: Int = 1
+  search: String
+}
+
+input AdminFindManyIdentityInput {
   ownerId: String
   provider: IdentityProvider
 }
 
-input AdminFindNetworksInput {
+input AdminFindManyNetworkInput {
+  limit: Int = 10
+  page: Int = 1
   search: String
-  skip: Int = 0
-  take: Int = 10
   type: NetworkType
 }
 
-input AdminFindUsersInput {
+input AdminFindManyUserInput {
+  limit: Int = 10
+  page: Int = 1
   role: UserRole
   search: String
-  skip: Int = 0
   status: UserStatus
-  take: Int = 10
 }
 
 input AdminReportDiscordMemberWalletsInput {
@@ -176,6 +176,11 @@ input AssetAttributeInput {
   value: String!
 }
 
+type AssetPaging {
+  data: [Asset!]!
+  meta: PagingMeta!
+}
+
 type Collection {
   account: String
   assetCount: Int
@@ -199,6 +204,16 @@ type CollectionCombo {
   updatedAt: DateTime!
 }
 
+type CollectionComboPaging {
+  data: [CollectionCombo!]!
+  meta: PagingMeta!
+}
+
+type CollectionPaging {
+  data: [Collection!]!
+  meta: PagingMeta!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -212,7 +227,7 @@ type DiscordRole {
   managed: Boolean
   mentionable: Boolean
   name: String
-  permissions: Float
+  permissions: String
   position: Float
   serverId: String
 }
@@ -237,7 +252,7 @@ type DiscordServer {
   id: String!
   name: String
   owner: Boolean
-  permissions: Float
+  permissions: String
   roles: [DiscordRole!]
   serverUrl: String
 }
@@ -246,6 +261,11 @@ type DiscordServerChannel {
   id: String!
   name: String!
   type: String!
+}
+
+type DiscordServerPaging {
+  data: [DiscordServer!]!
+  meta: PagingMeta!
 }
 
 type Email {
@@ -387,6 +407,11 @@ type Network {
   updatedAt: DateTime!
 }
 
+type NetworkPaging {
+  data: [Network!]!
+  meta: PagingMeta!
+}
+
 type NetworkToken {
   address: String!
   createdAt: DateTime!
@@ -405,56 +430,50 @@ enum NetworkType {
   SolanaMainnet
 }
 
-type Paging {
-  count: Int
-  skip: Int
-  take: Int
-  total: Int
+type PagingMeta {
+  currentPage: Int!
+  isFirstPage: Boolean!
+  isLastPage: Boolean!
+  nextPage: Int
+  pageCount: Int
+  previousPage: Int
+  totalCount: Int
 }
 
 type Query {
   adminDevCheckAccount(address: String!, type: NetworkType!): JSON
   adminDevCheckIdentity(provider: IdentityProvider!, providerId: String!): JSON
-  adminFindAssets(input: AdminFindAssetsInput!): [Asset!]
-  adminFindAssetsCount(input: AdminFindAssetsInput!): Paging
-  adminFindCollectionCombos(input: AdminFindCollectionCombosInput!): [CollectionCombo!]
-  adminFindCollectionCombosCount(input: AdminFindCollectionCombosInput!): Paging
-  adminFindCollections(input: AdminFindCollectionsInput!): [Collection!]
-  adminFindCollectionsCount(input: AdminFindCollectionsInput!): Paging
-  adminFindDiscordServers(input: AdminFindDiscordServersInput!): [DiscordServer!]
-  adminFindDiscordServersCount(input: AdminFindDiscordServersInput!): Paging
   adminFindEmails(input: AdminFindEmailsInput!): [Email!]
-  adminFindIdentities(input: AdminFindIdentitiesInput!): [Identity!]
-  adminFindNetworks(input: AdminFindNetworksInput!): [Network!]
-  adminFindNetworksCount(input: AdminFindNetworksInput!): Paging
-  adminFindUsers(input: AdminFindUsersInput!): [User!]
-  adminFindUsersCount(input: AdminFindUsersInput!): Paging
-  adminGetAsset(assetId: String!): Asset
+  adminFindManyAsset(input: AdminFindManyAssetInput!): AssetPaging!
+  adminFindManyCollection(input: AdminFindManyCollectionInput!): CollectionPaging!
+  adminFindManyCollectionCombo(input: AdminFindManyCollectionComboInput!): CollectionComboPaging!
+  adminFindManyDiscordServer(input: AdminFindManyDiscordServerInput!): DiscordServerPaging!
+  adminFindManyDiscordServerChannel(serverId: String!): [DiscordServerChannel!]
+  adminFindManyIdentity(input: AdminFindManyIdentityInput!): [Identity!]
+  adminFindManyNetwork(input: AdminFindManyNetworkInput!): NetworkPaging!
+  adminFindManyUser(input: AdminFindManyUserInput!): UserPaging!
+  adminFindOneAsset(assetId: String!): Asset
+  adminFindOneCollection(collectionId: String!): Collection
+  adminFindOneCollectionCombo(collectionComboId: String!): CollectionCombo
+  adminFindOneDiscordServer(serverId: String!): DiscordServer
+  adminFindOneNetwork(networkId: String!): Network
+  adminFindOneUser(userId: String!): User
   adminGetBotInviteUrl: String
-  adminGetCollection(collectionId: String!): Collection
-  adminGetCollectionCombo(collectionComboId: String!): CollectionCombo
-  adminGetDiscordServer(serverId: String!): DiscordServer
-  adminGetDiscordServerChannels(serverId: String!): [DiscordServerChannel!]
-  adminGetNetwork(networkId: String!): Network
   adminGetQueue(type: QueueType!): Queue
   adminGetQueueJobs(statuses: [JobStatus!]!, type: QueueType!): [Job!]
   adminGetQueues: [Queue!]
-  adminGetUser(userId: String!): User
   adminReportDiscordMemberWallets(input: AdminReportDiscordMemberWalletsInput!): JSON
   appConfig: AppConfig!
   me: User
   uptime: Float!
-  userFindAssets(input: UserFindAssetsInput!): [Asset!]
-  userFindAssetsCount(input: UserFindAssetsInput!): Paging
-  userFindCollections(input: UserFindCollectionsInput!): [Collection!]
-  userFindCollectionsCount(input: UserFindCollectionsInput!): Paging
-  userFindIdentities: [Identity!]
-  userFindUsers(input: UserFindUsersInput!): [User!]
-  userFindUsersCount(input: UserFindUsersInput!): Paging
-  userGetAsset(assetId: String!): Asset
-  userGetCollection(collectionId: String!): Collection
-  userGetDiscordServers: [DiscordServer!]
-  userGetUserByUsername(username: String!): User
+  userFindManyAsset(input: UserFindManyAssetInput!): AssetPaging!
+  userFindManyCollection(input: UserFindManyCollectionInput!): CollectionPaging!
+  userFindManyDiscordServer: [DiscordServer!]
+  userFindManyIdentity: [Identity!]
+  userFindManyUser(input: UserFindManyUserInput!): UserPaging!
+  userFindOneAsset(assetId: String!): Asset
+  userFindOneCollection(collectionId: String!): Collection
+  userFindOneUser(username: String!): User
   userRequestIdentityChallenge(input: RequestIdentityChallengeInput!): IdentityChallenge
 }
 
@@ -495,52 +514,44 @@ input RequestIdentityChallengeInput {
 }
 
 type User {
-  allowDm: Boolean
   avatarUrl: String
   createdAt: DateTime
-  description: String
-  devStack: String
-  devType: String
-  devYears: String
   developer: Boolean
-  discordUrl: String
-  githubUrl: String
   id: String!
-  language: String
-  location: String
   name: String
   profileUrl: String
   role: UserRole
   status: UserStatus
-  telegramUrl: String
-  twitterUrl: String
   updatedAt: DateTime
   username: String
-  verified: Boolean
-  websiteUrl: String
 }
 
-input UserFindAssetsInput {
+input UserFindManyAssetInput {
   attributes: [AssetAttributeInput!]
   collectionAccount: String
+  limit: Int = 10
   network: NetworkType
   ownerId: String
+  page: Int = 1
   search: String
-  skip: Int = 0
-  take: Int = 10
 }
 
-input UserFindCollectionsInput {
+input UserFindManyCollectionInput {
+  limit: Int = 10
   network: NetworkType
+  page: Int = 1
   search: String
-  skip: Int = 0
-  take: Int = 10
 }
 
-input UserFindUsersInput {
+input UserFindManyUserInput {
+  limit: Int = 10
+  page: Int = 1
   search: String
-  skip: Int = 0
-  take: Int = 10
+}
+
+type UserPaging {
+  data: [User!]!
+  meta: PagingMeta!
 }
 
 enum UserRole {

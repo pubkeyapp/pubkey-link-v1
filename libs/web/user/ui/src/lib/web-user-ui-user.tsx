@@ -1,10 +1,9 @@
+import { Anchor, GroupProps, Stack } from '@mantine/core'
 import { User } from '@pubkey-link/sdk'
 import { UiGroup } from '@pubkey-link/web/ui/core'
-import { Anchor, GroupProps, Stack } from '@mantine/core'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { WebUserUiAvatar } from './web-user-ui-avatar'
-import { WebUserUiVerified } from './web-user-ui.verified'
 
 export interface WebUserUiUserProps extends GroupProps {
   action?: ReactNode
@@ -27,7 +26,6 @@ export function WebUserUiUser({ action, avatar, children, content, status, user,
                 {user?.username ?? 'Unknown'}
               </Anchor>
             ) : null}
-            <WebUserUiVerified user={user} />
             {status}
           </UiGroup>
           {action}

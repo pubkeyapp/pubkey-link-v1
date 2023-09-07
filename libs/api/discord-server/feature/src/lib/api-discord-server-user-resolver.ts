@@ -10,7 +10,7 @@ export class ApiDiscordServerUserResolver {
   constructor(private readonly service: ApiDiscordServerService) {}
 
   @Query(() => [DiscordServer], { nullable: true })
-  userGetDiscordServers(@CtxUser() user: User) {
-    return this.service.user.getDiscordServers(user.id)
+  userFindManyDiscordServer(@CtxUser() user: User) {
+    return this.service.user.findManyDiscordServer(user.id)
   }
 }

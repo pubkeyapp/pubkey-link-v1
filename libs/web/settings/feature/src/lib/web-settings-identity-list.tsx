@@ -1,9 +1,9 @@
-import { useUserIdentities } from '@pubkey-link/web/identity/data-access'
+import { useUserFindManyIdentity } from '@pubkey-link/web/identity/data-access'
 import { IdentityUiIdentityGroupList, IdentityUiSolanaLinkButton } from '@pubkey-link/web/identity/ui'
 import { UiLoader, UiStack, UiWarn } from '@pubkey-link/web/ui/core'
 
 export function WebSettingsIdentityList() {
-  const { deleteIdentity, hasSolana, grouped, items, query } = useUserIdentities()
+  const { deleteIdentity, hasSolana, grouped, items, query } = useUserFindManyIdentity()
 
   return (
     <UiStack>

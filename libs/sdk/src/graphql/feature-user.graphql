@@ -1,32 +1,29 @@
 fragment UserDetails on User {
-  allowDm
   avatarUrl
   createdAt
   developer
-  description
   id
-  language
-  location
   name
   profileUrl
   role
   status
   updatedAt
   username
-  verified
 }
 
-query adminFindUsers($input: AdminFindUsersInput!) {
-  count: adminFindUsersCount(input: $input) {
-    ...PagingDetails
-  }
-  items: adminFindUsers(input: $input) {
-    ...UserDetails
+query adminFindManyUser($input: AdminFindManyUserInput!) {
+  paging: adminFindManyUser(input: $input) {
+    data {
+      ...UserDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
   }
 }
 
-query adminGetUser($userId: String!) {
-  item: adminGetUser(userId: $userId) {
+query adminFindOneUser($userId: String!) {
+  item: adminFindOneUser(userId: $userId) {
     ...UserDetails
   }
 }
@@ -47,16 +44,18 @@ mutation adminDeleteUser($userId: String!) {
   deleted: adminDeleteUser(userId: $userId)
 }
 
-query userFindUsers($input: UserFindUsersInput!) {
-  count: userFindUsersCount(input: $input) {
-    ...PagingDetails
-  }
-  items: userFindUsers(input: $input) {
-    ...UserDetails
+query userFindManyUser($input: UserFindManyUserInput!) {
+  paging: userFindManyUser(input: $input) {
+    data {
+      ...UserDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
   }
 }
-query userGetUserByUsername($username: String!) {
-  item: userGetUserByUsername(username: $username) {
+query userFindOneUser($username: String!) {
+  item: userFindOneUser(username: $username) {
     ...UserDetails
   }
 }

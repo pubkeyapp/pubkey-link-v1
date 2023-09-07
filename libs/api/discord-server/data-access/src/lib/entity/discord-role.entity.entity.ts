@@ -8,7 +8,7 @@ export class DiscordRole {
   @Field({ nullable: true })
   name!: string
   @Field({ nullable: true })
-  permissions!: number
+  permissions!: string
   @Field({ nullable: true })
   color!: number
   @Field({ nullable: true })

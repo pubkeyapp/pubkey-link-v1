@@ -8,13 +8,13 @@ export class DiscordServer {
   @Field({ nullable: true })
   name!: string
   @Field({ nullable: true })
-  icon!: string
+  icon?: string | null
   @Field({ nullable: true })
   owner!: boolean
   @Field({ nullable: true })
-  botChannel!: string
+  botChannel?: string | null
   @Field({ nullable: true })
-  permissions?: number
+  permissions?: string | null
   @Field()
   enabled!: boolean
   @Field()
@@ -22,5 +22,5 @@ export class DiscordServer {
   @Field(() => [String], { nullable: true })
   features!: string[]
   @Field(() => [DiscordRole], { nullable: true })
-  roles!: DiscordRole[]
+  roles?: DiscordRole[]
 }

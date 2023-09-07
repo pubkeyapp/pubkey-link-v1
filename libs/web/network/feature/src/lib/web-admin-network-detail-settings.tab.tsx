@@ -1,9 +1,9 @@
-import { useAdminNetwork } from '@pubkey-link/web/network/data-access'
+import { useAdminFindOneNetwork } from '@pubkey-link/web/network/data-access'
 import { AuthUiNetworkUpdateForm } from '@pubkey-link/web/network/ui'
 import { UiAlert, UiCard } from '@pubkey-link/web/ui/core'
 
 export function WebAdminNetworkDetailSettingsTab({ networkId }: { networkId: string }) {
-  const { network, updateNetwork } = useAdminNetwork(networkId)
+  const { network, updateNetwork } = useAdminFindOneNetwork({ networkId })
 
   return (
     <UiCard>

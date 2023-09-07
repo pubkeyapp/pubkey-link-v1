@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Asset as PrismaAsset } from '@prisma/client'
-import { ApiCoreService, Paging } from '@pubkey-link/api/core/data-access'
+import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { ApiNetworkService } from '@pubkey-link/api/network/data-access'
-import { AdminFindAssetsInput } from './dto/admin-find-assets.input'
-import { parseAdminFindAssetsInput } from './helpers/parse-admin-find-assets.input'
+import { AdminFindManyAssetInput } from './dto/admin-find-many-asset.input'
+import { AssetPaging } from './entity/asset-paging'
+import { getAdminASsetWhereInput } from './helpers/get-admin-a-sset-where-input'
 
 @Injectable()
 export class ApiAssetAdminService {
@@ -23,28 +23,20 @@ export class ApiAssetAdminService {
     return true
   }
 
-  async findAssets(adminId: string, input: AdminFindAssetsInput): Promise<PrismaAsset[]> {
+  async findManyAsset(adminId: string, input: AdminFindManyAssetInput): Promise<AssetPaging> {
     await this.core.ensureUserAdmin(adminId)
 
-    const { where, orderBy, take, skip, include } = parseAdminFindAssetsInput(input)
-    const items = await this.core.data.asset.findMany({ where, orderBy, take, skip, include })
-
-    return items ?? []
+    return this.core.data.asset
+      .paginate({
+        include: { identity: { include: { owner: true } } },
+        orderBy: [{ identityId: 'asc' }, { name: 'asc' }],
+        where: getAdminASsetWhereInput(input),
+      })
+      .withPages({ limit: input.limit, page: input.page })
+      .then(([data, meta]) => ({ data, meta }))
   }
 
-  async findAssetsCount(adminId: string, input: AdminFindAssetsInput): Promise<Paging> {
-    await this.core.ensureUserAdmin(adminId)
-
-    const { where, orderBy, take, skip } = parseAdminFindAssetsInput(input)
-    const [count, total] = await Promise.all([
-      this.core.data.asset.count({ where, orderBy, take, skip }),
-      this.core.data.asset.count({ where, orderBy }),
-    ])
-
-    return { count, skip, take, total }
-  }
-
-  async getAsset(adminId: string, assetId: string) {
+  async findOneAsset(adminId: string, assetId: string) {
     await this.core.ensureUserAdmin(adminId)
     const found = await this.core.data.asset.findUnique({ where: { id: assetId } })
     if (!found) {

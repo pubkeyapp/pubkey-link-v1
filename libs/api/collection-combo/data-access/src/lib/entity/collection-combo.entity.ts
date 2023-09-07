@@ -14,7 +14,7 @@ export class CollectionCombo {
   @Field({ nullable: true })
   collectionAccount!: string
   @Field({ nullable: true })
-  description!: string
+  description?: string | null
   @Field(() => NetworkType, { nullable: true })
   network!: NetworkType
   attributes?: unknown[]

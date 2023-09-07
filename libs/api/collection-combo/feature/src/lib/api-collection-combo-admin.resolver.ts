@@ -4,12 +4,12 @@ import { AssetAttributeInput } from '@pubkey-link/api/asset/data-access'
 import { ApiAuthGraphqlGuard, CtxUser } from '@pubkey-link/api/auth/data-access'
 import {
   AdminCreateCollectionComboInput,
-  AdminFindCollectionCombosInput,
+  AdminFindManyCollectionComboInput,
   AdminUpdateCollectionComboInput,
   ApiCollectionComboService,
   CollectionCombo,
+  CollectionComboPaging,
 } from '@pubkey-link/api/collection-combo/data-access'
-import { Paging } from '@pubkey-link/api/core/data-access'
 import { User } from '@pubkey-link/api/user/data-access'
 
 @Resolver()
@@ -45,22 +45,14 @@ export class ApiCollectionComboAdminResolver {
     return this.service.admin.deleteCollectionCombo(user.id, collectionComboId)
   }
 
-  @Query(() => [CollectionCombo], { nullable: true })
-  adminFindCollectionCombos(@CtxUser() user: User, @Args('input') input: AdminFindCollectionCombosInput) {
-    return this.service.admin.findCollectionCombos(user.id, input)
-  }
-
-  @Query(() => Paging, { nullable: true })
-  adminFindCollectionCombosCount(
-    @CtxUser() user: CollectionCombo,
-    @Args('input') input: AdminFindCollectionCombosInput,
-  ) {
-    return this.service.admin.findCollectionCombosCount(user.id, input)
+  @Query(() => CollectionComboPaging)
+  adminFindManyCollectionCombo(@CtxUser() user: User, @Args('input') input: AdminFindManyCollectionComboInput) {
+    return this.service.admin.findManyCollectionCombo(user.id, input)
   }
 
   @Query(() => CollectionCombo, { nullable: true })
-  adminGetCollectionCombo(@CtxUser() user: User, @Args('collectionComboId') collectionComboId: string) {
-    return this.service.admin.getCollectionCombo(user.id, collectionComboId)
+  adminFindOneCollectionCombo(@CtxUser() user: User, @Args('collectionComboId') collectionComboId: string) {
+    return this.service.admin.findOneCollectionCombo(user.id, collectionComboId)
   }
 
   @Mutation(() => CollectionCombo, { nullable: true })

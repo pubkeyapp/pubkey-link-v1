@@ -1,18 +1,16 @@
 import { NetworkType } from '@pubkey-link/sdk'
-import { useUserCollections } from '@pubkey-link/web/collection/data-access'
+import { useUserFindManyCollection } from '@pubkey-link/web/collection/data-access'
 import { WebProfileUiAssetAttributes } from '@pubkey-link/web/profile/ui'
 import { UiAlert, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
 
 export function WebCollectionUiDashboard() {
-  const { query } = useUserCollections()
-
-  const collections = query.data?.items ?? []
+  const { query, items } = useUserFindManyCollection()
 
   return query.isLoading ? (
     <UiLoader />
-  ) : collections.length ? (
+  ) : items.length ? (
     <UiStack>
-      {collections.map((collection) => (
+      {items.map((collection) => (
         <UiStack key={collection.id}>
           {/*<UiPageHeader title={collection.name} />*/}
           {collection.combos?.length ? (

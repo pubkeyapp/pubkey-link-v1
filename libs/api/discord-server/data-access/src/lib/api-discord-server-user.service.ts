@@ -8,7 +8,7 @@ import { DiscordServer } from './entity/discord-server.entity'
 export class ApiDiscordServerUserService {
   constructor(private readonly core: ApiCoreService) {}
 
-  async getDiscordServers(userId: string) {
+  async findManyDiscordServer(userId: string) {
     await this.core.ensureUserActive(userId)
     const [all, user] = await Promise.all([
       this.core.data.discordServer.findMany({

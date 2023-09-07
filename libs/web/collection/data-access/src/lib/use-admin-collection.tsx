@@ -7,7 +7,7 @@ export function useAdminCollection(collectionId: string) {
   const sdk = useWebSdk()
   const query = useQuery(
     ['admin', 'collections', 'get', collectionId],
-    () => sdk.adminGetCollection({ collectionId }).then((res) => res.data),
+    () => sdk.adminFindOneCollection({ collectionId }).then((res) => res.data),
     { retry: 0 },
   )
   const collection = query.data?.item ?? undefined

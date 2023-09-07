@@ -1,4 +1,4 @@
-import { useAdminNetwork } from '@pubkey-link/web/network/data-access'
+import { useAdminFindOneNetwork } from '@pubkey-link/web/network/data-access'
 import { UiAdminPage, UiBack, UiError, UiLoader, UiStack, UiTabRoutes } from '@pubkey-link/web/ui/core'
 import { useParams } from 'react-router-dom'
 import { WebAdminNetworkDetailOverviewTab } from './web-admin-network-detail-overview-tab'
@@ -6,7 +6,7 @@ import { WebAdminNetworkDetailSettingsTab } from './web-admin-network-detail-set
 
 export function WebAdminNetworkDetailFeature() {
   const { networkId } = useParams<{ networkId: string }>() as { networkId: string }
-  const { query, network } = useAdminNetwork(networkId)
+  const { query, network } = useAdminFindOneNetwork({ networkId })
 
   return (
     <UiAdminPage leftAction={<UiBack />} title={network?.name ?? '...'}>

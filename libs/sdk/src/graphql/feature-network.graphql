@@ -20,17 +20,19 @@ fragment NetworkTokenDetails on NetworkToken {
   network
 }
 
-query adminFindNetworks($input: AdminFindNetworksInput!) {
-  count: adminFindNetworksCount(input: $input) {
-    ...PagingDetails
-  }
-  items: adminFindNetworks(input: $input) {
-    ...NetworkDetails
+query adminFindManyNetwork($input: AdminFindManyNetworkInput!) {
+  paging: adminFindManyNetwork(input: $input) {
+    data {
+      ...NetworkDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
   }
 }
 
-query adminGetNetwork($networkId: String!) {
-  item: adminGetNetwork(networkId: $networkId) {
+query adminFindOneNetwork($networkId: String!) {
+  item: adminFindOneNetwork(networkId: $networkId) {
     ...NetworkDetails
     collections {
       ...CollectionDetails

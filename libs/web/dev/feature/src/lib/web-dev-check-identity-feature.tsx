@@ -1,6 +1,6 @@
 import { Button, Group, Select } from '@mantine/core'
 import { ellipsify, IdentityProvider } from '@pubkey-link/sdk'
-import { useAdminIdentities } from '@pubkey-link/web/identity/data-access'
+import { useAdminFindManyIdentity } from '@pubkey-link/web/identity/data-access'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
 import { UiCard, UiDebug, UiStack } from '@pubkey-link/web/ui/core'
 import { showNotificationError } from '@pubkey-link/web/ui/notifications'
@@ -10,17 +10,16 @@ export function WebDevCheckIdentityFeature() {
   const provider = IdentityProvider.Solana
   const sdk = useWebSdk()
 
-  const { identities } = useAdminIdentities({ provider: IdentityProvider.Solana })
-  // const rds = useAdminIdentity()
+  const { items } = useAdminFindManyIdentity({ provider: IdentityProvider.Solana })
 
   const [providerId, setProviderId] = useState('')
   const [result, setResult] = useState<unknown | undefined>(undefined)
   const identityOptions = useMemo(() => {
-    return identities?.map((identity) => ({
+    return items?.map((identity) => ({
       value: identity.providerId,
       label: `${ellipsify(identity.providerId)} - ${identity.owner?.username}`,
     }))
-  }, [identities])
+  }, [items])
 
   async function checkIdentity() {
     sdk

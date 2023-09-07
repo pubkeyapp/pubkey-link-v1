@@ -10,7 +10,7 @@ export class Collection {
   @Field()
   updatedAt!: Date
   @Field()
-  name!: string
+  name?: string | null
   @Field({ nullable: true })
   account!: string
   @Field(() => Int, { nullable: true })

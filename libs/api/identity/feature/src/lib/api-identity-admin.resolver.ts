@@ -3,7 +3,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { ApiAuthGraphqlGuard, CtxUser } from '@pubkey-link/api/auth/data-access'
 import {
   AdminCreateIdentityInput,
-  AdminFindIdentitiesInput,
+  AdminFindManyIdentityInput,
   ApiIdentityService,
   Identity,
 } from '@pubkey-link/api/identity/data-access'
@@ -16,14 +16,14 @@ export class ApiIdentityAdminResolver {
 
   @Mutation(() => Identity, { nullable: true })
   adminCreateIdentity(@CtxUser() user: User, @Args('input') input: AdminCreateIdentityInput) {
-    return this.service.admin.adminCreateIdentity(user.id, input)
+    return this.service.admin.createIdentity(user.id, input)
   }
   @Mutation(() => Boolean, { nullable: true })
   adminDeleteIdentity(@CtxUser() user: User, @Args('identityId') identityId: string) {
-    return this.service.admin.adminDeleteIdentity(user.id, identityId)
+    return this.service.admin.deleteIdentity(user.id, identityId)
   }
   @Query(() => [Identity], { nullable: true })
-  adminFindIdentities(@CtxUser() user: User, @Args('input') input: AdminFindIdentitiesInput) {
-    return this.service.admin.adminFindIdentities(user.id, input)
+  adminFindManyIdentity(@CtxUser() user: User, @Args('input') input: AdminFindManyIdentityInput) {
+    return this.service.admin.findManyIdentity(user.id, input)
   }
 }

@@ -1,10 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import { print } from 'graphql'
 import { GraphQLClient } from 'graphql-request'
 import * as Dom from 'graphql-request/dist/types.dom'
+import { print } from 'graphql'
 import gql from 'graphql-tag'
-
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -64,57 +63,57 @@ export type AdminCreateUserInput = {
   username: Scalars['String']
 }
 
-export type AdminFindAssetsInput = {
-  collectionAccount?: InputMaybe<Scalars['String']>
-  network?: InputMaybe<NetworkType>
-  search?: InputMaybe<Scalars['String']>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-}
-
-export type AdminFindCollectionCombosInput = {
-  collectionId: Scalars['String']
-  network?: InputMaybe<NetworkType>
-  search?: InputMaybe<Scalars['String']>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-}
-
-export type AdminFindCollectionsInput = {
-  network?: InputMaybe<NetworkType>
-  search?: InputMaybe<Scalars['String']>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-}
-
-export type AdminFindDiscordServersInput = {
-  search?: InputMaybe<Scalars['String']>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-}
-
 export type AdminFindEmailsInput = {
   ownerId: Scalars['String']
 }
 
-export type AdminFindIdentitiesInput = {
+export type AdminFindManyAssetInput = {
+  collectionAccount?: InputMaybe<Scalars['String']>
+  limit?: InputMaybe<Scalars['Int']>
+  network?: InputMaybe<NetworkType>
+  page?: InputMaybe<Scalars['Int']>
+  search?: InputMaybe<Scalars['String']>
+}
+
+export type AdminFindManyCollectionComboInput = {
+  collectionId: Scalars['String']
+  limit?: InputMaybe<Scalars['Int']>
+  network?: InputMaybe<NetworkType>
+  page?: InputMaybe<Scalars['Int']>
+  search?: InputMaybe<Scalars['String']>
+}
+
+export type AdminFindManyCollectionInput = {
+  limit?: InputMaybe<Scalars['Int']>
+  network?: InputMaybe<NetworkType>
+  page?: InputMaybe<Scalars['Int']>
+  search?: InputMaybe<Scalars['String']>
+}
+
+export type AdminFindManyDiscordServerInput = {
+  limit?: InputMaybe<Scalars['Int']>
+  page?: InputMaybe<Scalars['Int']>
+  search?: InputMaybe<Scalars['String']>
+}
+
+export type AdminFindManyIdentityInput = {
   ownerId?: InputMaybe<Scalars['String']>
   provider?: InputMaybe<IdentityProvider>
 }
 
-export type AdminFindNetworksInput = {
+export type AdminFindManyNetworkInput = {
+  limit?: InputMaybe<Scalars['Int']>
+  page?: InputMaybe<Scalars['Int']>
   search?: InputMaybe<Scalars['String']>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
   type?: InputMaybe<NetworkType>
 }
 
-export type AdminFindUsersInput = {
+export type AdminFindManyUserInput = {
+  limit?: InputMaybe<Scalars['Int']>
+  page?: InputMaybe<Scalars['Int']>
   role?: InputMaybe<UserRole>
   search?: InputMaybe<Scalars['String']>
-  skip?: InputMaybe<Scalars['Int']>
   status?: InputMaybe<UserStatus>
-  take?: InputMaybe<Scalars['Int']>
 }
 
 export type AdminReportDiscordMemberWalletsInput = {
@@ -200,6 +199,12 @@ export type AssetAttributeInput = {
   value: Scalars['String']
 }
 
+export type AssetPaging = {
+  __typename?: 'AssetPaging'
+  data: Array<Asset>
+  meta: PagingMeta
+}
+
 export type Collection = {
   __typename?: 'Collection'
   account?: Maybe<Scalars['String']>
@@ -225,6 +230,18 @@ export type CollectionCombo = {
   updatedAt: Scalars['DateTime']
 }
 
+export type CollectionComboPaging = {
+  __typename?: 'CollectionComboPaging'
+  data: Array<CollectionCombo>
+  meta: PagingMeta
+}
+
+export type CollectionPaging = {
+  __typename?: 'CollectionPaging'
+  data: Array<Collection>
+  meta: PagingMeta
+}
+
 export type DiscordRole = {
   __typename?: 'DiscordRole'
   color?: Maybe<Scalars['Float']>
@@ -234,7 +251,7 @@ export type DiscordRole = {
   managed?: Maybe<Scalars['Boolean']>
   mentionable?: Maybe<Scalars['Boolean']>
   name?: Maybe<Scalars['String']>
-  permissions?: Maybe<Scalars['Float']>
+  permissions?: Maybe<Scalars['String']>
   position?: Maybe<Scalars['Float']>
   serverId?: Maybe<Scalars['String']>
 }
@@ -261,7 +278,7 @@ export type DiscordServer = {
   id: Scalars['String']
   name?: Maybe<Scalars['String']>
   owner?: Maybe<Scalars['Boolean']>
-  permissions?: Maybe<Scalars['Float']>
+  permissions?: Maybe<Scalars['String']>
   roles?: Maybe<Array<DiscordRole>>
   serverUrl?: Maybe<Scalars['String']>
 }
@@ -271,6 +288,12 @@ export type DiscordServerChannel = {
   id: Scalars['String']
   name: Scalars['String']
   type: Scalars['String']
+}
+
+export type DiscordServerPaging = {
+  __typename?: 'DiscordServerPaging'
+  data: Array<DiscordServer>
+  meta: PagingMeta
 }
 
 export type Email = {
@@ -594,6 +617,12 @@ export type Network = {
   updatedAt: Scalars['DateTime']
 }
 
+export type NetworkPaging = {
+  __typename?: 'NetworkPaging'
+  data: Array<Network>
+  meta: PagingMeta
+}
+
 export type NetworkToken = {
   __typename?: 'NetworkToken'
   address: Scalars['String']
@@ -613,58 +642,52 @@ export enum NetworkType {
   SolanaMainnet = 'SolanaMainnet',
 }
 
-export type Paging = {
-  __typename?: 'Paging'
-  count?: Maybe<Scalars['Int']>
-  skip?: Maybe<Scalars['Int']>
-  take?: Maybe<Scalars['Int']>
-  total?: Maybe<Scalars['Int']>
+export type PagingMeta = {
+  __typename?: 'PagingMeta'
+  currentPage: Scalars['Int']
+  isFirstPage: Scalars['Boolean']
+  isLastPage: Scalars['Boolean']
+  nextPage?: Maybe<Scalars['Int']>
+  pageCount?: Maybe<Scalars['Int']>
+  previousPage?: Maybe<Scalars['Int']>
+  totalCount?: Maybe<Scalars['Int']>
 }
 
 export type Query = {
   __typename?: 'Query'
   adminDevCheckAccount?: Maybe<Scalars['JSON']>
   adminDevCheckIdentity?: Maybe<Scalars['JSON']>
-  adminFindAssets?: Maybe<Array<Asset>>
-  adminFindAssetsCount?: Maybe<Paging>
-  adminFindCollectionCombos?: Maybe<Array<CollectionCombo>>
-  adminFindCollectionCombosCount?: Maybe<Paging>
-  adminFindCollections?: Maybe<Array<Collection>>
-  adminFindCollectionsCount?: Maybe<Paging>
-  adminFindDiscordServers?: Maybe<Array<DiscordServer>>
-  adminFindDiscordServersCount?: Maybe<Paging>
   adminFindEmails?: Maybe<Array<Email>>
-  adminFindIdentities?: Maybe<Array<Identity>>
-  adminFindNetworks?: Maybe<Array<Network>>
-  adminFindNetworksCount?: Maybe<Paging>
-  adminFindUsers?: Maybe<Array<User>>
-  adminFindUsersCount?: Maybe<Paging>
-  adminGetAsset?: Maybe<Asset>
+  adminFindManyAsset: AssetPaging
+  adminFindManyCollection: CollectionPaging
+  adminFindManyCollectionCombo: CollectionComboPaging
+  adminFindManyDiscordServer: DiscordServerPaging
+  adminFindManyDiscordServerChannel?: Maybe<Array<DiscordServerChannel>>
+  adminFindManyIdentity?: Maybe<Array<Identity>>
+  adminFindManyNetwork: NetworkPaging
+  adminFindManyUser: UserPaging
+  adminFindOneAsset?: Maybe<Asset>
+  adminFindOneCollection?: Maybe<Collection>
+  adminFindOneCollectionCombo?: Maybe<CollectionCombo>
+  adminFindOneDiscordServer?: Maybe<DiscordServer>
+  adminFindOneNetwork?: Maybe<Network>
+  adminFindOneUser?: Maybe<User>
   adminGetBotInviteUrl?: Maybe<Scalars['String']>
-  adminGetCollection?: Maybe<Collection>
-  adminGetCollectionCombo?: Maybe<CollectionCombo>
-  adminGetDiscordServer?: Maybe<DiscordServer>
-  adminGetDiscordServerChannels?: Maybe<Array<DiscordServerChannel>>
-  adminGetNetwork?: Maybe<Network>
   adminGetQueue?: Maybe<Queue>
   adminGetQueueJobs?: Maybe<Array<Job>>
   adminGetQueues?: Maybe<Array<Queue>>
-  adminGetUser?: Maybe<User>
   adminReportDiscordMemberWallets?: Maybe<Scalars['JSON']>
   appConfig: AppConfig
   me?: Maybe<User>
   uptime: Scalars['Float']
-  userFindAssets?: Maybe<Array<Asset>>
-  userFindAssetsCount?: Maybe<Paging>
-  userFindCollections?: Maybe<Array<Collection>>
-  userFindCollectionsCount?: Maybe<Paging>
-  userFindIdentities?: Maybe<Array<Identity>>
-  userFindUsers?: Maybe<Array<User>>
-  userFindUsersCount?: Maybe<Paging>
-  userGetAsset?: Maybe<Asset>
-  userGetCollection?: Maybe<Collection>
-  userGetDiscordServers?: Maybe<Array<DiscordServer>>
-  userGetUserByUsername?: Maybe<User>
+  userFindManyAsset: AssetPaging
+  userFindManyCollection: CollectionPaging
+  userFindManyDiscordServer?: Maybe<Array<DiscordServer>>
+  userFindManyIdentity?: Maybe<Array<Identity>>
+  userFindManyUser: UserPaging
+  userFindOneAsset?: Maybe<Asset>
+  userFindOneCollection?: Maybe<Collection>
+  userFindOneUser?: Maybe<User>
   userRequestIdentityChallenge?: Maybe<IdentityChallenge>
 }
 
@@ -678,84 +701,64 @@ export type QueryAdminDevCheckIdentityArgs = {
   providerId: Scalars['String']
 }
 
-export type QueryAdminFindAssetsArgs = {
-  input: AdminFindAssetsInput
-}
-
-export type QueryAdminFindAssetsCountArgs = {
-  input: AdminFindAssetsInput
-}
-
-export type QueryAdminFindCollectionCombosArgs = {
-  input: AdminFindCollectionCombosInput
-}
-
-export type QueryAdminFindCollectionCombosCountArgs = {
-  input: AdminFindCollectionCombosInput
-}
-
-export type QueryAdminFindCollectionsArgs = {
-  input: AdminFindCollectionsInput
-}
-
-export type QueryAdminFindCollectionsCountArgs = {
-  input: AdminFindCollectionsInput
-}
-
-export type QueryAdminFindDiscordServersArgs = {
-  input: AdminFindDiscordServersInput
-}
-
-export type QueryAdminFindDiscordServersCountArgs = {
-  input: AdminFindDiscordServersInput
-}
-
 export type QueryAdminFindEmailsArgs = {
   input: AdminFindEmailsInput
 }
 
-export type QueryAdminFindIdentitiesArgs = {
-  input: AdminFindIdentitiesInput
+export type QueryAdminFindManyAssetArgs = {
+  input: AdminFindManyAssetInput
 }
 
-export type QueryAdminFindNetworksArgs = {
-  input: AdminFindNetworksInput
+export type QueryAdminFindManyCollectionArgs = {
+  input: AdminFindManyCollectionInput
 }
 
-export type QueryAdminFindNetworksCountArgs = {
-  input: AdminFindNetworksInput
+export type QueryAdminFindManyCollectionComboArgs = {
+  input: AdminFindManyCollectionComboInput
 }
 
-export type QueryAdminFindUsersArgs = {
-  input: AdminFindUsersInput
+export type QueryAdminFindManyDiscordServerArgs = {
+  input: AdminFindManyDiscordServerInput
 }
 
-export type QueryAdminFindUsersCountArgs = {
-  input: AdminFindUsersInput
+export type QueryAdminFindManyDiscordServerChannelArgs = {
+  serverId: Scalars['String']
 }
 
-export type QueryAdminGetAssetArgs = {
+export type QueryAdminFindManyIdentityArgs = {
+  input: AdminFindManyIdentityInput
+}
+
+export type QueryAdminFindManyNetworkArgs = {
+  input: AdminFindManyNetworkInput
+}
+
+export type QueryAdminFindManyUserArgs = {
+  input: AdminFindManyUserInput
+}
+
+export type QueryAdminFindOneAssetArgs = {
   assetId: Scalars['String']
 }
 
-export type QueryAdminGetCollectionArgs = {
+export type QueryAdminFindOneCollectionArgs = {
   collectionId: Scalars['String']
 }
 
-export type QueryAdminGetCollectionComboArgs = {
+export type QueryAdminFindOneCollectionComboArgs = {
   collectionComboId: Scalars['String']
 }
 
-export type QueryAdminGetDiscordServerArgs = {
+export type QueryAdminFindOneDiscordServerArgs = {
   serverId: Scalars['String']
 }
 
-export type QueryAdminGetDiscordServerChannelsArgs = {
-  serverId: Scalars['String']
-}
-
-export type QueryAdminGetNetworkArgs = {
+export type QueryAdminFindOneNetworkArgs = {
   networkId: Scalars['String']
+}
+
+export type QueryAdminFindOneUserArgs = {
+  userId: Scalars['String']
 }
 
 export type QueryAdminGetQueueArgs = {
@@ -767,47 +770,31 @@ export type QueryAdminGetQueueJobsArgs = {
   type: QueueType
 }
 
-export type QueryAdminGetUserArgs = {
-  userId: Scalars['String']
-}
-
 export type QueryAdminReportDiscordMemberWalletsArgs = {
   input: AdminReportDiscordMemberWalletsInput
 }
 
-export type QueryUserFindAssetsArgs = {
-  input: UserFindAssetsInput
+export type QueryUserFindManyAssetArgs = {
+  input: UserFindManyAssetInput
 }
 
-export type QueryUserFindAssetsCountArgs = {
-  input: UserFindAssetsInput
+export type QueryUserFindManyCollectionArgs = {
+  input: UserFindManyCollectionInput
 }
 
-export type QueryUserFindCollectionsArgs = {
-  input: UserFindCollectionsInput
+export type QueryUserFindManyUserArgs = {
+  input: UserFindManyUserInput
 }
 
-export type QueryUserFindCollectionsCountArgs = {
-  input: UserFindCollectionsInput
-}
-
-export type QueryUserFindUsersArgs = {
-  input: UserFindUsersInput
-}
-
-export type QueryUserFindUsersCountArgs = {
-  input: UserFindUsersInput
-}
-
-export type QueryUserGetAssetArgs = {
+export type QueryUserFindOneAssetArgs = {
   assetId: Scalars['String']
 }
 
-export type QueryUserGetCollectionArgs = {
+export type QueryUserFindOneCollectionArgs = {
   collectionId: Scalars['String']
 }
 
-export type QueryUserGetUserByUsernameArgs = {
+export type QueryUserFindOneUserArgs = {
   username: Scalars['String']
 }
 
@@ -855,52 +842,45 @@ export type RequestIdentityChallengeInput = {
 
 export type User = {
   __typename?: 'User'
-  allowDm?: Maybe<Scalars['Boolean']>
   avatarUrl?: Maybe<Scalars['String']>
   createdAt?: Maybe<Scalars['DateTime']>
-  description?: Maybe<Scalars['String']>
-  devStack?: Maybe<Scalars['String']>
-  devType?: Maybe<Scalars['String']>
-  devYears?: Maybe<Scalars['String']>
   developer?: Maybe<Scalars['Boolean']>
-  discordUrl?: Maybe<Scalars['String']>
-  githubUrl?: Maybe<Scalars['String']>
   id: Scalars['String']
-  language?: Maybe<Scalars['String']>
-  location?: Maybe<Scalars['String']>
   name?: Maybe<Scalars['String']>
   profileUrl?: Maybe<Scalars['String']>
   role?: Maybe<UserRole>
   status?: Maybe<UserStatus>
-  telegramUrl?: Maybe<Scalars['String']>
-  twitterUrl?: Maybe<Scalars['String']>
   updatedAt?: Maybe<Scalars['DateTime']>
   username?: Maybe<Scalars['String']>
-  verified?: Maybe<Scalars['Boolean']>
-  websiteUrl?: Maybe<Scalars['String']>
 }
 
-export type UserFindAssetsInput = {
+export type UserFindManyAssetInput = {
   attributes?: InputMaybe<Array<AssetAttributeInput>>
   collectionAccount?: InputMaybe<Scalars['String']>
+  limit?: InputMaybe<Scalars['Int']>
   network?: InputMaybe<NetworkType>
   ownerId?: InputMaybe<Scalars['String']>
+  page?: InputMaybe<Scalars['Int']>
   search?: InputMaybe<Scalars['String']>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
 }
 
-export type UserFindCollectionsInput = {
+export type UserFindManyCollectionInput = {
+  limit?: InputMaybe<Scalars['Int']>
   network?: InputMaybe<NetworkType>
+  page?: InputMaybe<Scalars['Int']>
   search?: InputMaybe<Scalars['String']>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
 }
 
-export type UserFindUsersInput = {
+export type UserFindManyUserInput = {
+  limit?: InputMaybe<Scalars['Int']>
+  page?: InputMaybe<Scalars['Int']>
   search?: InputMaybe<Scalars['String']>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
+}
+
+export type UserPaging = {
+  __typename?: 'UserPaging'
+  data: Array<User>
+  meta: PagingMeta
 }
 
 export enum UserRole {
@@ -962,79 +942,80 @@ export type AssetAttributeDetailsFragment = {
   count?: number | null
 }
 
-export type AdminFindAssetsQueryVariables = Exact<{
-  input: AdminFindAssetsInput
+export type AdminFindManyAssetQueryVariables = Exact<{
+  input: AdminFindManyAssetInput
 }>
 
-export type AdminFindAssetsQuery = {
+export type AdminFindManyAssetQuery = {
   __typename?: 'Query'
-  count?: {
-    __typename?: 'Paging'
-    count?: number | null
-    skip?: number | null
-    take?: number | null
-    total?: number | null
-  } | null
-  items?: Array<{
-    __typename?: 'Asset'
-    account?: string | null
-    attributeMap?: any | null
-    createdAt: Date
-    id: string
-    image?: string | null
-    owner?: string | null
-    metadata?: any | null
-    name: string
-    network?: NetworkType | null
-    symbol?: string | null
-    updatedAt: Date
-    raw?: any | null
-    identity?: {
-      __typename?: 'Identity'
+  paging: {
+    __typename?: 'AssetPaging'
+    data: Array<{
+      __typename?: 'Asset'
+      account?: string | null
+      attributeMap?: any | null
       createdAt: Date
-      expired?: boolean | null
       id: string
-      profile?: any | null
-      provider: IdentityProvider
-      providerId: string
+      image?: string | null
+      owner?: string | null
+      metadata?: any | null
+      name: string
+      network?: NetworkType | null
+      symbol?: string | null
       updatedAt: Date
-      verified?: boolean | null
-      owner?: {
-        __typename?: 'User'
-        allowDm?: boolean | null
-        avatarUrl?: string | null
-        createdAt?: Date | null
-        developer?: boolean | null
-        description?: string | null
+      raw?: any | null
+      identity?: {
+        __typename?: 'Identity'
+        createdAt: Date
+        expired?: boolean | null
         id: string
-        language?: string | null
-        location?: string | null
-        name?: string | null
-        profileUrl?: string | null
-        role?: UserRole | null
-        status?: UserStatus | null
-        updatedAt?: Date | null
-        username?: string | null
+        profile?: any | null
+        provider: IdentityProvider
+        providerId: string
+        updatedAt: Date
         verified?: boolean | null
+        owner?: {
+          __typename?: 'User'
+          avatarUrl?: string | null
+          createdAt?: Date | null
+          developer?: boolean | null
+          id: string
+          name?: string | null
+          profileUrl?: string | null
+          role?: UserRole | null
+          status?: UserStatus | null
+          updatedAt?: Date | null
+          username?: string | null
+        } | null
       } | null
-    } | null
-    attributes?: Array<{
-      __typename?: 'AssetAttribute'
-      id?: string | null
-      createdAt?: Date | null
-      updatedAt?: Date | null
-      key: string
-      value: string
-      count?: number | null
-    }> | null
-  }> | null
+      attributes?: Array<{
+        __typename?: 'AssetAttribute'
+        id?: string | null
+        createdAt?: Date | null
+        updatedAt?: Date | null
+        key: string
+        value: string
+        count?: number | null
+      }> | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
 }
 
-export type AdminGetAssetQueryVariables = Exact<{
+export type AdminFindOneAssetQueryVariables = Exact<{
   assetId: Scalars['String']
 }>
 
-export type AdminGetAssetQuery = {
+export type AdminFindOneAssetQuery = {
   __typename?: 'Query'
   item?: {
     __typename?: 'Asset'
@@ -1068,107 +1049,108 @@ export type AdminDeleteAssetMutationVariables = Exact<{
 
 export type AdminDeleteAssetMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
 
-export type UserFindAssetsQueryVariables = Exact<{
-  input: UserFindAssetsInput
+export type UserFindManyAssetQueryVariables = Exact<{
+  input: UserFindManyAssetInput
 }>
 
-export type UserFindAssetsQuery = {
+export type UserFindManyAssetQuery = {
   __typename?: 'Query'
-  count?: {
-    __typename?: 'Paging'
-    count?: number | null
-    skip?: number | null
-    take?: number | null
-    total?: number | null
-  } | null
-  items?: Array<{
-    __typename?: 'Asset'
-    account?: string | null
-    attributeMap?: any | null
-    createdAt: Date
-    id: string
-    image?: string | null
-    owner?: string | null
-    metadata?: any | null
-    name: string
-    network?: NetworkType | null
-    symbol?: string | null
-    updatedAt: Date
-    raw?: any | null
-    collection?: {
-      __typename?: 'Collection'
-      createdAt: Date
+  paging: {
+    __typename?: 'AssetPaging'
+    data: Array<{
+      __typename?: 'Asset'
       account?: string | null
+      attributeMap?: any | null
+      createdAt: Date
       id: string
+      image?: string | null
+      owner?: string | null
+      metadata?: any | null
       name: string
       network?: NetworkType | null
+      symbol?: string | null
       updatedAt: Date
-      assetCount?: number | null
-      combos?: Array<{
-        __typename?: 'CollectionCombo'
+      raw?: any | null
+      collection?: {
+        __typename?: 'Collection'
         createdAt: Date
+        account?: string | null
         id: string
         name: string
         network?: NetworkType | null
-        collectionAccount?: string | null
         updatedAt: Date
-        attributes?: Array<{
-          __typename?: 'AssetAttribute'
-          id?: string | null
-          createdAt?: Date | null
-          updatedAt?: Date | null
-          key: string
-          value: string
-          count?: number | null
+        assetCount?: number | null
+        combos?: Array<{
+          __typename?: 'CollectionCombo'
+          createdAt: Date
+          id: string
+          name: string
+          network?: NetworkType | null
+          collectionAccount?: string | null
+          updatedAt: Date
+          attributes?: Array<{
+            __typename?: 'AssetAttribute'
+            id?: string | null
+            createdAt?: Date | null
+            updatedAt?: Date | null
+            key: string
+            value: string
+            count?: number | null
+          }> | null
         }> | null
-      }> | null
-    } | null
-    identity?: {
-      __typename?: 'Identity'
-      createdAt: Date
-      expired?: boolean | null
-      id: string
-      profile?: any | null
-      provider: IdentityProvider
-      providerId: string
-      updatedAt: Date
-      verified?: boolean | null
-      owner?: {
-        __typename?: 'User'
-        allowDm?: boolean | null
-        avatarUrl?: string | null
-        createdAt?: Date | null
-        developer?: boolean | null
-        description?: string | null
-        id: string
-        language?: string | null
-        location?: string | null
-        name?: string | null
-        profileUrl?: string | null
-        role?: UserRole | null
-        status?: UserStatus | null
-        updatedAt?: Date | null
-        username?: string | null
-        verified?: boolean | null
       } | null
-    } | null
-    attributes?: Array<{
-      __typename?: 'AssetAttribute'
-      id?: string | null
-      createdAt?: Date | null
-      updatedAt?: Date | null
-      key: string
-      value: string
-      count?: number | null
-    }> | null
-  }> | null
+      identity?: {
+        __typename?: 'Identity'
+        createdAt: Date
+        expired?: boolean | null
+        id: string
+        profile?: any | null
+        provider: IdentityProvider
+        providerId: string
+        updatedAt: Date
+        verified?: boolean | null
+        owner?: {
+          __typename?: 'User'
+          avatarUrl?: string | null
+          createdAt?: Date | null
+          developer?: boolean | null
+          id: string
+          name?: string | null
+          profileUrl?: string | null
+          role?: UserRole | null
+          status?: UserStatus | null
+          updatedAt?: Date | null
+          username?: string | null
+        } | null
+      } | null
+      attributes?: Array<{
+        __typename?: 'AssetAttribute'
+        id?: string | null
+        createdAt?: Date | null
+        updatedAt?: Date | null
+        key: string
+        value: string
+        count?: number | null
+      }> | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
 }
 
-export type UserGetAssetQueryVariables = Exact<{
+export type UserFindOneAssetQueryVariables = Exact<{
   assetId: Scalars['String']
 }>
 
-export type UserGetAssetQuery = {
+export type UserFindOneAssetQuery = {
   __typename?: 'Query'
   item?: {
     __typename?: 'Asset'
@@ -1224,21 +1206,16 @@ export type UserGetAssetQuery = {
       verified?: boolean | null
       owner?: {
         __typename?: 'User'
-        allowDm?: boolean | null
         avatarUrl?: string | null
         createdAt?: Date | null
         developer?: boolean | null
-        description?: string | null
         id: string
-        language?: string | null
-        location?: string | null
         name?: string | null
         profileUrl?: string | null
         role?: UserRole | null
         status?: UserStatus | null
         updatedAt?: Date | null
         username?: string | null
-        verified?: boolean | null
       } | null
     } | null
     attributes?: Array<{
@@ -1261,21 +1238,16 @@ export type LoginMutation = {
   __typename?: 'Mutation'
   login?: {
     __typename?: 'User'
-    allowDm?: boolean | null
     avatarUrl?: string | null
     createdAt?: Date | null
     developer?: boolean | null
-    description?: string | null
     id: string
-    language?: string | null
-    location?: string | null
     name?: string | null
     profileUrl?: string | null
     role?: UserRole | null
     status?: UserStatus | null
     updatedAt?: Date | null
     username?: string | null
-    verified?: boolean | null
   } | null
 }
 
@@ -1291,21 +1263,16 @@ export type RegisterMutation = {
   __typename?: 'Mutation'
   register?: {
     __typename?: 'User'
-    allowDm?: boolean | null
     avatarUrl?: string | null
     createdAt?: Date | null
     developer?: boolean | null
-    description?: string | null
     id: string
-    language?: string | null
-    location?: string | null
     name?: string | null
     profileUrl?: string | null
     role?: UserRole | null
     status?: UserStatus | null
     updatedAt?: Date | null
     username?: string | null
-    verified?: boolean | null
   } | null
 }
 
@@ -1315,21 +1282,16 @@ export type MeQuery = {
   __typename?: 'Query'
   me?: {
     __typename?: 'User'
-    allowDm?: boolean | null
     avatarUrl?: string | null
     createdAt?: Date | null
     developer?: boolean | null
-    description?: string | null
     id: string
-    language?: string | null
-    location?: string | null
     name?: string | null
     profileUrl?: string | null
     role?: UserRole | null
     status?: UserStatus | null
     updatedAt?: Date | null
     username?: string | null
-    verified?: boolean | null
   } | null
 }
 
@@ -1352,44 +1314,50 @@ export type CollectionComboDetailsFragment = {
   }> | null
 }
 
-export type AdminFindCollectionCombosQueryVariables = Exact<{
-  input: AdminFindCollectionCombosInput
+export type AdminFindManyCollectionComboQueryVariables = Exact<{
+  input: AdminFindManyCollectionComboInput
 }>
 
-export type AdminFindCollectionCombosQuery = {
+export type AdminFindManyCollectionComboQuery = {
   __typename?: 'Query'
-  count?: {
-    __typename?: 'Paging'
-    count?: number | null
-    skip?: number | null
-    take?: number | null
-    total?: number | null
-  } | null
-  items?: Array<{
-    __typename?: 'CollectionCombo'
-    createdAt: Date
-    id: string
-    name: string
-    network?: NetworkType | null
-    collectionAccount?: string | null
-    updatedAt: Date
-    attributes?: Array<{
-      __typename?: 'AssetAttribute'
-      id?: string | null
-      createdAt?: Date | null
-      updatedAt?: Date | null
-      key: string
-      value: string
-      count?: number | null
-    }> | null
-  }> | null
+  paging: {
+    __typename?: 'CollectionComboPaging'
+    data: Array<{
+      __typename?: 'CollectionCombo'
+      createdAt: Date
+      id: string
+      name: string
+      network?: NetworkType | null
+      collectionAccount?: string | null
+      updatedAt: Date
+      attributes?: Array<{
+        __typename?: 'AssetAttribute'
+        id?: string | null
+        createdAt?: Date | null
+        updatedAt?: Date | null
+        key: string
+        value: string
+        count?: number | null
+      }> | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
 }
 
-export type AdminGetCollectionComboQueryVariables = Exact<{
+export type AdminFindOneCollectionComboQueryVariables = Exact<{
   collectionComboId: Scalars['String']
 }>
 
-export type AdminGetCollectionComboQuery = {
+export type AdminFindOneCollectionComboQuery = {
   __typename?: 'Query'
   item?: {
     __typename?: 'CollectionCombo'
@@ -1593,54 +1561,60 @@ export type CollectionDetailsFragment = {
   }> | null
 }
 
-export type AdminFindCollectionsQueryVariables = Exact<{
-  input: AdminFindCollectionsInput
+export type AdminFindManyCollectionQueryVariables = Exact<{
+  input: AdminFindManyCollectionInput
 }>
 
-export type AdminFindCollectionsQuery = {
+export type AdminFindManyCollectionQuery = {
   __typename?: 'Query'
-  count?: {
-    __typename?: 'Paging'
-    count?: number | null
-    skip?: number | null
-    take?: number | null
-    total?: number | null
-  } | null
-  items?: Array<{
-    __typename?: 'Collection'
-    createdAt: Date
-    account?: string | null
-    id: string
-    name: string
-    network?: NetworkType | null
-    updatedAt: Date
-    assetCount?: number | null
-    combos?: Array<{
-      __typename?: 'CollectionCombo'
+  paging: {
+    __typename?: 'CollectionPaging'
+    data: Array<{
+      __typename?: 'Collection'
       createdAt: Date
+      account?: string | null
       id: string
       name: string
       network?: NetworkType | null
-      collectionAccount?: string | null
       updatedAt: Date
-      attributes?: Array<{
-        __typename?: 'AssetAttribute'
-        id?: string | null
-        createdAt?: Date | null
-        updatedAt?: Date | null
-        key: string
-        value: string
-        count?: number | null
+      assetCount?: number | null
+      combos?: Array<{
+        __typename?: 'CollectionCombo'
+        createdAt: Date
+        id: string
+        name: string
+        network?: NetworkType | null
+        collectionAccount?: string | null
+        updatedAt: Date
+        attributes?: Array<{
+          __typename?: 'AssetAttribute'
+          id?: string | null
+          createdAt?: Date | null
+          updatedAt?: Date | null
+          key: string
+          value: string
+          count?: number | null
+        }> | null
       }> | null
-    }> | null
-  }> | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
 }
 
-export type AdminGetCollectionQueryVariables = Exact<{
+export type AdminFindOneCollectionQueryVariables = Exact<{
   collectionId: Scalars['String']
 }>
 
-export type AdminGetCollectionQuery = {
+export type AdminFindOneCollectionQuery = {
   __typename?: 'Query'
   item?: {
     __typename?: 'Collection'
@@ -1770,54 +1744,60 @@ export type AdminSyncCollectionsMutationVariables = Exact<{ [key: string]: never
 
 export type AdminSyncCollectionsMutation = { __typename?: 'Mutation'; synced?: boolean | null }
 
-export type UserFindCollectionsQueryVariables = Exact<{
-  input: UserFindCollectionsInput
+export type UserFindManyCollectionQueryVariables = Exact<{
+  input: UserFindManyCollectionInput
 }>
 
-export type UserFindCollectionsQuery = {
+export type UserFindManyCollectionQuery = {
   __typename?: 'Query'
-  count?: {
-    __typename?: 'Paging'
-    count?: number | null
-    skip?: number | null
-    take?: number | null
-    total?: number | null
-  } | null
-  items?: Array<{
-    __typename?: 'Collection'
-    createdAt: Date
-    account?: string | null
-    id: string
-    name: string
-    network?: NetworkType | null
-    updatedAt: Date
-    assetCount?: number | null
-    combos?: Array<{
-      __typename?: 'CollectionCombo'
+  paging: {
+    __typename?: 'CollectionPaging'
+    data: Array<{
+      __typename?: 'Collection'
       createdAt: Date
+      account?: string | null
       id: string
       name: string
       network?: NetworkType | null
-      collectionAccount?: string | null
       updatedAt: Date
-      attributes?: Array<{
-        __typename?: 'AssetAttribute'
-        id?: string | null
-        createdAt?: Date | null
-        updatedAt?: Date | null
-        key: string
-        value: string
-        count?: number | null
+      assetCount?: number | null
+      combos?: Array<{
+        __typename?: 'CollectionCombo'
+        createdAt: Date
+        id: string
+        name: string
+        network?: NetworkType | null
+        collectionAccount?: string | null
+        updatedAt: Date
+        attributes?: Array<{
+          __typename?: 'AssetAttribute'
+          id?: string | null
+          createdAt?: Date | null
+          updatedAt?: Date | null
+          key: string
+          value: string
+          count?: number | null
+        }> | null
       }> | null
-    }> | null
-  }> | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
 }
 
-export type UserGetCollectionQueryVariables = Exact<{
+export type UserFindOneCollectionQueryVariables = Exact<{
   collectionId: Scalars['String']
 }>
 
-export type UserGetCollectionQuery = {
+export type UserFindOneCollectionQuery = {
   __typename?: 'Query'
   item?: {
     __typename?: 'Collection'
@@ -1856,12 +1836,15 @@ export type AppConfigDetailsFragment = {
   authRegisterEnabled: boolean
 }
 
-export type PagingDetailsFragment = {
-  __typename?: 'Paging'
-  count?: number | null
-  skip?: number | null
-  take?: number | null
-  total?: number | null
+export type PagingMetaDetailsFragment = {
+  __typename?: 'PagingMeta'
+  currentPage: number
+  isFirstPage: boolean
+  isLastPage: boolean
+  nextPage?: number | null
+  pageCount?: number | null
+  previousPage?: number | null
+  totalCount?: number | null
 }
 
 export type UptimeQueryVariables = Exact<{ [key: string]: never }>
@@ -1951,7 +1934,7 @@ export type DiscordRoleDetailsFragment = {
   __typename?: 'DiscordRole'
   id?: string | null
   name?: string | null
-  permissions?: number | null
+  permissions?: string | null
   color?: number | null
   hoist?: boolean | null
   position?: number | null
@@ -2036,7 +2019,7 @@ export type DiscordServerDetailsFragment = {
   enabled: boolean
   enableSync: boolean
   botChannel?: string | null
-  permissions?: number | null
+  permissions?: string | null
   serverUrl?: string | null
 }
 
@@ -2044,11 +2027,11 @@ export type AdminGetBotInviteUrlQueryVariables = Exact<{ [key: string]: never }>
 
 export type AdminGetBotInviteUrlQuery = { __typename?: 'Query'; url?: string | null }
 
-export type AdminGetDiscordServerQueryVariables = Exact<{
+export type AdminFindOneDiscordServerQueryVariables = Exact<{
   serverId: Scalars['String']
 }>
 
-export type AdminGetDiscordServerQuery = {
+export type AdminFindOneDiscordServerQuery = {
   __typename?: 'Query'
   item?: {
     __typename?: 'DiscordServer'
@@ -2061,13 +2044,13 @@ export type AdminGetDiscordServerQuery = {
     enabled: boolean
     enableSync: boolean
     botChannel?: string | null
-    permissions?: number | null
+    permissions?: string | null
     serverUrl?: string | null
     roles?: Array<{
       __typename?: 'DiscordRole'
       id?: string | null
       name?: string | null
-      permissions?: number | null
+      permissions?: string | null
       color?: number | null
       hoist?: boolean | null
       position?: number | null
@@ -2130,42 +2113,48 @@ export type AdminGetDiscordServerQuery = {
   } | null
 }
 
-export type AdminGetDiscordServerChannelsQueryVariables = Exact<{
+export type AdminFindManyDiscordServerChannelQueryVariables = Exact<{
   serverId: Scalars['String']
 }>
 
-export type AdminGetDiscordServerChannelsQuery = {
+export type AdminFindManyDiscordServerChannelQuery = {
   __typename?: 'Query'
   items?: Array<{ __typename?: 'DiscordServerChannel'; id: string; name: string; type: string }> | null
 }
 
-export type AdminFindDiscordServersQueryVariables = Exact<{
-  input: AdminFindDiscordServersInput
+export type AdminFindManyDiscordServerQueryVariables = Exact<{
+  input: AdminFindManyDiscordServerInput
 }>
 
-export type AdminFindDiscordServersQuery = {
+export type AdminFindManyDiscordServerQuery = {
   __typename?: 'Query'
-  count?: {
-    __typename?: 'Paging'
-    count?: number | null
-    skip?: number | null
-    take?: number | null
-    total?: number | null
-  } | null
-  items?: Array<{
-    __typename?: 'DiscordServer'
-    features?: Array<string> | null
-    icon?: string | null
-    iconUrl?: string | null
-    id: string
-    name?: string | null
-    owner?: boolean | null
-    enabled: boolean
-    enableSync: boolean
-    botChannel?: string | null
-    permissions?: number | null
-    serverUrl?: string | null
-  }> | null
+  paging: {
+    __typename?: 'DiscordServerPaging'
+    data: Array<{
+      __typename?: 'DiscordServer'
+      features?: Array<string> | null
+      icon?: string | null
+      iconUrl?: string | null
+      id: string
+      name?: string | null
+      owner?: boolean | null
+      enabled: boolean
+      enableSync: boolean
+      botChannel?: string | null
+      permissions?: string | null
+      serverUrl?: string | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
 }
 
 export type AdminTestDiscordServerBotChannelMutationVariables = Exact<{
@@ -2195,14 +2184,14 @@ export type AdminUpdateDiscordServerMutation = {
     enabled: boolean
     enableSync: boolean
     botChannel?: string | null
-    permissions?: number | null
+    permissions?: string | null
     serverUrl?: string | null
   } | null
 }
 
-export type UserGetDiscordServersQueryVariables = Exact<{ [key: string]: never }>
+export type UserFindManyDiscordServerQueryVariables = Exact<{ [key: string]: never }>
 
-export type UserGetDiscordServersQuery = {
+export type UserFindManyDiscordServerQuery = {
   __typename?: 'Query'
   items?: Array<{
     __typename?: 'DiscordServer'
@@ -2215,13 +2204,13 @@ export type UserGetDiscordServersQuery = {
     enabled: boolean
     enableSync: boolean
     botChannel?: string | null
-    permissions?: number | null
+    permissions?: string | null
     serverUrl?: string | null
     roles?: Array<{
       __typename?: 'DiscordRole'
       id?: string | null
       name?: string | null
-      permissions?: number | null
+      permissions?: string | null
       color?: number | null
       hoist?: boolean | null
       position?: number | null
@@ -2382,11 +2371,11 @@ export type IdentityChallengeDetailsFragment = {
   verified: boolean
 }
 
-export type AdminFindIdentitiesQueryVariables = Exact<{
-  input: AdminFindIdentitiesInput
+export type AdminFindManyIdentityQueryVariables = Exact<{
+  input: AdminFindManyIdentityInput
 }>
 
-export type AdminFindIdentitiesQuery = {
+export type AdminFindManyIdentityQuery = {
   __typename?: 'Query'
   items?: Array<{
     __typename?: 'Identity'
@@ -2413,21 +2402,16 @@ export type AdminFindIdentitiesQuery = {
     }> | null
     owner?: {
       __typename?: 'User'
-      allowDm?: boolean | null
       avatarUrl?: string | null
       createdAt?: Date | null
       developer?: boolean | null
-      description?: string | null
       id: string
-      language?: string | null
-      location?: string | null
       name?: string | null
       profileUrl?: string | null
       role?: UserRole | null
       status?: UserStatus | null
       updatedAt?: Date | null
       username?: string | null
-      verified?: boolean | null
     } | null
   }> | null
 }
@@ -2457,9 +2441,9 @@ export type AdminDeleteIdentityMutationVariables = Exact<{
 
 export type AdminDeleteIdentityMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
 
-export type UserFindIdentitiesQueryVariables = Exact<{ [key: string]: never }>
+export type UserFindManyIdentityQueryVariables = Exact<{ [key: string]: never }>
 
-export type UserFindIdentitiesQuery = {
+export type UserFindManyIdentityQuery = {
   __typename?: 'Query'
   items?: Array<{
     __typename?: 'Identity'
@@ -2565,35 +2549,41 @@ export type NetworkTokenDetailsFragment = {
   network?: NetworkType | null
 }
 
-export type AdminFindNetworksQueryVariables = Exact<{
-  input: AdminFindNetworksInput
+export type AdminFindManyNetworkQueryVariables = Exact<{
+  input: AdminFindManyNetworkInput
 }>
 
-export type AdminFindNetworksQuery = {
+export type AdminFindManyNetworkQuery = {
   __typename?: 'Query'
-  count?: {
-    __typename?: 'Paging'
-    count?: number | null
-    skip?: number | null
-    take?: number | null
-    total?: number | null
-  } | null
-  items?: Array<{
-    __typename?: 'Network'
-    createdAt: Date
-    endpoint?: string | null
-    id: string
-    name: string
-    type?: NetworkType | null
-    updatedAt: Date
-  }> | null
+  paging: {
+    __typename?: 'NetworkPaging'
+    data: Array<{
+      __typename?: 'Network'
+      createdAt: Date
+      endpoint?: string | null
+      id: string
+      name: string
+      type?: NetworkType | null
+      updatedAt: Date
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
 }
 
-export type AdminGetNetworkQueryVariables = Exact<{
+export type AdminFindOneNetworkQueryVariables = Exact<{
   networkId: Scalars['String']
 }>
 
-export type AdminGetNetworkQuery = {
+export type AdminFindOneNetworkQuery = {
   __typename?: 'Query'
   item?: {
     __typename?: 'Network'
@@ -2861,79 +2851,70 @@ export type AdminReportDiscordMemberWalletsQuery = { __typename?: 'Query'; repor
 
 export type UserDetailsFragment = {
   __typename?: 'User'
-  allowDm?: boolean | null
   avatarUrl?: string | null
   createdAt?: Date | null
   developer?: boolean | null
-  description?: string | null
   id: string
-  language?: string | null
-  location?: string | null
   name?: string | null
   profileUrl?: string | null
   role?: UserRole | null
   status?: UserStatus | null
   updatedAt?: Date | null
   username?: string | null
-  verified?: boolean | null
 }
 
-export type AdminFindUsersQueryVariables = Exact<{
-  input: AdminFindUsersInput
+export type AdminFindManyUserQueryVariables = Exact<{
+  input: AdminFindManyUserInput
 }>
 
-export type AdminFindUsersQuery = {
+export type AdminFindManyUserQuery = {
   __typename?: 'Query'
-  count?: {
-    __typename?: 'Paging'
-    count?: number | null
-    skip?: number | null
-    take?: number | null
-    total?: number | null
-  } | null
-  items?: Array<{
-    __typename?: 'User'
-    allowDm?: boolean | null
-    avatarUrl?: string | null
-    createdAt?: Date | null
-    developer?: boolean | null
-    description?: string | null
-    id: string
-    language?: string | null
-    location?: string | null
-    name?: string | null
-    profileUrl?: string | null
-    role?: UserRole | null
-    status?: UserStatus | null
-    updatedAt?: Date | null
-    username?: string | null
-    verified?: boolean | null
-  }> | null
+  paging: {
+    __typename?: 'UserPaging'
+    data: Array<{
+      __typename?: 'User'
+      avatarUrl?: string | null
+      createdAt?: Date | null
+      developer?: boolean | null
+      id: string
+      name?: string | null
+      profileUrl?: string | null
+      role?: UserRole | null
+      status?: UserStatus | null
+      updatedAt?: Date | null
+      username?: string | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
 }
 
-export type AdminGetUserQueryVariables = Exact<{
+export type AdminFindOneUserQueryVariables = Exact<{
   userId: Scalars['String']
 }>
 
-export type AdminGetUserQuery = {
+export type AdminFindOneUserQuery = {
   __typename?: 'Query'
   item?: {
     __typename?: 'User'
-    allowDm?: boolean | null
     avatarUrl?: string | null
     createdAt?: Date | null
     developer?: boolean | null
-    description?: string | null
     id: string
-    language?: string | null
-    location?: string | null
     name?: string | null
     profileUrl?: string | null
     role?: UserRole | null
     status?: UserStatus | null
     updatedAt?: Date | null
     username?: string | null
-    verified?: boolean | null
   } | null
 }
 
@@ -2945,21 +2926,16 @@ export type AdminCreateUserMutation = {
   __typename?: 'Mutation'
   created?: {
     __typename?: 'User'
-    allowDm?: boolean | null
     avatarUrl?: string | null
     createdAt?: Date | null
     developer?: boolean | null
-    description?: string | null
     id: string
-    language?: string | null
-    location?: string | null
     name?: string | null
     profileUrl?: string | null
     role?: UserRole | null
     status?: UserStatus | null
     updatedAt?: Date | null
     username?: string | null
-    verified?: boolean | null
   } | null
 }
 
@@ -2972,21 +2948,16 @@ export type AdminUpdateUserMutation = {
   __typename?: 'Mutation'
   updated?: {
     __typename?: 'User'
-    allowDm?: boolean | null
     avatarUrl?: string | null
     createdAt?: Date | null
     developer?: boolean | null
-    description?: string | null
     id: string
-    language?: string | null
-    location?: string | null
     name?: string | null
     profileUrl?: string | null
     role?: UserRole | null
     status?: UserStatus | null
     updatedAt?: Date | null
     username?: string | null
-    verified?: boolean | null
   } | null
 }
 
@@ -2996,62 +2967,58 @@ export type AdminDeleteUserMutationVariables = Exact<{
 
 export type AdminDeleteUserMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
 
-export type UserFindUsersQueryVariables = Exact<{
-  input: UserFindUsersInput
+export type UserFindManyUserQueryVariables = Exact<{
+  input: UserFindManyUserInput
 }>
 
-export type UserFindUsersQuery = {
+export type UserFindManyUserQuery = {
   __typename?: 'Query'
-  count?: {
-    __typename?: 'Paging'
-    count?: number | null
-    skip?: number | null
-    take?: number | null
-    total?: number | null
-  } | null
-  items?: Array<{
-    __typename?: 'User'
-    allowDm?: boolean | null
-    avatarUrl?: string | null
-    createdAt?: Date | null
-    developer?: boolean | null
-    description?: string | null
-    id: string
-    language?: string | null
-    location?: string | null
-    name?: string | null
-    profileUrl?: string | null
-    role?: UserRole | null
-    status?: UserStatus | null
-    updatedAt?: Date | null
-    username?: string | null
-    verified?: boolean | null
-  }> | null
+  paging: {
+    __typename?: 'UserPaging'
+    data: Array<{
+      __typename?: 'User'
+      avatarUrl?: string | null
+      createdAt?: Date | null
+      developer?: boolean | null
+      id: string
+      name?: string | null
+      profileUrl?: string | null
+      role?: UserRole | null
+      status?: UserStatus | null
+      updatedAt?: Date | null
+      username?: string | null
+    }>
+    meta: {
+      __typename?: 'PagingMeta'
+      currentPage: number
+      isFirstPage: boolean
+      isLastPage: boolean
+      nextPage?: number | null
+      pageCount?: number | null
+      previousPage?: number | null
+      totalCount?: number | null
+    }
+  }
 }
 
-export type UserGetUserByUsernameQueryVariables = Exact<{
+export type UserFindOneUserQueryVariables = Exact<{
   username: Scalars['String']
 }>
 
-export type UserGetUserByUsernameQuery = {
+export type UserFindOneUserQuery = {
   __typename?: 'Query'
   item?: {
     __typename?: 'User'
-    allowDm?: boolean | null
     avatarUrl?: string | null
     createdAt?: Date | null
     developer?: boolean | null
-    description?: string | null
     id: string
-    language?: string | null
-    location?: string | null
     name?: string | null
     profileUrl?: string | null
     role?: UserRole | null
     status?: UserStatus | null
     updatedAt?: Date | null
     username?: string | null
-    verified?: boolean | null
   } | null
 }
 
@@ -3063,21 +3030,16 @@ export type UserUpdateUserMutation = {
   __typename?: 'Mutation'
   updated?: {
     __typename?: 'User'
-    allowDm?: boolean | null
     avatarUrl?: string | null
     createdAt?: Date | null
     developer?: boolean | null
-    description?: string | null
     id: string
-    language?: string | null
-    location?: string | null
     name?: string | null
     profileUrl?: string | null
     role?: UserRole | null
     status?: UserStatus | null
     updatedAt?: Date | null
     username?: string | null
-    verified?: boolean | null
   } | null
 }
 
@@ -3118,12 +3080,15 @@ export const AppConfigDetailsFragmentDoc = gql`
     authRegisterEnabled
   }
 `
-export const PagingDetailsFragmentDoc = gql`
-  fragment PagingDetails on Paging {
-    count
-    skip
-    take
-    total
+export const PagingMetaDetailsFragmentDoc = gql`
+  fragment PagingMetaDetails on PagingMeta {
+    currentPage
+    isFirstPage
+    isLastPage
+    nextPage
+    pageCount
+    previousPage
+    totalCount
   }
 `
 export const CollectionComboDetailsFragmentDoc = gql`
@@ -3313,46 +3278,43 @@ export const JobDetailsFragmentDoc = gql`
 `
 export const UserDetailsFragmentDoc = gql`
   fragment UserDetails on User {
-    allowDm
     avatarUrl
     createdAt
     developer
-    description
     id
-    language
-    location
     name
     profileUrl
     role
     status
     updatedAt
     username
-    verified
   }
 `
-export const AdminFindAssetsDocument = gql`
-  query adminFindAssets($input: AdminFindAssetsInput!) {
-    count: adminFindAssetsCount(input: $input) {
-      ...PagingDetails
-    }
-    items: adminFindAssets(input: $input) {
-      ...AssetDetails
-      identity {
-        ...IdentityDetails
-        owner {
-          ...UserDetails
+export const AdminFindManyAssetDocument = gql`
+  query adminFindManyAsset($input: AdminFindManyAssetInput!) {
+    paging: adminFindManyAsset(input: $input) {
+      data {
+        ...AssetDetails
+        identity {
+          ...IdentityDetails
+          owner {
+            ...UserDetails
+          }
         }
+      }
+      meta {
+        ...PagingMetaDetails
       }
     }
   }
-  ${PagingDetailsFragmentDoc}
   ${AssetDetailsFragmentDoc}
   ${IdentityDetailsFragmentDoc}
   ${UserDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
 `
-export const AdminGetAssetDocument = gql`
-  query adminGetAsset($assetId: String!) {
-    item: adminGetAsset(assetId: $assetId) {
+export const AdminFindOneAssetDocument = gql`
+  query adminFindOneAsset($assetId: String!) {
+    item: adminFindOneAsset(assetId: $assetId) {
       ...AssetDetails
     }
   }
@@ -3363,33 +3325,35 @@ export const AdminDeleteAssetDocument = gql`
     deleted: adminDeleteAsset(assetId: $assetId)
   }
 `
-export const UserFindAssetsDocument = gql`
-  query userFindAssets($input: UserFindAssetsInput!) {
-    count: userFindAssetsCount(input: $input) {
-      ...PagingDetails
-    }
-    items: userFindAssets(input: $input) {
-      ...AssetDetails
-      collection {
-        ...CollectionDetails
-      }
-      identity {
-        ...IdentityDetails
-        owner {
-          ...UserDetails
+export const UserFindManyAssetDocument = gql`
+  query userFindManyAsset($input: UserFindManyAssetInput!) {
+    paging: userFindManyAsset(input: $input) {
+      data {
+        ...AssetDetails
+        collection {
+          ...CollectionDetails
         }
+        identity {
+          ...IdentityDetails
+          owner {
+            ...UserDetails
+          }
+        }
+      }
+      meta {
+        ...PagingMetaDetails
       }
     }
   }
-  ${PagingDetailsFragmentDoc}
   ${AssetDetailsFragmentDoc}
   ${CollectionDetailsFragmentDoc}
   ${IdentityDetailsFragmentDoc}
   ${UserDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
 `
-export const UserGetAssetDocument = gql`
-  query userGetAsset($assetId: String!) {
-    item: userGetAsset(assetId: $assetId) {
+export const UserFindOneAssetDocument = gql`
+  query userFindOneAsset($assetId: String!) {
+    item: userFindOneAsset(assetId: $assetId) {
       ...AssetDetails
       collection {
         ...CollectionDetails
@@ -3436,21 +3400,23 @@ export const MeDocument = gql`
   }
   ${UserDetailsFragmentDoc}
 `
-export const AdminFindCollectionCombosDocument = gql`
-  query adminFindCollectionCombos($input: AdminFindCollectionCombosInput!) {
-    count: adminFindCollectionCombosCount(input: $input) {
-      ...PagingDetails
-    }
-    items: adminFindCollectionCombos(input: $input) {
-      ...CollectionComboDetails
+export const AdminFindManyCollectionComboDocument = gql`
+  query adminFindManyCollectionCombo($input: AdminFindManyCollectionComboInput!) {
+    paging: adminFindManyCollectionCombo(input: $input) {
+      data {
+        ...CollectionComboDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
     }
   }
-  ${PagingDetailsFragmentDoc}
   ${CollectionComboDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
 `
-export const AdminGetCollectionComboDocument = gql`
-  query adminGetCollectionCombo($collectionComboId: String!) {
-    item: adminGetCollectionCombo(collectionComboId: $collectionComboId) {
+export const AdminFindOneCollectionComboDocument = gql`
+  query adminFindOneCollectionCombo($collectionComboId: String!) {
+    item: adminFindOneCollectionCombo(collectionComboId: $collectionComboId) {
       ...CollectionComboDetails
     }
   }
@@ -3526,21 +3492,23 @@ export const AdminRemoveDiscordRoleConditionComboDocument = gql`
     added: adminRemoveDiscordRoleConditionCombo(conditionId: $conditionId, comboId: $comboId)
   }
 `
-export const AdminFindCollectionsDocument = gql`
-  query adminFindCollections($input: AdminFindCollectionsInput!) {
-    count: adminFindCollectionsCount(input: $input) {
-      ...PagingDetails
-    }
-    items: adminFindCollections(input: $input) {
-      ...CollectionDetails
+export const AdminFindManyCollectionDocument = gql`
+  query adminFindManyCollection($input: AdminFindManyCollectionInput!) {
+    paging: adminFindManyCollection(input: $input) {
+      data {
+        ...CollectionDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
     }
   }
-  ${PagingDetailsFragmentDoc}
   ${CollectionDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
 `
-export const AdminGetCollectionDocument = gql`
-  query adminGetCollection($collectionId: String!) {
-    item: adminGetCollection(collectionId: $collectionId) {
+export const AdminFindOneCollectionDocument = gql`
+  query adminFindOneCollection($collectionId: String!) {
+    item: adminFindOneCollection(collectionId: $collectionId) {
       ...CollectionDetails
       attributes {
         ...AssetAttributeDetails
@@ -3581,21 +3549,23 @@ export const AdminSyncCollectionsDocument = gql`
     synced: adminSyncCollections
   }
 `
-export const UserFindCollectionsDocument = gql`
-  query userFindCollections($input: UserFindCollectionsInput!) {
-    count: userFindCollectionsCount(input: $input) {
-      ...PagingDetails
-    }
-    items: userFindCollections(input: $input) {
-      ...CollectionDetails
+export const UserFindManyCollectionDocument = gql`
+  query userFindManyCollection($input: UserFindManyCollectionInput!) {
+    paging: userFindManyCollection(input: $input) {
+      data {
+        ...CollectionDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
     }
   }
-  ${PagingDetailsFragmentDoc}
   ${CollectionDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
 `
-export const UserGetCollectionDocument = gql`
-  query userGetCollection($collectionId: String!) {
-    item: userGetCollection(collectionId: $collectionId) {
+export const UserFindOneCollectionDocument = gql`
+  query userFindOneCollection($collectionId: String!) {
+    item: userFindOneCollection(collectionId: $collectionId) {
       ...CollectionDetails
     }
   }
@@ -3634,9 +3604,9 @@ export const AdminGetBotInviteUrlDocument = gql`
     url: adminGetBotInviteUrl
   }
 `
-export const AdminGetDiscordServerDocument = gql`
-  query adminGetDiscordServer($serverId: String!) {
-    item: adminGetDiscordServer(serverId: $serverId) {
+export const AdminFindOneDiscordServerDocument = gql`
+  query adminFindOneDiscordServer($serverId: String!) {
+    item: adminFindOneDiscordServer(serverId: $serverId) {
       ...DiscordServerDetails
       roles {
         ...DiscordRoleDetails
@@ -3646,25 +3616,27 @@ export const AdminGetDiscordServerDocument = gql`
   ${DiscordServerDetailsFragmentDoc}
   ${DiscordRoleDetailsFragmentDoc}
 `
-export const AdminGetDiscordServerChannelsDocument = gql`
-  query adminGetDiscordServerChannels($serverId: String!) {
-    items: adminGetDiscordServerChannels(serverId: $serverId) {
+export const AdminFindManyDiscordServerChannelDocument = gql`
+  query adminFindManyDiscordServerChannel($serverId: String!) {
+    items: adminFindManyDiscordServerChannel(serverId: $serverId) {
       ...DiscordServerChannelDetails
     }
   }
   ${DiscordServerChannelDetailsFragmentDoc}
 `
-export const AdminFindDiscordServersDocument = gql`
-  query adminFindDiscordServers($input: AdminFindDiscordServersInput!) {
-    count: adminFindDiscordServersCount(input: $input) {
-      ...PagingDetails
-    }
-    items: adminFindDiscordServers(input: $input) {
-      ...DiscordServerDetails
+export const AdminFindManyDiscordServerDocument = gql`
+  query adminFindManyDiscordServer($input: AdminFindManyDiscordServerInput!) {
+    paging: adminFindManyDiscordServer(input: $input) {
+      data {
+        ...DiscordServerDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
     }
   }
-  ${PagingDetailsFragmentDoc}
   ${DiscordServerDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
 `
 export const AdminTestDiscordServerBotChannelDocument = gql`
   mutation adminTestDiscordServerBotChannel($serverId: String!) {
@@ -3679,9 +3651,9 @@ export const AdminUpdateDiscordServerDocument = gql`
   }
   ${DiscordServerDetailsFragmentDoc}
 `
-export const UserGetDiscordServersDocument = gql`
-  query userGetDiscordServers {
-    items: userGetDiscordServers {
+export const UserFindManyDiscordServerDocument = gql`
+  query userFindManyDiscordServer {
+    items: userFindManyDiscordServer {
       ...DiscordServerDetails
       roles {
         ...DiscordRoleDetails
@@ -3732,9 +3704,9 @@ export const AdminDeleteEmailDocument = gql`
     deleted: adminDeleteEmail(emailId: $emailId)
   }
 `
-export const AdminFindIdentitiesDocument = gql`
-  query adminFindIdentities($input: AdminFindIdentitiesInput!) {
-    items: adminFindIdentities(input: $input) {
+export const AdminFindManyIdentityDocument = gql`
+  query adminFindManyIdentity($input: AdminFindManyIdentityInput!) {
+    items: adminFindManyIdentity(input: $input) {
       ...IdentityDetails
       challenges {
         ...IdentityChallengeDetails
@@ -3761,9 +3733,9 @@ export const AdminDeleteIdentityDocument = gql`
     deleted: adminDeleteIdentity(identityId: $identityId)
   }
 `
-export const UserFindIdentitiesDocument = gql`
-  query userFindIdentities {
-    items: userFindIdentities {
+export const UserFindManyIdentityDocument = gql`
+  query userFindManyIdentity {
+    items: userFindManyIdentity {
       ...IdentityDetails
     }
   }
@@ -3798,21 +3770,23 @@ export const UserLinkIdentityDocument = gql`
   }
   ${IdentityDetailsFragmentDoc}
 `
-export const AdminFindNetworksDocument = gql`
-  query adminFindNetworks($input: AdminFindNetworksInput!) {
-    count: adminFindNetworksCount(input: $input) {
-      ...PagingDetails
-    }
-    items: adminFindNetworks(input: $input) {
-      ...NetworkDetails
+export const AdminFindManyNetworkDocument = gql`
+  query adminFindManyNetwork($input: AdminFindManyNetworkInput!) {
+    paging: adminFindManyNetwork(input: $input) {
+      data {
+        ...NetworkDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
     }
   }
-  ${PagingDetailsFragmentDoc}
   ${NetworkDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
 `
-export const AdminGetNetworkDocument = gql`
-  query adminGetNetwork($networkId: String!) {
-    item: adminGetNetwork(networkId: $networkId) {
+export const AdminFindOneNetworkDocument = gql`
+  query adminFindOneNetwork($networkId: String!) {
+    item: adminFindOneNetwork(networkId: $networkId) {
       ...NetworkDetails
       collections {
         ...CollectionDetails
@@ -3909,21 +3883,23 @@ export const AdminReportDiscordMemberWalletsDocument = gql`
     report: adminReportDiscordMemberWallets(input: $input)
   }
 `
-export const AdminFindUsersDocument = gql`
-  query adminFindUsers($input: AdminFindUsersInput!) {
-    count: adminFindUsersCount(input: $input) {
-      ...PagingDetails
-    }
-    items: adminFindUsers(input: $input) {
-      ...UserDetails
+export const AdminFindManyUserDocument = gql`
+  query adminFindManyUser($input: AdminFindManyUserInput!) {
+    paging: adminFindManyUser(input: $input) {
+      data {
+        ...UserDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
     }
   }
-  ${PagingDetailsFragmentDoc}
   ${UserDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
 `
-export const AdminGetUserDocument = gql`
-  query adminGetUser($userId: String!) {
-    item: adminGetUser(userId: $userId) {
+export const AdminFindOneUserDocument = gql`
+  query adminFindOneUser($userId: String!) {
+    item: adminFindOneUser(userId: $userId) {
       ...UserDetails
     }
   }
@@ -3950,21 +3926,23 @@ export const AdminDeleteUserDocument = gql`
     deleted: adminDeleteUser(userId: $userId)
   }
 `
-export const UserFindUsersDocument = gql`
-  query userFindUsers($input: UserFindUsersInput!) {
-    count: userFindUsersCount(input: $input) {
-      ...PagingDetails
-    }
-    items: userFindUsers(input: $input) {
-      ...UserDetails
+export const UserFindManyUserDocument = gql`
+  query userFindManyUser($input: UserFindManyUserInput!) {
+    paging: userFindManyUser(input: $input) {
+      data {
+        ...UserDetails
+      }
+      meta {
+        ...PagingMetaDetails
+      }
     }
   }
-  ${PagingDetailsFragmentDoc}
   ${UserDetailsFragmentDoc}
+  ${PagingMetaDetailsFragmentDoc}
 `
-export const UserGetUserByUsernameDocument = gql`
-  query userGetUserByUsername($username: String!) {
-    item: userGetUserByUsername(username: $username) {
+export const UserFindOneUserDocument = gql`
+  query userFindOneUser($username: String!) {
+    item: userFindOneUser(username: $username) {
       ...UserDetails
     }
   }
@@ -3986,17 +3964,17 @@ export type SdkFunctionWrapper = <T>(
 ) => Promise<T>
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action()
-const AdminFindAssetsDocumentString = print(AdminFindAssetsDocument)
-const AdminGetAssetDocumentString = print(AdminGetAssetDocument)
+const AdminFindManyAssetDocumentString = print(AdminFindManyAssetDocument)
+const AdminFindOneAssetDocumentString = print(AdminFindOneAssetDocument)
 const AdminDeleteAssetDocumentString = print(AdminDeleteAssetDocument)
-const UserFindAssetsDocumentString = print(UserFindAssetsDocument)
-const UserGetAssetDocumentString = print(UserGetAssetDocument)
+const UserFindManyAssetDocumentString = print(UserFindManyAssetDocument)
+const UserFindOneAssetDocumentString = print(UserFindOneAssetDocument)
 const LoginDocumentString = print(LoginDocument)
 const LogoutDocumentString = print(LogoutDocument)
 const RegisterDocumentString = print(RegisterDocument)
 const MeDocumentString = print(MeDocument)
-const AdminFindCollectionCombosDocumentString = print(AdminFindCollectionCombosDocument)
-const AdminGetCollectionComboDocumentString = print(AdminGetCollectionComboDocument)
+const AdminFindManyCollectionComboDocumentString = print(AdminFindManyCollectionComboDocument)
+const AdminFindOneCollectionComboDocumentString = print(AdminFindOneCollectionComboDocument)
 const AdminCreateCollectionComboDocumentString = print(AdminCreateCollectionComboDocument)
 const AdminUpdateCollectionComboDocumentString = print(AdminUpdateCollectionComboDocument)
 const AdminDeleteCollectionComboDocumentString = print(AdminDeleteCollectionComboDocument)
@@ -4008,41 +3986,41 @@ const AdminAddDiscordRoleConditionCollectionDocumentString = print(AdminAddDisco
 const AdminAddDiscordRoleConditionComboDocumentString = print(AdminAddDiscordRoleConditionComboDocument)
 const AdminRemoveDiscordRoleConditionCollectionDocumentString = print(AdminRemoveDiscordRoleConditionCollectionDocument)
 const AdminRemoveDiscordRoleConditionComboDocumentString = print(AdminRemoveDiscordRoleConditionComboDocument)
-const AdminFindCollectionsDocumentString = print(AdminFindCollectionsDocument)
-const AdminGetCollectionDocumentString = print(AdminGetCollectionDocument)
+const AdminFindManyCollectionDocumentString = print(AdminFindManyCollectionDocument)
+const AdminFindOneCollectionDocumentString = print(AdminFindOneCollectionDocument)
 const AdminCreateCollectionDocumentString = print(AdminCreateCollectionDocument)
 const AdminUpdateCollectionDocumentString = print(AdminUpdateCollectionDocument)
 const AdminDeleteCollectionDocumentString = print(AdminDeleteCollectionDocument)
 const AdminSyncCollectionDocumentString = print(AdminSyncCollectionDocument)
 const AdminSyncCollectionsDocumentString = print(AdminSyncCollectionsDocument)
-const UserFindCollectionsDocumentString = print(UserFindCollectionsDocument)
-const UserGetCollectionDocumentString = print(UserGetCollectionDocument)
+const UserFindManyCollectionDocumentString = print(UserFindManyCollectionDocument)
+const UserFindOneCollectionDocumentString = print(UserFindOneCollectionDocument)
 const UptimeDocumentString = print(UptimeDocument)
 const AppConfigDocumentString = print(AppConfigDocument)
 const AdminDevCheckAccountDocumentString = print(AdminDevCheckAccountDocument)
 const AdminDevCheckIdentityDocumentString = print(AdminDevCheckIdentityDocument)
 const AdminSyncDiscordRolesDocumentString = print(AdminSyncDiscordRolesDocument)
 const AdminGetBotInviteUrlDocumentString = print(AdminGetBotInviteUrlDocument)
-const AdminGetDiscordServerDocumentString = print(AdminGetDiscordServerDocument)
-const AdminGetDiscordServerChannelsDocumentString = print(AdminGetDiscordServerChannelsDocument)
-const AdminFindDiscordServersDocumentString = print(AdminFindDiscordServersDocument)
+const AdminFindOneDiscordServerDocumentString = print(AdminFindOneDiscordServerDocument)
+const AdminFindManyDiscordServerChannelDocumentString = print(AdminFindManyDiscordServerChannelDocument)
+const AdminFindManyDiscordServerDocumentString = print(AdminFindManyDiscordServerDocument)
 const AdminTestDiscordServerBotChannelDocumentString = print(AdminTestDiscordServerBotChannelDocument)
 const AdminUpdateDiscordServerDocumentString = print(AdminUpdateDiscordServerDocument)
-const UserGetDiscordServersDocumentString = print(UserGetDiscordServersDocument)
+const UserFindManyDiscordServerDocumentString = print(UserFindManyDiscordServerDocument)
 const AdminFindEmailsDocumentString = print(AdminFindEmailsDocument)
 const AdminCreateEmailDocumentString = print(AdminCreateEmailDocument)
 const AdminUpdateEmailDocumentString = print(AdminUpdateEmailDocument)
 const AdminDeleteEmailDocumentString = print(AdminDeleteEmailDocument)
-const AdminFindIdentitiesDocumentString = print(AdminFindIdentitiesDocument)
+const AdminFindManyIdentityDocumentString = print(AdminFindManyIdentityDocument)
 const AdminCreateIdentityDocumentString = print(AdminCreateIdentityDocument)
 const AdminDeleteIdentityDocumentString = print(AdminDeleteIdentityDocument)
-const UserFindIdentitiesDocumentString = print(UserFindIdentitiesDocument)
+const UserFindManyIdentityDocumentString = print(UserFindManyIdentityDocument)
 const UserDeleteIdentityDocumentString = print(UserDeleteIdentityDocument)
 const UserRequestIdentityChallengeDocumentString = print(UserRequestIdentityChallengeDocument)
 const UserVerifyIdentityChallengeDocumentString = print(UserVerifyIdentityChallengeDocument)
 const UserLinkIdentityDocumentString = print(UserLinkIdentityDocument)
-const AdminFindNetworksDocumentString = print(AdminFindNetworksDocument)
-const AdminGetNetworkDocumentString = print(AdminGetNetworkDocument)
+const AdminFindManyNetworkDocumentString = print(AdminFindManyNetworkDocument)
+const AdminFindOneNetworkDocumentString = print(AdminFindOneNetworkDocument)
 const AdminCreateNetworkDocumentString = print(AdminCreateNetworkDocument)
 const AdminCreateNetworkTokenDocumentString = print(AdminCreateNetworkTokenDocument)
 const AdminUpdateNetworkDocumentString = print(AdminUpdateNetworkDocument)
@@ -4056,41 +4034,41 @@ const AdminDeleteQueueJobDocumentString = print(AdminDeleteQueueJobDocument)
 const AdminPauseQueueDocumentString = print(AdminPauseQueueDocument)
 const AdminResumeQueueDocumentString = print(AdminResumeQueueDocument)
 const AdminReportDiscordMemberWalletsDocumentString = print(AdminReportDiscordMemberWalletsDocument)
-const AdminFindUsersDocumentString = print(AdminFindUsersDocument)
-const AdminGetUserDocumentString = print(AdminGetUserDocument)
+const AdminFindManyUserDocumentString = print(AdminFindManyUserDocument)
+const AdminFindOneUserDocumentString = print(AdminFindOneUserDocument)
 const AdminCreateUserDocumentString = print(AdminCreateUserDocument)
 const AdminUpdateUserDocumentString = print(AdminUpdateUserDocument)
 const AdminDeleteUserDocumentString = print(AdminDeleteUserDocument)
-const UserFindUsersDocumentString = print(UserFindUsersDocument)
-const UserGetUserByUsernameDocumentString = print(UserGetUserByUsernameDocument)
+const UserFindManyUserDocumentString = print(UserFindManyUserDocument)
+const UserFindOneUserDocumentString = print(UserFindOneUserDocument)
 const UserUpdateUserDocumentString = print(UserUpdateUserDocument)
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    adminFindAssets(
-      variables: AdminFindAssetsQueryVariables,
+    adminFindManyAsset(
+      variables: AdminFindManyAssetQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindAssetsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindManyAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminFindAssetsQuery>(AdminFindAssetsDocumentString, variables, {
+          client.rawRequest<AdminFindManyAssetQuery>(AdminFindManyAssetDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminFindAssets',
+        'adminFindManyAsset',
         'query',
       )
     },
-    adminGetAsset(
-      variables: AdminGetAssetQueryVariables,
+    adminFindOneAsset(
+      variables: AdminFindOneAssetQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindOneAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminGetAssetQuery>(AdminGetAssetDocumentString, variables, {
+          client.rawRequest<AdminFindOneAssetQuery>(AdminFindOneAssetDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminGetAsset',
+        'adminFindOneAsset',
         'query',
       )
     },
@@ -4108,31 +4086,31 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'mutation',
       )
     },
-    userFindAssets(
-      variables: UserFindAssetsQueryVariables,
+    userFindManyAsset(
+      variables: UserFindManyAssetQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindAssetsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: UserFindManyAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<UserFindAssetsQuery>(UserFindAssetsDocumentString, variables, {
+          client.rawRequest<UserFindManyAssetQuery>(UserFindManyAssetDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'userFindAssets',
+        'userFindManyAsset',
         'query',
       )
     },
-    userGetAsset(
-      variables: UserGetAssetQueryVariables,
+    userFindOneAsset(
+      variables: UserFindOneAssetQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserGetAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: UserFindOneAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<UserGetAssetQuery>(UserGetAssetDocumentString, variables, {
+          client.rawRequest<UserFindOneAssetQuery>(UserFindOneAssetDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'userGetAsset',
+        'userFindOneAsset',
         'query',
       )
     },
@@ -4189,31 +4167,31 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'query',
       )
     },
-    adminFindCollectionCombos(
-      variables: AdminFindCollectionCombosQueryVariables,
+    adminFindManyCollectionCombo(
+      variables: AdminFindManyCollectionComboQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindCollectionCombosQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindManyCollectionComboQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminFindCollectionCombosQuery>(AdminFindCollectionCombosDocumentString, variables, {
+          client.rawRequest<AdminFindManyCollectionComboQuery>(AdminFindManyCollectionComboDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminFindCollectionCombos',
+        'adminFindManyCollectionCombo',
         'query',
       )
     },
-    adminGetCollectionCombo(
-      variables: AdminGetCollectionComboQueryVariables,
+    adminFindOneCollectionCombo(
+      variables: AdminFindOneCollectionComboQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetCollectionComboQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindOneCollectionComboQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminGetCollectionComboQuery>(AdminGetCollectionComboDocumentString, variables, {
+          client.rawRequest<AdminFindOneCollectionComboQuery>(AdminFindOneCollectionComboDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminGetCollectionCombo',
+        'adminFindOneCollectionCombo',
         'query',
       )
     },
@@ -4419,31 +4397,31 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'mutation',
       )
     },
-    adminFindCollections(
-      variables: AdminFindCollectionsQueryVariables,
+    adminFindManyCollection(
+      variables: AdminFindManyCollectionQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindCollectionsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindManyCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminFindCollectionsQuery>(AdminFindCollectionsDocumentString, variables, {
+          client.rawRequest<AdminFindManyCollectionQuery>(AdminFindManyCollectionDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminFindCollections',
+        'adminFindManyCollection',
         'query',
       )
     },
-    adminGetCollection(
-      variables: AdminGetCollectionQueryVariables,
+    adminFindOneCollection(
+      variables: AdminFindOneCollectionQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindOneCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminGetCollectionQuery>(AdminGetCollectionDocumentString, variables, {
+          client.rawRequest<AdminFindOneCollectionQuery>(AdminFindOneCollectionDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminGetCollection',
+        'adminFindOneCollection',
         'query',
       )
     },
@@ -4517,31 +4495,31 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'mutation',
       )
     },
-    userFindCollections(
-      variables: UserFindCollectionsQueryVariables,
+    userFindManyCollection(
+      variables: UserFindManyCollectionQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindCollectionsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: UserFindManyCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<UserFindCollectionsQuery>(UserFindCollectionsDocumentString, variables, {
+          client.rawRequest<UserFindManyCollectionQuery>(UserFindManyCollectionDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'userFindCollections',
+        'userFindManyCollection',
         'query',
       )
     },
-    userGetCollection(
-      variables: UserGetCollectionQueryVariables,
+    userFindOneCollection(
+      variables: UserFindOneCollectionQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserGetCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: UserFindOneCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<UserGetCollectionQuery>(UserGetCollectionDocumentString, variables, {
+          client.rawRequest<UserFindOneCollectionQuery>(UserFindOneCollectionDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'userGetCollection',
+        'userFindOneCollection',
         'query',
       )
     },
@@ -4629,46 +4607,51 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'query',
       )
     },
-    adminGetDiscordServer(
-      variables: AdminGetDiscordServerQueryVariables,
+    adminFindOneDiscordServer(
+      variables: AdminFindOneDiscordServerQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetDiscordServerQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindOneDiscordServerQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminGetDiscordServerQuery>(AdminGetDiscordServerDocumentString, variables, {
+          client.rawRequest<AdminFindOneDiscordServerQuery>(AdminFindOneDiscordServerDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminGetDiscordServer',
+        'adminFindOneDiscordServer',
         'query',
       )
     },
-    adminGetDiscordServerChannels(
-      variables: AdminGetDiscordServerChannelsQueryVariables,
+    adminFindManyDiscordServerChannel(
+      variables: AdminFindManyDiscordServerChannelQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetDiscordServerChannelsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{
+      data: AdminFindManyDiscordServerChannelQuery
+      extensions?: any
+      headers: Dom.Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminGetDiscordServerChannelsQuery>(
-            AdminGetDiscordServerChannelsDocumentString,
+          client.rawRequest<AdminFindManyDiscordServerChannelQuery>(
+            AdminFindManyDiscordServerChannelDocumentString,
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders },
           ),
-        'adminGetDiscordServerChannels',
+        'adminFindManyDiscordServerChannel',
         'query',
       )
     },
-    adminFindDiscordServers(
-      variables: AdminFindDiscordServersQueryVariables,
+    adminFindManyDiscordServer(
+      variables: AdminFindManyDiscordServerQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindDiscordServersQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindManyDiscordServerQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminFindDiscordServersQuery>(AdminFindDiscordServersDocumentString, variables, {
+          client.rawRequest<AdminFindManyDiscordServerQuery>(AdminFindManyDiscordServerDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminFindDiscordServers',
+        'adminFindManyDiscordServer',
         'query',
       )
     },
@@ -4706,17 +4689,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'mutation',
       )
     },
-    userGetDiscordServers(
-      variables?: UserGetDiscordServersQueryVariables,
+    userFindManyDiscordServer(
+      variables?: UserFindManyDiscordServerQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserGetDiscordServersQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: UserFindManyDiscordServerQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<UserGetDiscordServersQuery>(UserGetDiscordServersDocumentString, variables, {
+          client.rawRequest<UserFindManyDiscordServerQuery>(UserFindManyDiscordServerDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'userGetDiscordServers',
+        'userFindManyDiscordServer',
         'query',
       )
     },
@@ -4776,17 +4759,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'mutation',
       )
     },
-    adminFindIdentities(
-      variables: AdminFindIdentitiesQueryVariables,
+    adminFindManyIdentity(
+      variables: AdminFindManyIdentityQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindIdentitiesQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindManyIdentityQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminFindIdentitiesQuery>(AdminFindIdentitiesDocumentString, variables, {
+          client.rawRequest<AdminFindManyIdentityQuery>(AdminFindManyIdentityDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminFindIdentities',
+        'adminFindManyIdentity',
         'query',
       )
     },
@@ -4818,17 +4801,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'mutation',
       )
     },
-    userFindIdentities(
-      variables?: UserFindIdentitiesQueryVariables,
+    userFindManyIdentity(
+      variables?: UserFindManyIdentityQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindIdentitiesQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: UserFindManyIdentityQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<UserFindIdentitiesQuery>(UserFindIdentitiesDocumentString, variables, {
+          client.rawRequest<UserFindManyIdentityQuery>(UserFindManyIdentityDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'userFindIdentities',
+        'userFindManyIdentity',
         'query',
       )
     },
@@ -4888,31 +4871,31 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'mutation',
       )
     },
-    adminFindNetworks(
-      variables: AdminFindNetworksQueryVariables,
+    adminFindManyNetwork(
+      variables: AdminFindManyNetworkQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindNetworksQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindManyNetworkQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminFindNetworksQuery>(AdminFindNetworksDocumentString, variables, {
+          client.rawRequest<AdminFindManyNetworkQuery>(AdminFindManyNetworkDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminFindNetworks',
+        'adminFindManyNetwork',
         'query',
       )
     },
-    adminGetNetwork(
-      variables: AdminGetNetworkQueryVariables,
+    adminFindOneNetwork(
+      variables: AdminFindOneNetworkQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetNetworkQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindOneNetworkQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminGetNetworkQuery>(AdminGetNetworkDocumentString, variables, {
+          client.rawRequest<AdminFindOneNetworkQuery>(AdminFindOneNetworkDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminGetNetwork',
+        'adminFindOneNetwork',
         'query',
       )
     },
@@ -5099,31 +5082,31 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'query',
       )
     },
-    adminFindUsers(
-      variables: AdminFindUsersQueryVariables,
+    adminFindManyUser(
+      variables: AdminFindManyUserQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindUsersQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindManyUserQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminFindUsersQuery>(AdminFindUsersDocumentString, variables, {
+          client.rawRequest<AdminFindManyUserQuery>(AdminFindManyUserDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminFindUsers',
+        'adminFindManyUser',
         'query',
       )
     },
-    adminGetUser(
-      variables: AdminGetUserQueryVariables,
+    adminFindOneUser(
+      variables: AdminFindOneUserQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetUserQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: AdminFindOneUserQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<AdminGetUserQuery>(AdminGetUserDocumentString, variables, {
+          client.rawRequest<AdminFindOneUserQuery>(AdminFindOneUserDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'adminGetUser',
+        'adminFindOneUser',
         'query',
       )
     },
@@ -5169,31 +5152,31 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'mutation',
       )
     },
-    userFindUsers(
-      variables: UserFindUsersQueryVariables,
+    userFindManyUser(
+      variables: UserFindManyUserQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindUsersQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: UserFindManyUserQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<UserFindUsersQuery>(UserFindUsersDocumentString, variables, {
+          client.rawRequest<UserFindManyUserQuery>(UserFindManyUserDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'userFindUsers',
+        'userFindManyUser',
         'query',
       )
     },
-    userGetUserByUsername(
-      variables: UserGetUserByUsernameQueryVariables,
+    userFindOneUser(
+      variables: UserFindOneUserQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserGetUserByUsernameQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+    ): Promise<{ data: UserFindOneUserQuery; extensions?: any; headers: Dom.Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.rawRequest<UserGetUserByUsernameQuery>(UserGetUserByUsernameDocumentString, variables, {
+          client.rawRequest<UserFindOneUserQuery>(UserFindOneUserDocumentString, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'userGetUserByUsername',
+        'userFindOneUser',
         'query',
       )
     },

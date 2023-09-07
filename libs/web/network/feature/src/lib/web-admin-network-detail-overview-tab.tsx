@@ -1,12 +1,12 @@
 import { Button, Group, Modal, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Network } from '@pubkey-link/sdk'
-import { useAdminNetwork } from '@pubkey-link/web/network/data-access'
+import { useAdminFindOneNetwork } from '@pubkey-link/web/network/data-access'
 import { AdminUiNetworkTokenCreateForm, NetworkUiAdminTokenList } from '@pubkey-link/web/network/ui'
 import { UiAlert, UiGroup, UiStack } from '@pubkey-link/web/ui/core'
 
 export function WebAdminNetworkDetailOverviewTab({ networkId }: { networkId: string }) {
-  const { network, deleteNetworkToken } = useAdminNetwork(networkId)
+  const { network, deleteNetworkToken } = useAdminFindOneNetwork({ networkId })
 
   return (
     <UiStack>
@@ -30,7 +30,7 @@ export function WebAdminNetworkDetailOverviewTab({ networkId }: { networkId: str
 }
 function AddTokenModal({ network }: { network: Network }) {
   const [opened, { open, close }] = useDisclosure(false)
-  const { createNetworkToken } = useAdminNetwork(network.id)
+  const { createNetworkToken } = useAdminFindOneNetwork({ networkId: network.id })
 
   return (
     <>

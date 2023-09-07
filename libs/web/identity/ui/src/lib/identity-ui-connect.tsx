@@ -1,6 +1,6 @@
 import { Alert } from '@mantine/core'
 import { IdentityProvider } from '@pubkey-link/sdk'
-import { useUserIdentities } from '@pubkey-link/web/identity/data-access'
+import { useUserFindManyIdentity } from '@pubkey-link/web/identity/data-access'
 import { UiDashboardContainer } from '@pubkey-link/web/ui/core'
 
 import { IdentityUiDiscordLinkButton } from './identity-ui-discord-link-button'
@@ -8,7 +8,7 @@ import { IdentityUiIcon } from './identity-ui-icon'
 import { IdentityUiSolanaLinkButton } from './identity-ui-solana-link-button'
 
 export function IdentityUiConnect() {
-  const { hasDiscord, hasSolana, items, query } = useUserIdentities()
+  const { hasDiscord, hasSolana, items, query } = useUserFindManyIdentity()
   return (
     <UiDashboardContainer>
       {hasDiscord ? (

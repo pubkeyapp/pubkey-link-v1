@@ -1,20 +1,19 @@
+import { modals } from '@mantine/modals'
 import { AdminCreateEmailInput, AdminFindEmailsInput, AdminUpdateEmailInput, Email } from '@pubkey-link/sdk'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
 import { showNotificationError, showNotificationSuccess } from '@pubkey-link/web/ui/notifications'
-import { modals } from '@mantine/modals'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-export function useAdminEmail(userId: string) {
+export function useAdminEmail({ userId }: { userId: string }) {
   const sdk = useWebSdk()
 
-  const [input] = useState<AdminFindEmailsInput>({
-    ownerId: userId,
-  })
+  const [input] = useState<AdminFindEmailsInput>({ ownerId: userId })
 
-  const query = useQuery(['admin', 'emails', 'find', input], () =>
-    sdk.adminFindEmails({ input }).then((res) => res.data),
-  )
+  const query = useQuery({
+    queryKey: ['admin', 'emails', 'find', input],
+    queryFn: () => sdk.adminFindEmails({ input }).then((res) => res.data),
+  })
 
   return {
     emails: query.data?.items ?? [],

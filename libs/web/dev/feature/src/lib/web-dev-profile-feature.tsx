@@ -10,16 +10,14 @@ import {
   UiSearchField,
   UiStack,
 } from '@pubkey-link/web/ui/core'
-import { useAdminUsers } from '@pubkey-link/web/user/data-access'
+import { useAdminFindManyUser } from '@pubkey-link/web/user/data-access'
 import { WebUserUiUser } from '@pubkey-link/web/user/ui'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function WebDevProfileFeature() {
-  const { query, pagination, setSearch } = useAdminUsers({ take: 100 })
+  const { query, items, pagination, setSearch } = useAdminFindManyUser({ limit: 100 })
   const [user, setUser] = useState<User | undefined>(undefined)
   const [userId] = useState<string | undefined>()
-
-  const items = useMemo(() => query.data?.items ?? [], [query.data?.items])
 
   useEffect(() => {
     if (!userId) return

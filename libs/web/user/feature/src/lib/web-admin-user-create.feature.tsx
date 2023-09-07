@@ -2,13 +2,13 @@ import { Button, Group } from '@mantine/core'
 import { AdminCreateUserInput } from '@pubkey-link/sdk'
 import { UiBack, UiAdminPage, UiCard } from '@pubkey-link/web/ui/core'
 import { showNotificationError } from '@pubkey-link/web/ui/notifications'
-import { useAdminUsers } from '@pubkey-link/web/user/data-access'
+import { useAdminFindManyUser } from '@pubkey-link/web/user/data-access'
 import { AdminUiCreateUserForm } from '@pubkey-link/web/user/ui'
 import { useNavigate } from 'react-router-dom'
 
 export function WebAdminUserCreateFeature() {
   const navigate = useNavigate()
-  const { createUser } = useAdminUsers()
+  const { createUser } = useAdminFindManyUser()
 
   const submit = async (input: AdminCreateUserInput) =>
     createUser(input)

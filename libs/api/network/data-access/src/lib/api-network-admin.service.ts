@@ -1,12 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Network as PrismaNetwork } from '@prisma/client'
-import { ApiCoreService, Paging } from '@pubkey-link/api/core/data-access'
+import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { AdminCreateNetworkTokenInput } from './dto/admin-create-network-token-input'
 
 import { AdminCreateNetworkInput } from './dto/admin-create-network.input'
-import { AdminFindNetworksInput } from './dto/admin-find-networks.input'
+import { AdminFindManyNetworkInput } from './dto/admin-find-many-network-input'
 import { AdminUpdateNetworkInput } from './dto/admin-update-network.input'
-import { parseAdminFindNetworksInput } from './helpers/parse-admin-find-networks.input'
+import { NetworkPaging } from './entity/network-paging.entity'
+import { getAdminNetworkWhereInput } from './helpers/get-admin-network-where-input'
 
 @Injectable()
 export class ApiNetworkAdminService {
@@ -78,28 +79,19 @@ export class ApiNetworkAdminService {
     return true
   }
 
-  async findNetworks(adminId: string, input: AdminFindNetworksInput): Promise<PrismaNetwork[]> {
+  async findManyNetwork(adminId: string, input: AdminFindManyNetworkInput): Promise<NetworkPaging> {
     await this.core.ensureUserAdmin(adminId)
 
-    const { where, orderBy, take, skip } = parseAdminFindNetworksInput(input)
-    const items = await this.core.data.network.findMany({ where, orderBy, take, skip })
-
-    return items ?? []
+    return this.core.data.network
+      .paginate({
+        orderBy: { updatedAt: 'desc' },
+        where: getAdminNetworkWhereInput(input),
+      })
+      .withPages({ limit: input.limit, page: input.page })
+      .then(([data, meta]) => ({ data, meta }))
   }
 
-  async findNetworksCount(adminId: string, input: AdminFindNetworksInput): Promise<Paging> {
-    await this.core.ensureUserAdmin(adminId)
-
-    const { where, orderBy, take, skip } = parseAdminFindNetworksInput(input)
-    const [count, total] = await Promise.all([
-      this.core.data.network.count({ where, orderBy, take, skip }),
-      this.core.data.network.count({ where, orderBy }),
-    ])
-
-    return { count, skip, take, total }
-  }
-
-  async getNetwork(adminId: string, networkId: string) {
+  async findOneNetwork(adminId: string, networkId: string) {
     await this.core.ensureUserAdmin(adminId)
     const found = await this.core.data.network.findUnique({
       where: { id: networkId },

@@ -1,14 +1,14 @@
 import { Select } from '@mantine/core'
 import { DiscordServer } from '@pubkey-link/sdk'
-import { useAdminCollections } from '@pubkey-link/web/collection/data-access'
-import { useAdminFindDiscordServers } from '@pubkey-link/web/discord/data-access'
+import { useAdminFindManyCollection } from '@pubkey-link/web/collection/data-access'
+import { useAdminFindManyDiscordServer } from '@pubkey-link/web/discord/data-access'
 import { useAdminReportDiscordMemberWallets } from '@pubkey-link/web/report/data-access'
 import { UiAdminPage, UiAlert, UiBack, UiDebug, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
 import { useState } from 'react'
 
 export function WebAdminReportIndex() {
-  const { serverOptions, servers } = useAdminFindDiscordServers({ input: {} })
-  const { collectionOptions } = useAdminCollections()
+  const { serverOptions, items } = useAdminFindManyDiscordServer({ input: {} })
+  const { collectionOptions } = useAdminFindManyCollection()
   const [server, setServer] = useState<DiscordServer | undefined>(undefined)
   const [report, setReport] = useState<string | undefined>()
   const [collectionAccount, setCollectionAccount] = useState<string | undefined>()
@@ -22,7 +22,7 @@ export function WebAdminReportIndex() {
           placeholder="Select server"
           value={server?.id}
           onChange={(value) => {
-            const server = servers.find((server) => server.id === value)
+            const server = items.find((server) => server.id === value)
             setServer(server)
           }}
         />

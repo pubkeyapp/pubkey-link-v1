@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common'
 import { Identity as PrismaIdentity } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { AdminCreateIdentityInput } from './dto/admin-create-identity.input'
-import { AdminFindIdentitiesInput } from './dto/admin-find-identities.input'
+import { AdminFindManyIdentityInput } from './dto/admin-find-many-identity-input'
 
 @Injectable()
 export class ApiIdentityAdminService {
   constructor(private readonly core: ApiCoreService) {}
 
-  async adminCreateIdentity(adminId: string, input: AdminCreateIdentityInput): Promise<PrismaIdentity> {
+  async createIdentity(adminId: string, input: AdminCreateIdentityInput): Promise<PrismaIdentity> {
     await this.core.ensureUserAdmin(adminId)
     const found = await this.core.data.identity.findUnique({
       where: { provider_providerId: { providerId: input.providerId, provider: input.provider } },
@@ -29,7 +29,7 @@ export class ApiIdentityAdminService {
     return created
   }
 
-  async adminDeleteIdentity(adminId: string, identityId: string): Promise<boolean> {
+  async deleteIdentity(adminId: string, identityId: string): Promise<boolean> {
     await this.core.ensureUserAdmin(adminId)
     const found = await this.core.data.identity.findUnique({ where: { id: identityId } })
     if (!found) {
@@ -42,7 +42,7 @@ export class ApiIdentityAdminService {
     return true
   }
 
-  async adminFindIdentities(adminId: string, input: AdminFindIdentitiesInput): Promise<PrismaIdentity[]> {
+  async findManyIdentity(adminId: string, input: AdminFindManyIdentityInput): Promise<PrismaIdentity[]> {
     await this.core.ensureUserAdmin(adminId)
     const items = await this.core.data.identity.findMany({
       where: {

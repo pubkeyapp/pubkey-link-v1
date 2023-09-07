@@ -6,7 +6,7 @@ import { useAdminEmail } from '@pubkey-link/web/user/data-access'
 import { AdminUiEmailTable, AuthUiEmailCreateForm, AuthUiEmailUpdateForm } from '@pubkey-link/web/user/ui'
 
 export function WebAdminUserDetailEmailsTab({ userId }: { userId: string }) {
-  const { emails, createEmail, deleteEmail, updateEmail, query } = useAdminEmail(userId)
+  const { emails, createEmail, deleteEmail, updateEmail, query } = useAdminEmail({ userId })
 
   if (query.isLoading) return <UiLoader />
 

@@ -1,5 +1,5 @@
-import { UiBack, UiAdminPage, UiError, UiLoader, UiStack, UiTabRoutes } from '@pubkey-link/web/ui/core'
-import { useAdminUser } from '@pubkey-link/web/user/data-access'
+import { UiAdminPage, UiBack, UiError, UiLoader, UiStack, UiTabRoutes } from '@pubkey-link/web/ui/core'
+import { useAdminFindOneUser } from '@pubkey-link/web/user/data-access'
 import { useParams } from 'react-router-dom'
 import { WebAdminUserDetailEmailsTab } from './web-admin-user-detail-emails.tab'
 import { WebAdminUserDetailIdentitiesTab } from './web-admin-user-detail-identities.tab'
@@ -7,7 +7,7 @@ import { WebAdminUserDetailSettingsTab } from './web-admin-user-detail-settings.
 
 export function WebAdminUserDetailFeature() {
   const { userId } = useParams<{ userId: string }>() as { userId: string }
-  const { query, user } = useAdminUser(userId)
+  const { query, user } = useAdminFindOneUser({ userId })
 
   return (
     <UiAdminPage leftAction={<UiBack />} title={user?.username ?? '...'}>

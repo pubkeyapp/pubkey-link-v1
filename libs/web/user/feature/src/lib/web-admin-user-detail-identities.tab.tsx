@@ -1,18 +1,18 @@
 import { Button, Group } from '@mantine/core'
 import { modals } from '@mantine/modals'
-import { useAdminIdentities } from '@pubkey-link/web/identity/data-access'
+import { useAdminFindManyIdentity } from '@pubkey-link/web/identity/data-access'
 import { AuthUiIdentityCreateForm, IdentityUiAdminTable } from '@pubkey-link/web/identity/ui'
 import { UiAlert, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
 
 export function WebAdminUserDetailIdentitiesTab({ userId }: { userId: string }) {
-  const { identities, createIdentity, deleteIdentity, query } = useAdminIdentities({ ownerId: userId })
+  const { items, createIdentity, deleteIdentity, query } = useAdminFindManyIdentity({ ownerId: userId })
 
   if (query.isLoading) return <UiLoader />
 
   return (
     <UiStack>
-      {identities?.length ? (
-        <IdentityUiAdminTable identities={identities ?? []} deleteIdentity={deleteIdentity} />
+      {items?.length ? (
+        <IdentityUiAdminTable identities={items} deleteIdentity={deleteIdentity} />
       ) : (
         <UiAlert message="No identities found" />
       )}

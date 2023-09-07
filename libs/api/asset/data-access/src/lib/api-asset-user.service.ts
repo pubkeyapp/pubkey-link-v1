@@ -1,38 +1,31 @@
-import { Injectable, Logger } from '@nestjs/common'
-import { Asset as PrismaAsset } from '@prisma/client'
-import { ApiCoreService, Paging } from '@pubkey-link/api/core/data-access'
+import { Injectable } from '@nestjs/common'
+import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { ApiNetworkService } from '@pubkey-link/api/network/data-access'
-import { UserFindAssetsInput } from './dto/user-find-assets.input'
-import { parseUserFindAssetsInput } from './helpers/parse-user-find-assets.input'
+import { UserFindManyAssetInput } from './dto/user-find-many-asset.input'
+import { AssetPaging } from './entity/asset-paging'
+import { getUserAssetWhereInput } from './helpers/get-user-asset-where-input'
 
 @Injectable()
 export class ApiAssetUserService {
-  private readonly logger = new Logger(ApiAssetUserService.name)
-
   constructor(private readonly core: ApiCoreService, private readonly network: ApiNetworkService) {}
 
-  async findAssets(userId: string, input: UserFindAssetsInput): Promise<PrismaAsset[]> {
+  async findManyAsset(userId: string, input: UserFindManyAssetInput): Promise<AssetPaging> {
     await this.core.ensureUserActive(userId)
 
-    const { where, orderBy, take, skip, include } = parseUserFindAssetsInput(userId, input)
-    const items = await this.core.data.asset.findMany({ where, orderBy, take, skip, include })
-
-    return items ?? []
+    return this.core.data.asset
+      .paginate({
+        where: getUserAssetWhereInput(userId, input),
+        orderBy: { name: 'asc' },
+        include: {
+          collection: true,
+          identity: { include: { owner: true } },
+        },
+      })
+      .withPages({ limit: input.limit, page: input.page })
+      .then(([data, meta]) => ({ data, meta }))
   }
 
-  async findAssetsCount(userId: string, input: UserFindAssetsInput): Promise<Paging> {
-    await this.core.ensureUserActive(userId)
-
-    const { where, orderBy, take, skip } = parseUserFindAssetsInput(userId, input)
-    const [count, total] = await Promise.all([
-      this.core.data.asset.count({ where, orderBy, take, skip }),
-      this.core.data.asset.count({ where, orderBy }),
-    ])
-
-    return { count, skip, take, total }
-  }
-
-  async getAsset(userId: string, assetId: string) {
+  async findOneAsset(userId: string, assetId: string) {
     await this.core.ensureUserActive(userId)
     const found = await this.core.data.asset.findUnique({
       where: { id: assetId },

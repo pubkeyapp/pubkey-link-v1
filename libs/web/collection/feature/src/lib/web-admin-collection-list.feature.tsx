@@ -1,14 +1,15 @@
 import { Button, Group, Select } from '@mantine/core'
-import { Collection, NetworkType } from '@pubkey-link/sdk'
-import { useAdminCollections } from '@pubkey-link/web/collection/data-access'
+import { NetworkType } from '@pubkey-link/sdk'
+import { useAdminFindManyCollection } from '@pubkey-link/web/collection/data-access'
 import { AdminUiCollectionTable } from '@pubkey-link/web/collection/ui'
 import { networkTypeOptions } from '@pubkey-link/web/network/ui'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
-import { UiBack, UiAdminPage, UiAlert, UiLoader, UiPagination, UiSearchField } from '@pubkey-link/web/ui/core'
+import { UiAdminPage, UiAlert, UiBack, UiLoader, UiPagination, UiSearchField } from '@pubkey-link/web/ui/core'
 import { Link } from 'react-router-dom'
 
 export function WebAdminCollectionListFeature() {
-  const { deleteCollection, pagination, query, network, setNetwork, setSearch, syncCollections } = useAdminCollections()
+  const { deleteCollection, pagination, query, items, network, setNetwork, setSearch, syncCollections } =
+    useAdminFindManyCollection()
   const sdk = useWebSdk()
   return (
     <UiAdminPage
@@ -28,7 +29,7 @@ export function WebAdminCollectionListFeature() {
         <Select
           value={network?.toString() ?? ''}
           onChange={(network) => {
-            pagination.setSkip(0)
+            pagination.setPage(1)
             setNetwork(network === '' ? undefined : (network as NetworkType))
           }}
           data={[{ value: '', label: 'Filter by network' }, ...networkTypeOptions()]}
@@ -37,7 +38,7 @@ export function WebAdminCollectionListFeature() {
 
       {query.isLoading ? (
         <UiLoader />
-      ) : query?.data?.items?.length ? (
+      ) : items?.length ? (
         <AdminUiCollectionTable
           syncCollection={(collection) => {
             return sdk.adminSyncCollection({ collectionId: collection.id }).then(() => {
@@ -48,7 +49,7 @@ export function WebAdminCollectionListFeature() {
             if (!window.confirm('Are you sure?')) return
             return deleteCollection(collection.id)
           }}
-          collections={query?.data?.items as Collection[]}
+          collections={items}
         />
       ) : (
         <UiAlert message="Collection not found" />

@@ -21,8 +21,8 @@ query adminGetBotInviteUrl {
   url: adminGetBotInviteUrl
 }
 
-query adminGetDiscordServer($serverId: String!) {
-  item: adminGetDiscordServer(serverId: $serverId) {
+query adminFindOneDiscordServer($serverId: String!) {
+  item: adminFindOneDiscordServer(serverId: $serverId) {
     ...DiscordServerDetails
     roles {
       ...DiscordRoleDetails
@@ -30,18 +30,20 @@ query adminGetDiscordServer($serverId: String!) {
   }
 }
 
-query adminGetDiscordServerChannels($serverId: String!) {
-  items: adminGetDiscordServerChannels(serverId: $serverId) {
+query adminFindManyDiscordServerChannel($serverId: String!) {
+  items: adminFindManyDiscordServerChannel(serverId: $serverId) {
     ...DiscordServerChannelDetails
   }
 }
 
-query adminFindDiscordServers($input: AdminFindDiscordServersInput!) {
-  count: adminFindDiscordServersCount(input: $input) {
-    ...PagingDetails
-  }
-  items: adminFindDiscordServers(input: $input) {
-    ...DiscordServerDetails
+query adminFindManyDiscordServer($input: AdminFindManyDiscordServerInput!) {
+  paging: adminFindManyDiscordServer(input: $input) {
+    data {
+      ...DiscordServerDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
   }
 }
 
@@ -55,8 +57,8 @@ mutation adminUpdateDiscordServer($serverId: String!, $input: AdminUpdateDiscord
   }
 }
 
-query userGetDiscordServers {
-  items: userGetDiscordServers {
+query userFindManyDiscordServer {
+  items: userFindManyDiscordServer {
     ...DiscordServerDetails
     roles {
       ...DiscordRoleDetails

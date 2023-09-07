@@ -51,7 +51,7 @@ export class ApiIdentityUserResolver {
   }
 
   @Query(() => [Identity], { nullable: true })
-  userFindIdentities(@CtxUser() user: User) {
-    return this.service.user.findIdentities(user.id)
+  userFindManyIdentity(@CtxUser() user: User) {
+    return this.service.user.findManyIdentity(user.id)
   }
 }

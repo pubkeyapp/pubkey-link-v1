@@ -1,38 +1,29 @@
-import { ApiCoreService, Paging } from '@pubkey-link/api/core/data-access'
 import { Injectable, Logger } from '@nestjs/common'
-import { User as PrismaUser } from '@prisma/client'
+import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 
-import { UserFindUsersInput } from './dto/user-find-users.input'
+import { UserFindManyUserInput } from './dto/user-find-many-user-input'
 import { UserUpdateUserInput } from './dto/user-update-user.input'
-import { parseUserFindUsersInput } from './helpers/parse-user-find-users.input'
+import { UserPaging } from './entity/user-paging.entity'
+import { getUserUserWhereInput } from './helpers/get-user-user-where-input'
 
 @Injectable()
 export class ApiUserUserService {
   private readonly logger = new Logger(ApiUserUserService.name)
   constructor(private readonly core: ApiCoreService) {}
 
-  async userFindUsers(userId: string, input: UserFindUsersInput): Promise<PrismaUser[]> {
+  async findManyUser(userId: string, input: UserFindManyUserInput): Promise<UserPaging> {
     await this.core.ensureUserActive(userId)
 
-    const { where, orderBy, take, skip } = parseUserFindUsersInput(input)
-    const items = await this.core.data.user.findMany({ where, orderBy, take, skip })
-
-    return items ?? []
+    return this.core.data.user
+      .paginate({
+        orderBy: { updatedAt: 'desc' },
+        where: getUserUserWhereInput(input),
+      })
+      .withPages({ limit: input.limit, page: input.page })
+      .then(([data, meta]) => ({ data, meta }))
   }
 
-  async userFindUsersCount(userId: string, input: UserFindUsersInput): Promise<Paging> {
-    await this.core.ensureUserActive(userId)
-
-    const { where, orderBy, take, skip } = parseUserFindUsersInput(input)
-    const [count, total] = await Promise.all([
-      this.core.data.user.count({ where, orderBy, take, skip }),
-      this.core.data.user.count({ where, orderBy }),
-    ])
-
-    return { count, skip, take, total }
-  }
-
-  async userUpdateUser(userId: string, input: UserUpdateUserInput) {
+  async updateUser(userId: string, input: UserUpdateUserInput) {
     await this.core.ensureUserActive(userId)
     const user = await this.core.data.user.update({
       where: { id: userId },
@@ -42,7 +33,7 @@ export class ApiUserUserService {
     return user
   }
 
-  async userGetUserByUsername(userId: string, username: string) {
+  async findOneUser(userId: string, username: string) {
     await this.core.ensureUserActive(userId)
     const found = await this.core.data.user.findUnique({
       where: { username },

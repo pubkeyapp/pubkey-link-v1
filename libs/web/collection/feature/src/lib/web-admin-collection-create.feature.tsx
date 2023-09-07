@@ -1,5 +1,5 @@
 import { AdminCreateCollectionInput } from '@pubkey-link/sdk'
-import { useAdminCollections } from '@pubkey-link/web/collection/data-access'
+import { useAdminFindManyCollection } from '@pubkey-link/web/collection/data-access'
 import { AdminUiCollectionCreateForm } from '@pubkey-link/web/collection/ui'
 import { UiBack, UiAdminPage, UiCard } from '@pubkey-link/web/ui/core'
 import { showNotificationError } from '@pubkey-link/web/ui/notifications'
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 export function WebAdminCollectionCreateFeature() {
   const navigate = useNavigate()
-  const { createCollection } = useAdminCollections()
+  const { createCollection } = useAdminFindManyCollection()
 
   const submit = async (input: AdminCreateCollectionInput) =>
     createCollection(input)

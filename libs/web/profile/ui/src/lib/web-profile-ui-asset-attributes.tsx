@@ -1,6 +1,6 @@
 import { Alert, Group, Text } from '@mantine/core'
 import { AssetAttribute, NetworkType } from '@pubkey-link/sdk'
-import { useUserAssets } from '@pubkey-link/web/asset/data-access'
+import { useUserFindManyAsset } from '@pubkey-link/web/asset/data-access'
 import { AssetGrid } from '@pubkey-link/web/asset/ui'
 import { UiCard, UiLoader, UiStack, UiStatus, UiWarn } from '@pubkey-link/web/ui/core'
 
@@ -15,7 +15,7 @@ export function WebProfileUiAssetAttributes({
   network: NetworkType
   collectionAccount: string
 }) {
-  const { query, collections } = useUserAssets({ attributes, collectionAccount, network })
+  const { query, items, collections } = useUserFindManyAsset({ attributes, collectionAccount, network })
   const limit = 36
 
   return (
@@ -24,13 +24,13 @@ export function WebProfileUiAssetAttributes({
         <Group position={'apart'}>
           <Text size="xl">{name}</Text>
           <UiStatus>
-            {query.data?.items?.length} assets in {collections.length} collections
+            {items?.length} assets in {collections.length} collections
           </UiStatus>
         </Group>
 
         {query.isLoading ? (
           <UiLoader />
-        ) : query.data?.items?.length ? (
+        ) : items?.length ? (
           <UiStack>
             {collections.map(({ collection, assets }) => (
               <UiStack key={collection.id}>

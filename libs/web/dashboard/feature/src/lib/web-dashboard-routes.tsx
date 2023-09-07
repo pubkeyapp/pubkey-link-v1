@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core'
 import { useWebAuth } from '@pubkey-link/web/auth/data-access'
 import { DiscordUiServerSummary } from '@pubkey-link/web/discord/ui'
-import { useUserIdentities } from '@pubkey-link/web/identity/data-access'
+import { useUserFindManyIdentity } from '@pubkey-link/web/identity/data-access'
 import {
   IdentityUiConnect,
   IdentityUiDiscordLinkButton,
@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 
 export default function WebDashboardRoutes() {
   const { user } = useWebAuth()
-  const { expiredDiscord, hasDiscord, hasSolana, grouped } = useUserIdentities()
+  const { expiredDiscord, hasDiscord, hasSolana, grouped } = useUserFindManyIdentity()
 
   const connectIdentities = !hasDiscord || !hasSolana
 

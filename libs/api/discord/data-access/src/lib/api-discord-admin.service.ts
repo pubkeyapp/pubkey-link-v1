@@ -56,7 +56,7 @@ export class ApiDiscordAdminService {
     }
   }
 
-  async getDiscordServerChannels(adminId: string, serverId: string) {
+  async findManyDiscordServerChannel(adminId: string, serverId: string) {
     await this.core.ensureUserAdmin(adminId)
 
     const channels = this.bot.client.guilds.cache.get(serverId)?.channels.cache.map((c) => ({

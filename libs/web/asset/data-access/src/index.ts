@@ -1,2 +1,2 @@
-export * from './lib/use-admin-assets'
-export * from './lib/use-user-assets'
+export * from './lib/use-admin-find-many-asset'
+export * from './lib/use-user-find-many-asset'

@@ -1,10 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { Collection as PrismaCollection } from '@prisma/client'
-import { ApiCoreService, Paging } from '@pubkey-link/api/core/data-access'
+import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { ApiNetworkService } from '@pubkey-link/api/network/data-access'
-import { UserFindCollectionsInput } from './dto/user-find-collections.input'
-
-import { parseUserFindCollectionsInput } from './helpers/parse-user-find-collections.input'
+import { UserFindManyCollectionInput } from './dto/user-find-many-collection-input'
+import { CollectionPaging } from './entity/collection-paging'
+import { getUserCollectionWhereInput } from './helpers/get-user-collection-where-input'
 
 @Injectable()
 export class ApiCollectionUserService {
@@ -12,28 +11,20 @@ export class ApiCollectionUserService {
 
   constructor(private readonly core: ApiCoreService, private readonly network: ApiNetworkService) {}
 
-  async findCollections(userId: string, input: UserFindCollectionsInput): Promise<PrismaCollection[]> {
+  async findManyCollection(userId: string, input: UserFindManyCollectionInput): Promise<CollectionPaging> {
     await this.core.ensureUserActive(userId)
 
-    const { where, orderBy, take, skip, include } = parseUserFindCollectionsInput(input)
-    const items = await this.core.data.collection.findMany({ where, orderBy, take, skip, include })
-
-    return items ?? []
+    return this.core.data.collection
+      .paginate({
+        include: { combos: { include: { attributes: true } } },
+        orderBy: { updatedAt: 'desc' },
+        where: getUserCollectionWhereInput(input),
+      })
+      .withPages({ limit: input.limit, page: input.page })
+      .then(([data, meta]) => ({ data, meta }))
   }
 
-  async findCollectionsCount(userId: string, input: UserFindCollectionsInput): Promise<Paging> {
-    await this.core.ensureUserActive(userId)
-
-    const { where, orderBy, take, skip } = parseUserFindCollectionsInput(input)
-    const [count, total] = await Promise.all([
-      this.core.data.collection.count({ where, orderBy, take, skip }),
-      this.core.data.collection.count({ where, orderBy }),
-    ])
-
-    return { count, skip, take, total }
-  }
-
-  async getCollection(userId: string, collectionId: string) {
+  async findOneCollection(userId: string, collectionId: string) {
     await this.core.ensureUserActive(userId)
     const found = await this.core.data.collection.findUnique({
       where: { id: collectionId },

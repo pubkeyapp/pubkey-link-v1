@@ -5,14 +5,16 @@ import { AdminUiCollectionComboCreateModal, AdminUiCollectionComboTable } from '
 import { UiAlert, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
 
 export function WebAdminCollectionDetailCombosTab({ collection }: { collection: Collection }) {
-  const { query, deleteCollectionCombo, removeAttribute } = useAdminCollectionCombos({ collectionId: collection.id })
+  const { query, items, deleteCollectionCombo, removeAttribute } = useAdminCollectionCombos({
+    collectionId: collection.id,
+  })
   return query.isLoading ? (
     <UiLoader />
-  ) : query.data?.items?.length ? (
+  ) : items?.length ? (
     <UiStack>
       <AdminUiCollectionComboTable
         refresh={() => query.refetch()}
-        items={query?.data?.items ?? []}
+        items={items ?? []}
         deleteCollectionCombo={(item) => deleteCollectionCombo(item.id).then((res) => query.refetch())}
         removeAssetAttribute={(collectionComboId, assetAttributeId) =>
           removeAttribute(collectionComboId, assetAttributeId).then((res) => query.refetch())

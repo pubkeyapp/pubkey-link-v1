@@ -1,4 +1,5 @@
 import { Field, HideField, ObjectType } from '@nestjs/graphql'
+import { Prisma } from '@prisma/client'
 import { NetworkType } from '@pubkey-link/api/network/data-access'
 import { GraphQLJSON } from 'graphql-scalars'
 import { AssetAttribute } from './asset-attribute.entity'
@@ -14,9 +15,9 @@ export class Asset {
   @Field({ nullable: true })
   account!: string
   @Field(() => [AssetAttribute], { nullable: true })
-  attributes?: AssetAttribute[]
+  attributes?: Prisma.JsonValue | null
   @Field(() => GraphQLJSON, { nullable: true })
-  attributeMap?: unknown
+  attributeMap?: unknown | null
   @Field()
   name!: string
   @Field(() => NetworkType, { nullable: true })

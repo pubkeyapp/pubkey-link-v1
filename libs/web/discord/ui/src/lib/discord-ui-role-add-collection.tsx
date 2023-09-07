@@ -1,6 +1,6 @@
 import { Button, Group, Select } from '@mantine/core'
 import { DiscordRoleCondition } from '@pubkey-link/sdk'
-import { useUserCollections } from '@pubkey-link/web/collection/data-access'
+import { useUserFindManyCollection } from '@pubkey-link/web/collection/data-access'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
 import { showNotificationError, showNotificationSuccess } from '@pubkey-link/web/ui/notifications'
 import { useMemo, useState } from 'react'
@@ -14,8 +14,8 @@ export function DiscordUiRoleAddCollection({
 }) {
   const sdk = useWebSdk()
   const [collectionId, setCollectionId] = useState<string | null>(null)
-  const { query } = useUserCollections()
-  const items = useMemo(() => query.data?.items ?? [], [query.data?.items])
+  const { query } = useUserFindManyCollection()
+  const items = query.data?.paging.data ?? []
 
   const options = useMemo(
     () =>

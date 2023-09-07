@@ -3,12 +3,12 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { ApiAuthGraphqlGuard, CtxUser } from '@pubkey-link/api/auth/data-access'
 import {
   AdminCreateCollectionInput,
-  AdminFindCollectionsInput,
+  AdminFindManyCollectionInput,
   AdminUpdateCollectionInput,
   ApiCollectionService,
   Collection,
+  CollectionPaging,
 } from '@pubkey-link/api/collection/data-access'
-import { Paging } from '@pubkey-link/api/core/data-access'
 import { User } from '@pubkey-link/api/user/data-access'
 
 @Resolver()
@@ -25,19 +25,14 @@ export class ApiCollectionAdminResolver {
     return this.service.admin.deleteCollection(user.id, collectionId)
   }
 
-  @Query(() => [Collection], { nullable: true })
-  adminFindCollections(@CtxUser() user: User, @Args('input') input: AdminFindCollectionsInput) {
-    return this.service.admin.findCollections(user.id, input)
-  }
-
-  @Query(() => Paging, { nullable: true })
-  adminFindCollectionsCount(@CtxUser() user: Collection, @Args('input') input: AdminFindCollectionsInput) {
-    return this.service.admin.findCollectionsCount(user.id, input)
+  @Query(() => CollectionPaging)
+  adminFindManyCollection(@CtxUser() user: User, @Args('input') input: AdminFindManyCollectionInput) {
+    return this.service.admin.findManyCollection(user.id, input)
   }
 
   @Query(() => Collection, { nullable: true })
-  adminGetCollection(@CtxUser() user: User, @Args('collectionId') collectionId: string) {
-    return this.service.admin.getCollection(user.id, collectionId)
+  adminFindOneCollection(@CtxUser() user: User, @Args('collectionId') collectionId: string) {
+    return this.service.admin.findOneCollection(user.id, collectionId)
   }
 
   @Mutation(() => Boolean, { nullable: true })

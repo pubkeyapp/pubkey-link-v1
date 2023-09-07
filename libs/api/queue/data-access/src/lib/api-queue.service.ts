@@ -29,7 +29,7 @@ export class ApiQueueService {
     this.queues.set(type, queue)
   }
 
-  private async getClientQueueInfo(type: QueueType, queue?: Queue) {
+  private async getClientQueueInfo(type: QueueType, queue: Queue) {
     const [isPaused, count] = await Promise.all([queue.isPaused(), queue.getJobCounts()])
     return {
       count: count as unknown as QueueCount,

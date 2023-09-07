@@ -7,7 +7,6 @@ import { DataTable } from 'mantine-datatable'
 import { Link } from 'react-router-dom'
 import { WebUserUiRoleBadge } from './web-user-ui-role-badge'
 import { WebUserUiStatusBadge } from './web-user-ui-status-badge'
-import { WebUserUiVerified } from './web-user-ui.verified'
 
 interface AdminUserTableProps {
   users: User[]
@@ -34,7 +33,6 @@ export function AdminUiUserTable({ deleteUser, users = [] }: AdminUserTableProps
                       <Anchor component={Link} to={link} size="sm" weight={500}>
                         {item.username}
                       </Anchor>
-                      <WebUserUiVerified user={item} />
                     </UiGroup>
                     {item.name ? (
                       <Text component={Link} to={link} size="sm" color="dimmed">

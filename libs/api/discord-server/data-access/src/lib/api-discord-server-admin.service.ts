@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { DiscordServer as PrismaDiscordServer } from '@prisma/client'
-
-import { ApiCoreService, Paging } from '@pubkey-link/api/core/data-access'
-import { AdminFindDiscordServersInput } from './dto/admin-find-discord-servers.input'
+import { ApiCoreService } from '@pubkey-link/api/core/data-access'
+import { AdminFindManyDiscordServerInput } from './dto/admin-find-many-discord-server-input'
 import { AdminUpdateDiscordServerInput } from './dto/admin-update-discord-server.input'
-import { parseAdminFindDiscordServersInput } from './helpers/parse-admin-find-discord-servers.input'
+import { DiscordServerPaging } from './entity/discord-server-paging'
+import { getAdminDiscordServerInput } from './helpers/get-admin-discord-server-input'
 
 @Injectable()
 export class ApiDiscordServerAdminService {
@@ -12,28 +12,20 @@ export class ApiDiscordServerAdminService {
 
   constructor(private readonly core: ApiCoreService) {}
 
-  async findDiscordServers(adminId: string, input: AdminFindDiscordServersInput): Promise<PrismaDiscordServer[]> {
+  async findManyDiscordServer(adminId: string, input: AdminFindManyDiscordServerInput): Promise<DiscordServerPaging> {
     await this.core.ensureUserAdmin(adminId)
 
-    const { where, orderBy, take, skip, include } = parseAdminFindDiscordServersInput(input)
-    const items = await this.core.data.discordServer.findMany({ where, orderBy, take, skip, include })
-
-    return items ?? []
+    return this.core.data.discordServer
+      .paginate({
+        include: { roles: true },
+        orderBy: { name: 'asc' },
+        where: getAdminDiscordServerInput(input),
+      })
+      .withPages({ limit: input.limit, page: input.page })
+      .then(([data, meta]) => ({ data, meta }))
   }
 
-  async findDiscordServersCount(adminId: string, input: AdminFindDiscordServersInput): Promise<Paging> {
-    await this.core.ensureUserAdmin(adminId)
-
-    const { where, orderBy, take, skip } = parseAdminFindDiscordServersInput(input)
-    const [count, total] = await Promise.all([
-      this.core.data.discordServer.count({ where, orderBy, take, skip }),
-      this.core.data.discordServer.count({ where, orderBy }),
-    ])
-
-    return { count, skip, take, total }
-  }
-
-  async getDiscordServer(userId: string, serverId: string) {
+  async findOneDiscordServer(userId: string, serverId: string) {
     await this.core.ensureUserAdmin(userId)
 
     return this.core.data.discordServer.findUnique({

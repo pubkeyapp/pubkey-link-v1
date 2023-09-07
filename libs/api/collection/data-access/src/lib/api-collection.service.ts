@@ -32,7 +32,7 @@ export class ApiCollectionService {
   async syncCollection(adminId: string, collectionId: string) {
     await this.core.ensureUserAdmin(adminId)
     throw new Error('Syncing collections is currently disabled')
-    const collection = await this.admin.getCollection(adminId, collectionId)
+    const collection = await this.admin.findOneCollection(adminId, collectionId)
     if (!collection) {
       throw new Error(`Collection ${collectionId} not found`)
     }

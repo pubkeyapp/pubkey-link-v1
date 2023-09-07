@@ -1,6 +1,6 @@
 import { Alert, Button } from '@mantine/core'
 import { useWebAuth } from '@pubkey-link/web/auth/data-access'
-import { useUserProfile } from '@pubkey-link/web/profile/data-access'
+import { useUserFindOneUser } from '@pubkey-link/web/profile/data-access'
 import { WebProfileUiUser } from '@pubkey-link/web/profile/ui'
 import { UiContainer, UiLoader, UiStack, UiWarn } from '@pubkey-link/web/ui/core'
 import { IconMoodSmile } from '@tabler/icons-react'
@@ -9,7 +9,7 @@ import { Link, useParams } from 'react-router-dom'
 export function WebProfileDetailFeature() {
   const { user: authUser } = useWebAuth()
   const { username } = useParams<{ username: string }>() as { username: string }
-  const { user, query } = useUserProfile(username)
+  const { user, query } = useUserFindOneUser(username)
 
   if (query.isLoading) {
     return <UiLoader />

@@ -11,17 +11,19 @@ fragment CollectionDetails on Collection {
   }
 }
 
-query adminFindCollections($input: AdminFindCollectionsInput!) {
-  count: adminFindCollectionsCount(input: $input) {
-    ...PagingDetails
-  }
-  items: adminFindCollections(input: $input) {
-    ...CollectionDetails
+query adminFindManyCollection($input: AdminFindManyCollectionInput!) {
+  paging: adminFindManyCollection(input: $input) {
+    data {
+      ...CollectionDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
   }
 }
 
-query adminGetCollection($collectionId: String!) {
-  item: adminGetCollection(collectionId: $collectionId) {
+query adminFindOneCollection($collectionId: String!) {
+  item: adminFindOneCollection(collectionId: $collectionId) {
     ...CollectionDetails
     attributes {
       ...AssetAttributeDetails
@@ -52,17 +54,19 @@ mutation adminSyncCollections {
   synced: adminSyncCollections
 }
 
-query userFindCollections($input: UserFindCollectionsInput!) {
-  count: userFindCollectionsCount(input: $input) {
-    ...PagingDetails
-  }
-  items: userFindCollections(input: $input) {
-    ...CollectionDetails
+query userFindManyCollection($input: UserFindManyCollectionInput!) {
+  paging: userFindManyCollection(input: $input) {
+    data {
+      ...CollectionDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
   }
 }
 
-query userGetCollection($collectionId: String!) {
-  item: userGetCollection(collectionId: $collectionId) {
+query userFindOneCollection($collectionId: String!) {
+  item: userFindOneCollection(collectionId: $collectionId) {
     ...CollectionDetails
   }
 }

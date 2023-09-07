@@ -17,16 +17,12 @@ export function userStatusOptions(): { label: string; value: UserStatus }[] {
 
 export function AdminUiUpdateUserForm({ submit, user }: AdminUiUpdateUserFormProps) {
   const model = {
-    allowDm: user.allowDm ?? false,
     avatarUrl: user.avatarUrl ?? user.avatarUrl ?? '',
     developer: user.developer ?? false,
-    language: user.language ?? '',
-    location: user.location ?? '',
     name: user.name ?? '',
     role: user.role ?? UserRole.User,
     status: user.status ?? UserStatus.Created,
     username: user.username ?? '',
-    verified: user.verified ?? false,
   }
 
   const fields: UiFormField<AdminUpdateUserInput>[] = [

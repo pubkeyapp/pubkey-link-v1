@@ -11,12 +11,12 @@ export interface AuthUiDiscordServerUpdateFormProps {
   submit: (input: AdminUpdateDiscordServerInput) => Promise<boolean>
 }
 
-function useAdminDiscordServerChannels(serverId: string) {
+function useAdminFindManyDiscordServerChannel({ serverId }: { serverId: string }) {
   const sdk = useWebSdk()
 
   const query = useQuery({
-    queryKey: ['admin', 'discord-server', 'channels', serverId],
-    queryFn: () => sdk.adminGetDiscordServerChannels({ serverId }).then((res) => res.data),
+    queryKey: ['admin', 'find-many-discord-server-channel', serverId],
+    queryFn: () => sdk.adminFindManyDiscordServerChannel({ serverId }).then((res) => res.data),
   })
 
   const options = useMemo(() => {
@@ -31,7 +31,7 @@ function useAdminDiscordServerChannels(serverId: string) {
 }
 
 export function AuthUiDiscordServerUpdateForm({ children, item, submit }: AuthUiDiscordServerUpdateFormProps) {
-  const { query, options } = useAdminDiscordServerChannels(item.id)
+  const { query, options } = useAdminFindManyDiscordServerChannel({ serverId: item.id })
   const model: AdminUpdateDiscordServerInput = {
     botChannel: item.botChannel,
     enableSync: item.enableSync,

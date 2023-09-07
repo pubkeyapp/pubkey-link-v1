@@ -32,16 +32,13 @@ export class ApiIdentityUserService {
     return true
   }
 
-  async findIdentities(userId: string): Promise<PrismaIdentity[]> {
+  async findManyIdentity(userId: string): Promise<PrismaIdentity[]> {
     await this.core.ensureUserActive(userId)
     const items = await this.core.data.identity.findMany({
       where: { ownerId: userId },
       orderBy: [{ provider: 'asc' }, { providerId: 'asc' }],
     })
-    if (!items) {
-      return []
-    }
-    return items
+    return items ?? []
   }
 
   async requestIdentityChallenge(

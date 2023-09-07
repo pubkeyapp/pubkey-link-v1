@@ -1,12 +1,12 @@
 import { Button, Group, Select } from '@mantine/core'
 import { User, UserRole, UserStatus } from '@pubkey-link/sdk'
 import { UiBack, UiAdminPage, UiAlert, UiLoader, UiPagination, UiSearchField } from '@pubkey-link/web/ui/core'
-import { useAdminUsers } from '@pubkey-link/web/user/data-access'
+import { useAdminFindManyUser } from '@pubkey-link/web/user/data-access'
 import { AdminUiUserTable, userRoleOptions, userStatusOptions } from '@pubkey-link/web/user/ui'
 import { Link } from 'react-router-dom'
 
 export function WebAdminUserListFeature() {
-  const { deleteUser, pagination, query, role, setRole, setSearch, setStatus, status } = useAdminUsers()
+  const { deleteUser, pagination, query, items, role, setRole, setSearch, setStatus, status } = useAdminFindManyUser()
 
   return (
     <UiAdminPage
@@ -23,7 +23,7 @@ export function WebAdminUserListFeature() {
         <Select
           value={role?.toString() ?? ''}
           onChange={(role) => {
-            pagination.setSkip(0)
+            pagination.setPage(1)
             setRole(role === '' ? undefined : (role as UserRole))
           }}
           data={[{ value: '', label: 'Filter by role' }, ...userRoleOptions()]}
@@ -31,7 +31,7 @@ export function WebAdminUserListFeature() {
         <Select
           value={status?.toString() ?? ''}
           onChange={(status) => {
-            pagination.setSkip(0)
+            pagination.setPage(1)
             setStatus(status === '' ? undefined : (status as UserStatus))
           }}
           data={[{ value: '', label: 'Filter by status' }, ...userStatusOptions()]}
@@ -40,13 +40,13 @@ export function WebAdminUserListFeature() {
 
       {query.isLoading ? (
         <UiLoader />
-      ) : query?.data?.items?.length ? (
+      ) : items?.length ? (
         <AdminUiUserTable
           deleteUser={(user) => {
             if (!window.confirm('Are you sure?')) return
             return deleteUser(user.id)
           }}
-          users={query?.data?.items as User[]}
+          users={items ?? []}
         />
       ) : (
         <UiAlert message="User not found" />

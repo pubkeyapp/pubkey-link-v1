@@ -25,23 +25,25 @@ fragment AssetAttributeDetails on AssetAttribute {
   count
 }
 
-query adminFindAssets($input: AdminFindAssetsInput!) {
-  count: adminFindAssetsCount(input: $input) {
-    ...PagingDetails
-  }
-  items: adminFindAssets(input: $input) {
-    ...AssetDetails
-    identity {
-      ...IdentityDetails
-      owner {
-        ...UserDetails
+query adminFindManyAsset($input: AdminFindManyAssetInput!) {
+  paging: adminFindManyAsset(input: $input) {
+    data {
+      ...AssetDetails
+      identity {
+        ...IdentityDetails
+        owner {
+          ...UserDetails
+        }
       }
+    }
+    meta {
+      ...PagingMetaDetails
     }
   }
 }
 
-query adminGetAsset($assetId: String!) {
-  item: adminGetAsset(assetId: $assetId) {
+query adminFindOneAsset($assetId: String!) {
+  item: adminFindOneAsset(assetId: $assetId) {
     ...AssetDetails
   }
 }
@@ -50,26 +52,28 @@ mutation adminDeleteAsset($assetId: String!) {
   deleted: adminDeleteAsset(assetId: $assetId)
 }
 
-query userFindAssets($input: UserFindAssetsInput!) {
-  count: userFindAssetsCount(input: $input) {
-    ...PagingDetails
-  }
-  items: userFindAssets(input: $input) {
-    ...AssetDetails
-    collection {
-      ...CollectionDetails
-    }
-    identity {
-      ...IdentityDetails
-      owner {
-        ...UserDetails
+query userFindManyAsset($input: UserFindManyAssetInput!) {
+  paging: userFindManyAsset(input: $input) {
+    data {
+      ...AssetDetails
+      collection {
+        ...CollectionDetails
       }
+      identity {
+        ...IdentityDetails
+        owner {
+          ...UserDetails
+        }
+      }
+    }
+    meta {
+      ...PagingMetaDetails
     }
   }
 }
 
-query userGetAsset($assetId: String!) {
-  item: userGetAsset(assetId: $assetId) {
+query userFindOneAsset($assetId: String!) {
+  item: userFindOneAsset(assetId: $assetId) {
     ...AssetDetails
     collection {
       ...CollectionDetails

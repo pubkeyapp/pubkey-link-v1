@@ -11,8 +11,8 @@ export class ApiDiscordAdminResolver {
   constructor(private readonly service: ApiDiscordService) {}
 
   @Query(() => [DiscordServerChannel], { nullable: true })
-  adminGetDiscordServerChannels(@CtxUser() user: User, @Args('serverId') serverId: string) {
-    return this.service.admin.getDiscordServerChannels(user.id, serverId)
+  adminFindManyDiscordServerChannel(@CtxUser() user: User, @Args('serverId') serverId: string) {
+    return this.service.admin.findManyDiscordServerChannel(user.id, serverId)
   }
 
   @Query(() => String, { nullable: true })

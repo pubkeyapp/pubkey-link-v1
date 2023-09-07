@@ -10,17 +10,19 @@ fragment CollectionComboDetails on CollectionCombo {
   }
 }
 
-query adminFindCollectionCombos($input: AdminFindCollectionCombosInput!) {
-  count: adminFindCollectionCombosCount(input: $input) {
-    ...PagingDetails
-  }
-  items: adminFindCollectionCombos(input: $input) {
-    ...CollectionComboDetails
+query adminFindManyCollectionCombo($input: AdminFindManyCollectionComboInput!) {
+  paging: adminFindManyCollectionCombo(input: $input) {
+    data {
+      ...CollectionComboDetails
+    }
+    meta {
+      ...PagingMetaDetails
+    }
   }
 }
 
-query adminGetCollectionCombo($collectionComboId: String!) {
-  item: adminGetCollectionCombo(collectionComboId: $collectionComboId) {
+query adminFindOneCollectionCombo($collectionComboId: String!) {
+  item: adminFindOneCollectionCombo(collectionComboId: $collectionComboId) {
     ...CollectionComboDetails
   }
 }

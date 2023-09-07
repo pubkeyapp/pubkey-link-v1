@@ -1,6 +1,6 @@
 import {
   AdminCreateCollectionComboInput,
-  AdminFindCollectionCombosInput,
+  AdminFindManyCollectionComboInput,
   AssetAttributeInput,
   NetworkType,
 } from '@pubkey-link/sdk'
@@ -15,17 +15,31 @@ export function useAdminCollectionCombos(props: { collectionId: string }) {
   const sdk = useWebSdk()
   const [network, setNetwork] = useState<NetworkType | undefined>(undefined)
   const [collectionId] = useState<string>(props.collectionId)
-  const [take, setTake] = useState(10)
-  const [skip, setSkip] = useState(0)
+  const [limit, setLimit] = useState(10)
+  const [page, setPage] = useState(1)
   const [search, setSearch] = useState<string>('')
 
-  const input: AdminFindCollectionCombosInput = { network, skip, take, search, collectionId }
-  const query = useQuery(['admin', 'collection-combos', 'find', input], () =>
-    sdk.adminFindCollectionCombos({ input }).then((res) => res.data),
-  )
-  const total = query.data?.count?.total ?? 0
+  const input: AdminFindManyCollectionComboInput = { network, page, limit, search, collectionId }
+  const query = useQuery({
+    queryKey: ['admin', 'collection-combos', 'find', input],
+    queryFn: () => sdk.adminFindManyCollectionCombo({ input }).then((res) => res.data),
+  })
+  const total = query.data?.paging.meta.totalCount ?? 0
+  const items = query.data?.paging.data ?? []
 
   return {
+    items,
+    query,
+    network,
+    setNetwork,
+    setSearch,
+    pagination: useUiPagination({
+      page,
+      setPage,
+      limit,
+      setLimit,
+      total,
+    }),
     createCollectionCombo: (input: AdminCreateCollectionComboInput) =>
       sdk
         .adminCreateCollectionCombo({
@@ -62,17 +76,6 @@ export function useAdminCollectionCombos(props: { collectionId: string }) {
         showNotificationSuccess('Attribute removed')
         return query.refetch()
       }),
-    query,
-    network,
-    setNetwork,
-    setSearch,
-    pagination: useUiPagination({
-      skip,
-      setSkip,
-      take,
-      setTake,
-      total,
-    }),
   }
 }
 
