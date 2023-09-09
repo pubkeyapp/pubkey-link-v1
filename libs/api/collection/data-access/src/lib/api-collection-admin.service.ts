@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Collection as PrismaCollection } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { ApiNetworkService } from '@pubkey-link/api/network/data-access'
+import { fetchStakedTokens } from '@pubkey-link/api/network/util'
 
 import { AdminCreateCollectionInput } from './dto/admin-create-collection.input'
 import { AdminFindManyCollectionInput } from './dto/admin-find-many-collection-input'
@@ -84,6 +85,13 @@ export class ApiCollectionAdminService {
     if (!found) {
       throw new Error(`Collection ${collectionId} not found`)
     }
+    if (input.vaultId) {
+      const res = await fetchStakedTokens(input.vaultId)
+      if (!res.length) {
+        throw new Error(`Vault ${input.vaultId} has no assets`)
+      }
+    }
+
     const updated = await this.core.data.collection.update({
       where: { id: collectionId },
       data: { ...input },
