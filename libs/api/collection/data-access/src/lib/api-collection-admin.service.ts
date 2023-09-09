@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Collection as PrismaCollection } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
-import { ApiNetworkService } from '@pubkey-link/api/network/data-access'
 import { fetchStakedTokens } from '@pubkey-link/api/network/util'
+import { ApiCollectionSyncService } from './api-collection-sync.service'
 
 import { AdminCreateCollectionInput } from './dto/admin-create-collection.input'
 import { AdminFindManyCollectionInput } from './dto/admin-find-many-collection-input'
@@ -13,7 +13,7 @@ import { getAdminCollectionWhereInput } from './helpers/get-admin-collection-whe
 @Injectable()
 export class ApiCollectionAdminService {
   private readonly logger = new Logger(ApiCollectionAdminService.name)
-  constructor(private readonly core: ApiCoreService, private readonly network: ApiNetworkService) {}
+  constructor(private readonly core: ApiCoreService, readonly sync: ApiCollectionSyncService) {}
 
   async createCollection(adminId: string, input: AdminCreateCollectionInput): Promise<PrismaCollection> {
     await this.core.ensureUserAdmin(adminId)
@@ -25,6 +25,10 @@ export class ApiCollectionAdminService {
     if (found) {
       throw new Error(`Collection ${input.network} => ${input.account} already exists`)
     }
+    const metadata = await this.sync.network.getTokenMetadata(input.network, input.account)
+    if (!metadata?.length || !metadata[0]?.offChainMetadata?.metadata) {
+      throw new Error(`Collection ${input.network} => ${input.account} not found`)
+    }
     const created = await this.core.data.collection.create({
       data: {
         ...input,
@@ -35,6 +39,7 @@ export class ApiCollectionAdminService {
     } else {
       this.logger.verbose(`Collection ${input.network} => ${input.account} created`)
     }
+    await this.sync.syncCollection(adminId, created.id)
     return created
   }
 

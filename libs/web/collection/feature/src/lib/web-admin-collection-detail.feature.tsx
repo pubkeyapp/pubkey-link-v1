@@ -1,6 +1,7 @@
 import { Button, Group } from '@mantine/core'
 import { useAdminCollection } from '@pubkey-link/web/collection/data-access'
-import { UiBack, UiAdminPage, UiDebugModal, UiError, UiLoader, UiStack, UiTabRoutes } from '@pubkey-link/web/ui/core'
+import { WebUiCollectionAvatar } from '@pubkey-link/web/collection/ui'
+import { UiAdminPage, UiBack, UiDebugModal, UiError, UiLoader, UiStack, UiTabRoutes } from '@pubkey-link/web/ui/core'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { WebAdminCollectionDetailAssetsTab } from './web-admin-collection-detail-assets-tab'
@@ -23,7 +24,12 @@ export function WebAdminCollectionDetailFeature() {
   return (
     <UiAdminPage
       leftAction={<UiBack />}
-      title={collection?.name ?? '...'}
+      title={
+        <Group spacing="xs">
+          <WebUiCollectionAvatar collection={collection} size={36} />
+          {collection?.name ?? '...'}
+        </Group>
+      }
       rightAction={
         <Group>
           <UiDebugModal data={collection} />

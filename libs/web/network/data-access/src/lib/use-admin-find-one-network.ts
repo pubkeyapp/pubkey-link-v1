@@ -1,4 +1,4 @@
-import { AdminUpdateNetworkInput, AdminCreateNetworkTokenInput } from '@pubkey-link/sdk'
+import { AdminCreateNetworkTokenInput, AdminUpdateNetworkInput } from '@pubkey-link/sdk'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
 import { showNotificationError, showNotificationSuccess } from '@pubkey-link/web/ui/notifications'
 import { useQuery } from '@tanstack/react-query'
@@ -15,6 +15,7 @@ export function useAdminFindOneNetwork({ networkId }: { networkId: string }) {
   return {
     network,
     query,
+    searchAsset: async (mint: string) => sdk.adminSearchNetworkAsset({ networkId, mint }).then((res) => res.data),
     createNetworkToken: async (input: AdminCreateNetworkTokenInput) =>
       sdk
         .adminCreateNetworkToken({ input: { ...input, network: network?.type } })

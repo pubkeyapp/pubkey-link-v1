@@ -30,7 +30,6 @@ export type AdminCreateCollectionComboInput = {
 
 export type AdminCreateCollectionInput = {
   account: Scalars['String']
-  name?: InputMaybe<Scalars['String']>
   network?: InputMaybe<NetworkType>
 }
 
@@ -138,7 +137,11 @@ export type AdminUpdateCollectionComboInput = {
 
 export type AdminUpdateCollectionInput = {
   account?: InputMaybe<Scalars['String']>
+  description: Scalars['String']
+  imageUrl: Scalars['String']
+  metadataUrl: Scalars['String']
   name?: InputMaybe<Scalars['String']>
+  symbol: Scalars['String']
   vaultId?: InputMaybe<Scalars['String']>
 }
 
@@ -223,9 +226,13 @@ export type Collection = {
   attributes?: Maybe<Array<AssetAttribute>>
   combos?: Maybe<Array<CollectionCombo>>
   createdAt: Scalars['DateTime']
+  description?: Maybe<Scalars['String']>
   id: Scalars['String']
-  name: Scalars['String']
+  imageUrl?: Maybe<Scalars['String']>
+  metadataUrl?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
   network?: Maybe<NetworkType>
+  symbol?: Maybe<Scalars['String']>
   updatedAt: Scalars['DateTime']
   vaultId?: Maybe<Scalars['String']>
 }
@@ -699,6 +706,7 @@ export type Query = {
   adminGetQueueJobs?: Maybe<Array<Job>>
   adminGetQueues?: Maybe<Array<Queue>>
   adminReportDiscordMemberWallets?: Maybe<Scalars['JSON']>
+  adminSearchNetworkAsset?: Maybe<Scalars['JSON']>
   appConfig: AppConfig
   me?: Maybe<User>
   uptime: Scalars['Float']
@@ -794,6 +802,11 @@ export type QueryAdminGetQueueJobsArgs = {
 
 export type QueryAdminReportDiscordMemberWalletsArgs = {
   input: AdminReportDiscordMemberWalletsInput
+}
+
+export type QueryAdminSearchNetworkAssetArgs = {
+  mint: Scalars['String']
+  networkId: Scalars['String']
 }
 
 export type QueryUserFindManyAssetArgs = {
@@ -1098,7 +1111,11 @@ export type UserFindManyAssetQuery = {
         createdAt: Date
         account?: string | null
         id: string
-        name: string
+        name?: string | null
+        imageUrl?: string | null
+        metadataUrl?: string | null
+        description?: string | null
+        symbol?: string | null
         network?: NetworkType | null
         vaultId?: string | null
         updatedAt: Date
@@ -1194,7 +1211,11 @@ export type UserFindOneAssetQuery = {
       createdAt: Date
       account?: string | null
       id: string
-      name: string
+      name?: string | null
+      imageUrl?: string | null
+      metadataUrl?: string | null
+      description?: string | null
+      symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
       updatedAt: Date
@@ -1561,7 +1582,11 @@ export type CollectionDetailsFragment = {
   createdAt: Date
   account?: string | null
   id: string
-  name: string
+  name?: string | null
+  imageUrl?: string | null
+  metadataUrl?: string | null
+  description?: string | null
+  symbol?: string | null
   network?: NetworkType | null
   vaultId?: string | null
   updatedAt: Date
@@ -1599,7 +1624,11 @@ export type AdminFindManyCollectionQuery = {
       createdAt: Date
       account?: string | null
       id: string
-      name: string
+      name?: string | null
+      imageUrl?: string | null
+      metadataUrl?: string | null
+      description?: string | null
+      symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
       updatedAt: Date
@@ -1647,7 +1676,11 @@ export type AdminFindOneCollectionQuery = {
     createdAt: Date
     account?: string | null
     id: string
-    name: string
+    name?: string | null
+    imageUrl?: string | null
+    metadataUrl?: string | null
+    description?: string | null
+    symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
     updatedAt: Date
@@ -1693,7 +1726,11 @@ export type AdminCreateCollectionMutation = {
     createdAt: Date
     account?: string | null
     id: string
-    name: string
+    name?: string | null
+    imageUrl?: string | null
+    metadataUrl?: string | null
+    description?: string | null
+    symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
     updatedAt: Date
@@ -1731,7 +1768,11 @@ export type AdminUpdateCollectionMutation = {
     createdAt: Date
     account?: string | null
     id: string
-    name: string
+    name?: string | null
+    imageUrl?: string | null
+    metadataUrl?: string | null
+    description?: string | null
+    symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
     updatedAt: Date
@@ -1786,7 +1827,11 @@ export type UserFindManyCollectionQuery = {
       createdAt: Date
       account?: string | null
       id: string
-      name: string
+      name?: string | null
+      imageUrl?: string | null
+      metadataUrl?: string | null
+      description?: string | null
+      symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
       updatedAt: Date
@@ -1834,7 +1879,11 @@ export type UserFindOneCollectionQuery = {
     createdAt: Date
     account?: string | null
     id: string
-    name: string
+    name?: string | null
+    imageUrl?: string | null
+    metadataUrl?: string | null
+    description?: string | null
+    symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
     updatedAt: Date
@@ -1918,7 +1967,11 @@ export type DiscordRoleConditionDetailsFragment = {
     createdAt: Date
     account?: string | null
     id: string
-    name: string
+    name?: string | null
+    imageUrl?: string | null
+    metadataUrl?: string | null
+    description?: string | null
+    symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
     updatedAt: Date
@@ -1983,7 +2036,11 @@ export type DiscordRoleDetailsFragment = {
       createdAt: Date
       account?: string | null
       id: string
-      name: string
+      name?: string | null
+      imageUrl?: string | null
+      metadataUrl?: string | null
+      description?: string | null
+      symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
       updatedAt: Date
@@ -2112,7 +2169,11 @@ export type AdminFindOneDiscordServerQuery = {
           createdAt: Date
           account?: string | null
           id: string
-          name: string
+          name?: string | null
+          imageUrl?: string | null
+          metadataUrl?: string | null
+          description?: string | null
+          symbol?: string | null
           network?: NetworkType | null
           vaultId?: string | null
           updatedAt: Date
@@ -2273,7 +2334,11 @@ export type UserFindManyDiscordServerQuery = {
           createdAt: Date
           account?: string | null
           id: string
-          name: string
+          name?: string | null
+          imageUrl?: string | null
+          metadataUrl?: string | null
+          description?: string | null
+          symbol?: string | null
           network?: NetworkType | null
           vaultId?: string | null
           updatedAt: Date
@@ -2645,7 +2710,11 @@ export type AdminFindOneNetworkQuery = {
       createdAt: Date
       account?: string | null
       id: string
-      name: string
+      name?: string | null
+      imageUrl?: string | null
+      metadataUrl?: string | null
+      description?: string | null
+      symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
       updatedAt: Date
@@ -2684,6 +2753,13 @@ export type AdminFindOneNetworkQuery = {
     }> | null
   } | null
 }
+
+export type AdminSearchNetworkAssetQueryVariables = Exact<{
+  networkId: Scalars['String']
+  mint: Scalars['String']
+}>
+
+export type AdminSearchNetworkAssetQuery = { __typename?: 'Query'; item?: any | null }
 
 export type AdminCreateNetworkMutationVariables = Exact<{
   input: AdminCreateNetworkInput
@@ -3159,6 +3235,10 @@ export const CollectionDetailsFragmentDoc = gql`
     account
     id
     name
+    imageUrl
+    metadataUrl
+    description
+    symbol
     network
     vaultId
     updatedAt
@@ -3859,6 +3939,11 @@ export const AdminFindOneNetworkDocument = gql`
   ${CollectionDetailsFragmentDoc}
   ${NetworkTokenDetailsFragmentDoc}
 `
+export const AdminSearchNetworkAssetDocument = gql`
+  query adminSearchNetworkAsset($networkId: String!, $mint: String!) {
+    item: adminSearchNetworkAsset(networkId: $networkId, mint: $mint)
+  }
+`
 export const AdminCreateNetworkDocument = gql`
   mutation adminCreateNetwork($input: AdminCreateNetworkInput!) {
     created: adminCreateNetwork(input: $input) {
@@ -4082,6 +4167,7 @@ const UserVerifyIdentityChallengeDocumentString = print(UserVerifyIdentityChalle
 const UserLinkIdentityDocumentString = print(UserLinkIdentityDocument)
 const AdminFindManyNetworkDocumentString = print(AdminFindManyNetworkDocument)
 const AdminFindOneNetworkDocumentString = print(AdminFindOneNetworkDocument)
+const AdminSearchNetworkAssetDocumentString = print(AdminSearchNetworkAssetDocument)
 const AdminCreateNetworkDocumentString = print(AdminCreateNetworkDocument)
 const AdminCreateNetworkTokenDocumentString = print(AdminCreateNetworkTokenDocument)
 const AdminUpdateNetworkDocumentString = print(AdminUpdateNetworkDocument)
@@ -4985,6 +5071,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
             ...wrappedRequestHeaders,
           }),
         'adminFindOneNetwork',
+        'query',
+      )
+    },
+    adminSearchNetworkAsset(
+      variables: AdminSearchNetworkAssetQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<{ data: AdminSearchNetworkAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminSearchNetworkAssetQuery>(AdminSearchNetworkAssetDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminSearchNetworkAsset',
         'query',
       )
     },

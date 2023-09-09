@@ -47,19 +47,23 @@ model AssetAttribute {
 }
 
 model Collection {
-  id         String                 @id @default(cuid())
-  createdAt  DateTime               @default(now())
-  updatedAt  DateTime               @default(now()) @updatedAt
-  account    String
-  name       String?
-  assets     Asset[]
-  assetCount Int                    @default(0)
-  vaultId    String?
-  Network    Network?               @relation(fields: [network], references: [type])
-  network    NetworkType
-  attributes AssetAttribute[]
-  combos     CollectionCombo[]
-  conditions DiscordRoleCondition[]
+  id          String                 @id @default(cuid())
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @default(now()) @updatedAt
+  account     String
+  name        String?
+  imageUrl    String?
+  metadataUrl String?
+  description String?
+  symbol      String?
+  assets      Asset[]
+  assetCount  Int                    @default(0)
+  vaultId     String?
+  Network     Network?               @relation(fields: [network], references: [type])
+  network     NetworkType
+  attributes  AssetAttribute[]
+  combos      CollectionCombo[]
+  conditions  DiscordRoleCondition[]
 
   @@unique([account, network])
 }

@@ -286,4 +286,20 @@ export class ApiNetworkService {
     }
     return this.vaultCache.get(vaultId)
   }
+
+  async searchNetworkAsset(adminId: string, networkId: string, mint: string) {
+    const network = await this.admin.findOneNetwork(adminId, networkId)
+
+    const client = await this.ensureClient(network.type)
+    this.logger.verbose(`Searching ${network.type} for ${mint}`)
+    const [asset, tokenMetadata] = await Promise.all([client.getAsset(mint), client.getTokenMetadata(mint)])
+
+    return { asset, tokenMetadata }
+  }
+
+  async getTokenMetadata(network: NetworkType, account: string) {
+    const client = await this.ensureClient(network)
+
+    return client.getTokenMetadata(account)
+  }
 }

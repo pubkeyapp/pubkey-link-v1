@@ -13,8 +13,16 @@ export class Collection {
   account!: string
   @Field(() => Int, { nullable: true })
   assetCount!: number
-  @Field()
+  @Field({ nullable: true })
   name?: string | null
+  @Field({ nullable: true })
+  imageUrl?: string | null
+  @Field({ nullable: true })
+  metadataUrl?: string | null
+  @Field({ nullable: true })
+  description?: string | null
+  @Field({ nullable: true })
+  symbol?: string | null
   @Field({ nullable: true })
   vaultId?: string | null
   @Field(() => NetworkType, { nullable: true })

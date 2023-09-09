@@ -45,7 +45,8 @@ export function useUserFindManyAsset(
   const total = query.data?.paging.meta.totalCount ?? 0
   const items = query.data?.paging.data ?? []
   const collections: AssetGroup[] = useMemo(
-    () => groupAssetsByCollection(items).sort((a, b) => a.collection.name.localeCompare(b.collection.name)),
+    () =>
+      groupAssetsByCollection(items).sort((a, b) => (a.collection.name ?? '').localeCompare(b.collection?.name ?? '')),
     [items],
   )
 

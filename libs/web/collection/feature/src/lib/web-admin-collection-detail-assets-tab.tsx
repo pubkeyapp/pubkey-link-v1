@@ -18,7 +18,7 @@ export function WebAdminCollectionDetailAssetsTab({ collection }: { collection: 
 
       {query.isLoading ? (
         <UiLoader />
-      ) : items ? (
+      ) : items?.length ? (
         <AssetGrid items={items ?? []} />
       ) : (
         <UiAlert message="Assets not found." />

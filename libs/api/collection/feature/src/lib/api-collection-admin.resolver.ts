@@ -37,12 +37,12 @@ export class ApiCollectionAdminResolver {
 
   @Mutation(() => Boolean, { nullable: true })
   adminSyncCollection(@CtxUser() user: User, @Args('collectionId') collectionId: string) {
-    return this.service.syncCollection(user.id, collectionId)
+    return this.service.sync.syncCollection(user.id, collectionId)
   }
 
   @Mutation(() => Boolean, { nullable: true })
   adminSyncCollections(@CtxUser() user: User) {
-    return this.service.syncCollections(user.id)
+    return this.service.sync.syncCollections(user.id)
   }
 
   @Mutation(() => Collection, { nullable: true })

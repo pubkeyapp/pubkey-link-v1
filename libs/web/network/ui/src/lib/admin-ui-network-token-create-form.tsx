@@ -6,7 +6,11 @@ export interface AdminUiNetworkTokenCreateFormProps {
   submit: (res: AdminCreateNetworkTokenInput) => Promise<boolean>
 }
 
-export function AdminUiNetworkTokenCreateForm({ submit }: AdminUiNetworkTokenCreateFormProps) {
+export function AdminUiNetworkTokenCreateForm({
+  submit,
+}: {
+  submit: (res: AdminCreateNetworkTokenInput) => Promise<boolean>
+}) {
   const model: AdminCreateNetworkTokenInput = {
     network: NetworkType.SolanaMainnet,
     symbol: '',
@@ -33,6 +37,24 @@ export function AdminUiNetworkTokenCreateForm({ submit }: AdminUiNetworkTokenCre
     <UiForm model={model} fields={fields} submit={(res) => submit(res as AdminCreateNetworkTokenInput)}>
       <Group position="right">
         <Button type="submit">Create</Button>
+      </Group>
+    </UiForm>
+  )
+}
+export function AdminUiNetworkAssetSearchForm({ submit }: { submit: (res: { mint: string }) => Promise<boolean> }) {
+  const model: { mint: string } = { mint: '' }
+
+  const fields: UiFormField<{ mint: string }>[] = [
+    formFieldText('mint', {
+      label: 'Mint',
+      required: true,
+    }),
+  ]
+
+  return (
+    <UiForm model={model} fields={fields} submit={(res) => submit(res as { mint: string })}>
+      <Group position="right">
+        <Button type="submit">Search</Button>
       </Group>
     </UiForm>
   )

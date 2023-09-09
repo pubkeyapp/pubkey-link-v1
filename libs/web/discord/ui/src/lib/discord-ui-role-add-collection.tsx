@@ -21,7 +21,7 @@ export function DiscordUiRoleAddCollection({
     () =>
       items
         // Map to option
-        .map((item) => ({ value: item.id, label: item.name })),
+        .map((item) => ({ value: item.id, label: `${item.name ?? item.account}` })),
     // Filter out already added collections
     // .filter((item) => !condition.collections?.find((collection) => collection.id === item.value)),
     [items, condition.collections],

@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common'
+import { Cluster } from '@solana/web3.js'
 import { AssetSortBy, AssetSortDirection, DAS, Helius } from 'helius-sdk'
 import {
   AssetCount,
@@ -10,13 +11,26 @@ import {
   HeliusClientConfig,
 } from './types/helius-client-types'
 
+function getEndpoint(cluster: Cluster): { api: string; rpc: string } {
+  switch (cluster) {
+    case 'devnet':
+      return { api: 'https://api-devnet.helius.xyz', rpc: 'https://rpc-devnet.helius.xyz' }
+    case 'mainnet-beta':
+      return { api: 'https://api.helius.xyz', rpc: 'https://rpc.helius.xyz' }
+    default:
+      throw new Error(`Unknown cluster ${cluster}`)
+  }
+}
+
 export class HeliusClient {
   private readonly logger: Logger
   private readonly client: Helius
+  private readonly endpoint: { api: string; rpc: string }
 
   constructor(private readonly config: HeliusClientConfig) {
     this.client = new Helius(config.apiKey, config.cluster)
     this.logger = new Logger(HeliusClient.name + `|${config.cluster}`)
+    this.endpoint = getEndpoint(config.cluster)
     this.ensureConnection().then((version) => {
       this.logger.verbose(`Connected to Cluster ${config.cluster}, running version ${version['solana-core']}`)
     })
@@ -173,8 +187,12 @@ export class HeliusClient {
     return this.client.rpc.getAssetsByGroup({ groupKey: 'collection', groupValue: collectionAccount, limit, page })
   }
 
+  getAsset(mint: string) {
+    return this.client.rpc.getAsset(mint)
+  }
+
   async getAssets(mints: string[]) {
-    return fetch(`https://rpc.helius.xyz/?api-key=${this.config.apiKey}`, {
+    return fetch(`${this.endpoint.rpc}/?api-key=${this.config.apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -187,5 +205,19 @@ export class HeliusClient {
       .then((res) => res.json())
       .then((res) => res?.result ?? [])
       .catch((err) => console.log(`getAssetsByMint: error: ${err}`))
+  }
+
+  async getTokenMetadata(mint: string) {
+    return fetch(`${this.endpoint.api}/v0/token-metadata?api-key=${this.config.apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mintAccounts: [mint],
+        includeOffChain: true,
+        disableCache: false,
+      }),
+    })
+      .then((res) => res.json())
+      .catch((err) => console.log(`getTokenMetadata: error: ${err}`))
   }
 }

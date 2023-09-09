@@ -6,8 +6,6 @@ import { NetworkType } from '@pubkey-link/api/network/data-access'
 export class AdminCreateCollectionInput {
   @Field()
   account!: string
-  @Field({ nullable: true })
-  name?: string
   @Field(() => NetworkType, { nullable: true })
   network!: NetworkType
 }

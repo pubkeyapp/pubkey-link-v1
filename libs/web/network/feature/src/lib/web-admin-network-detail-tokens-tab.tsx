@@ -5,7 +5,7 @@ import { useAdminFindOneNetwork } from '@pubkey-link/web/network/data-access'
 import { AdminUiNetworkTokenCreateForm, NetworkUiAdminTokenList } from '@pubkey-link/web/network/ui'
 import { UiAlert, UiGroup, UiStack } from '@pubkey-link/web/ui/core'
 
-export function WebAdminNetworkDetailOverviewTab({ networkId }: { networkId: string }) {
+export function WebAdminNetworkDetailTokensTab({ networkId }: { networkId: string }) {
   const { network, deleteNetworkToken } = useAdminFindOneNetwork({ networkId })
 
   return (

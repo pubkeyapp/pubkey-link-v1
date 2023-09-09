@@ -25,7 +25,7 @@ export function useAdminFindManyCollection() {
   return {
     items,
     collectionOptions: items.map((item) => ({
-      label: item.name,
+      label: `${item.name ?? item.account}`,
       value: item.account ?? '',
     })),
     query,

@@ -10,7 +10,6 @@ input AdminCreateCollectionComboInput {
 
 input AdminCreateCollectionInput {
   account: String!
-  name: String
   network: NetworkType
 }
 
@@ -118,7 +117,11 @@ input AdminUpdateCollectionComboInput {
 
 input AdminUpdateCollectionInput {
   account: String
+  description: String!
+  imageUrl: String!
+  metadataUrl: String!
   name: String
+  symbol: String!
   vaultId: String
 }
 
@@ -198,9 +201,13 @@ type Collection {
   attributes: [AssetAttribute!]
   combos: [CollectionCombo!]
   createdAt: DateTime!
+  description: String
   id: String!
-  name: String!
+  imageUrl: String
+  metadataUrl: String
+  name: String
   network: NetworkType
+  symbol: String
   updatedAt: DateTime!
   vaultId: String
 }
@@ -477,6 +484,7 @@ type Query {
   adminGetQueueJobs(statuses: [JobStatus!]!, type: QueueType!): [Job!]
   adminGetQueues: [Queue!]
   adminReportDiscordMemberWallets(input: AdminReportDiscordMemberWalletsInput!): JSON
+  adminSearchNetworkAsset(mint: String!, networkId: String!): JSON
   appConfig: AppConfig!
   me: User
   uptime: Float!

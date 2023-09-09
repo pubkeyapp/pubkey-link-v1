@@ -6,6 +6,7 @@ import { ApiNetworkDataAccessModule } from '@pubkey-link/api/network/data-access
 import { ApiQueueDataAccessModule, QueueType } from '@pubkey-link/api/queue/data-access'
 import { ApiCollectionAdminService } from './api-collection-admin.service'
 import { ApiCollectionQueueService } from './api-collection-queue.service'
+import { ApiCollectionSyncService } from './api-collection-sync.service'
 import { ApiCollectionUserService } from './api-collection-user.service'
 import { ApiCollectionService } from './api-collection.service'
 import { processors } from './processors'
@@ -41,6 +42,7 @@ import { processors } from './processors'
     ApiCollectionAdminService,
     ApiCollectionQueueService,
     ApiCollectionService,
+    ApiCollectionSyncService,
     ApiCollectionUserService,
   ],
   exports: [ApiCollectionService],

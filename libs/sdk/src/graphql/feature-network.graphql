@@ -43,6 +43,10 @@ query adminFindOneNetwork($networkId: String!) {
   }
 }
 
+query adminSearchNetworkAsset($networkId: String!, $mint: String!) {
+  item: adminSearchNetworkAsset(networkId: $networkId, mint: $mint)
+}
+
 mutation adminCreateNetwork($input: AdminCreateNetworkInput!) {
   created: adminCreateNetwork(input: $input) {
     ...NetworkDetails

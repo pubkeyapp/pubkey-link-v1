@@ -10,7 +10,6 @@ import { Job, Queue } from 'bullmq'
 import { DAS } from 'helius-sdk'
 import HumanDiff from 'human-object-diff'
 import { hasher } from 'node-object-hash'
-import { ApiCollectionAdminService } from './api-collection-admin.service'
 import { CollectionSyncManyQueueData, CollectionSyncOneQueueData } from './processors'
 
 export class ApiCollectionQueueService implements OnModuleInit {
@@ -22,7 +21,6 @@ export class ApiCollectionQueueService implements OnModuleInit {
 
     readonly core: ApiCoreService,
     private readonly asset: ApiAssetService,
-    private readonly admin: ApiCollectionAdminService,
     private readonly network: ApiNetworkService,
     private readonly queue: ApiQueueService,
   ) {}

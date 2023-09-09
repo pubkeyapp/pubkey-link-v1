@@ -3,6 +3,10 @@ fragment CollectionDetails on Collection {
   account
   id
   name
+  imageUrl
+  metadataUrl
+  description
+  symbol
   network
   vaultId
   updatedAt

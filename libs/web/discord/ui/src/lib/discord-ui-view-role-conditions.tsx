@@ -40,7 +40,7 @@ export function DiscordUiViewRoleConditions({ role }: { role: DiscordRole }) {
               ? condition.collections.map((coll) => (
                   <UiStack key={coll.id}>
                     <WebProfileUiAssetAttributes
-                      name={coll.name}
+                      name={coll.name ?? 'Unknown'}
                       network={coll.network as NetworkType}
                       collectionAccount={coll.account ?? ''}
                     />

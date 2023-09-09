@@ -1,8 +1,9 @@
 import { useAdminFindOneNetwork } from '@pubkey-link/web/network/data-access'
 import { UiAdminPage, UiBack, UiError, UiLoader, UiStack, UiTabRoutes } from '@pubkey-link/web/ui/core'
 import { useParams } from 'react-router-dom'
-import { WebAdminNetworkDetailOverviewTab } from './web-admin-network-detail-overview-tab'
-import { WebAdminNetworkDetailSettingsTab } from './web-admin-network-detail-settings.tab'
+import { WebAdminNetworkDetailAssetsTab } from './web-admin-network-detail-assets-tab'
+import { WebAdminNetworkDetailTokensTab } from './web-admin-network-detail-tokens-tab'
+import { WebAdminNetworkDetailSettingsTab } from './web-admin-network-detail-settings-tab'
 
 export function WebAdminNetworkDetailFeature() {
   const { networkId } = useParams<{ networkId: string }>() as { networkId: string }
@@ -17,9 +18,14 @@ export function WebAdminNetworkDetailFeature() {
           <UiTabRoutes
             tabs={[
               {
-                value: 'overview',
-                label: 'Overview',
-                component: <WebAdminNetworkDetailOverviewTab networkId={networkId} />,
+                value: 'tokens',
+                label: 'Tokens',
+                component: <WebAdminNetworkDetailTokensTab networkId={networkId} />,
+              },
+              {
+                value: 'assets',
+                label: 'Assets',
+                component: <WebAdminNetworkDetailAssetsTab networkId={networkId} />,
               },
               {
                 value: 'settings',

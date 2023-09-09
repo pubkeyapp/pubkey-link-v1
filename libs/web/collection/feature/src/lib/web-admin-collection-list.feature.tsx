@@ -49,6 +49,7 @@ export function WebAdminCollectionListFeature() {
         <UiLoader />
       ) : items?.length ? (
         <AdminUiCollectionTable
+          refresh={() => query.refetch()}
           syncCollection={(collection) => {
             return sdk.adminSyncCollection({ collectionId: collection.id }).then(() => {
               console.log('synced')

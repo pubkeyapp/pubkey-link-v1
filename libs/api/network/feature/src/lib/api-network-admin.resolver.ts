@@ -12,6 +12,7 @@ import {
   NetworkToken,
 } from '@pubkey-link/api/network/data-access'
 import { User } from '@pubkey-link/api/user/data-access'
+import { GraphQLJSON } from 'graphql-scalars'
 
 @Resolver()
 @UseGuards(ApiAuthGraphqlGuard)
@@ -44,6 +45,10 @@ export class ApiNetworkAdminResolver {
   @Query(() => Network, { nullable: true })
   adminFindOneNetwork(@CtxUser() user: User, @Args('networkId') networkId: string) {
     return this.service.admin.findOneNetwork(user.id, networkId)
+  }
+  @Query(() => GraphQLJSON, { nullable: true })
+  adminSearchNetworkAsset(@CtxUser() user: User, @Args('networkId') networkId: string, @Args('mint') mint: string) {
+    return this.service.searchNetworkAsset(user.id, networkId, mint)
   }
 
   @Mutation(() => Network, { nullable: true })
