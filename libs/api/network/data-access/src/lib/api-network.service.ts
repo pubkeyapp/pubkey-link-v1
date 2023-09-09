@@ -136,7 +136,7 @@ export class ApiNetworkService {
       return assets
     }
 
-    this.logger.verbose(`${tag} Getting assets...`)
+    this.logger.verbose(`${tag} Found ${vaultAssetsOwner.length} vaults for ${ownerAccount}, getting assets...`)
     const collectionAccounts = stakedCollectionMap['SolanaMainnet'].map((c) => c.account)
     assets['SolanaMainnet'] = await this.getStakedAccounts(
       'SolanaMainnet',
