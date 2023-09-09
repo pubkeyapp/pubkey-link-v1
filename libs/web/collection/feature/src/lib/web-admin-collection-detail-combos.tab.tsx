@@ -8,23 +8,27 @@ export function WebAdminCollectionDetailCombosTab({ collection }: { collection: 
   const { query, items, deleteCollectionCombo, removeAttribute } = useAdminCollectionCombos({
     collectionId: collection.id,
   })
-  return query.isLoading ? (
-    <UiLoader />
-  ) : items?.length ? (
+  return (
     <UiStack>
-      <AdminUiCollectionComboTable
-        refresh={() => query.refetch()}
-        items={items ?? []}
-        deleteCollectionCombo={(item) => deleteCollectionCombo(item.id).then((res) => query.refetch())}
-        removeAssetAttribute={(collectionComboId, assetAttributeId) =>
-          removeAttribute(collectionComboId, assetAttributeId).then((res) => query.refetch())
-        }
-      />
+      {query.isLoading ? (
+        <UiLoader />
+      ) : items?.length ? (
+        <UiStack>
+          <AdminUiCollectionComboTable
+            refresh={() => query.refetch()}
+            items={items ?? []}
+            deleteCollectionCombo={(item) => deleteCollectionCombo(item.id).then((res) => query.refetch())}
+            removeAssetAttribute={(collectionComboId, assetAttributeId) =>
+              removeAttribute(collectionComboId, assetAttributeId).then((res) => query.refetch())
+            }
+          />
+        </UiStack>
+      ) : (
+        <UiAlert message="No collection combos." />
+      )}
       <Group position="right">
         <AdminUiCollectionComboCreateModal collectionId={collection.id} />
       </Group>
     </UiStack>
-  ) : (
-    <UiAlert message="No collection combos." />
   )
 }
