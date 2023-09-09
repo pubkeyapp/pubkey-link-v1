@@ -36,7 +36,7 @@ export class ApiDevService {
             return {
               collection,
               assetCount: assets[key].filter(
-                ({ collection: { connect } }) => connect?.account_network?.account === collection,
+                ({ collection: { connect } }) => connect?.account_network?.account === collection.account,
               ).length,
             }
           })

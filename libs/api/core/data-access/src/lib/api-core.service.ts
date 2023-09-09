@@ -3,6 +3,7 @@ import { IdentityProvider, NetworkType, Prisma, UserRole, UserStatus } from '@pr
 import { hasher } from 'node-object-hash'
 import { ApiCoreConfigService } from './api-core-config.service'
 import { ApiCorePrismaClient, prismaClient } from './api-core-prisma-client'
+import { CollectionMap } from './entity/collection-map'
 
 @Injectable()
 export class ApiCoreService {
@@ -82,14 +83,14 @@ export class ApiCoreService {
     })
   }
 
-  async getProviderCollectionMap(provider: IdentityProvider): Promise<Record<NetworkType, string[]>> {
+  async getProviderCollectionMap(provider: IdentityProvider): Promise<CollectionMap> {
     return this.data.collection.findMany({ where: { network: { in: getNetworks(provider) } } }).then((res) => {
-      return res.reduce((acc, { network, account }) => {
+      return res.reduce((acc, { network, account, vaultId }) => {
         return {
           ...acc,
-          [network]: [...(acc[network] || []), account],
+          [network]: [...(acc[network] || []), { account, vaultId }],
         }
-      }, {} as Record<NetworkType, string[]>)
+      }, {} as CollectionMap)
     })
   }
 

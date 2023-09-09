@@ -172,4 +172,20 @@ export class HeliusClient {
   private async getAssetsByGroup({ collectionAccount, page = 1, limit = 1000 }: GetAssetsByGroupOptions) {
     return this.client.rpc.getAssetsByGroup({ groupKey: 'collection', groupValue: collectionAccount, limit, page })
   }
+
+  async getAssets(mints: string[]) {
+    return fetch(`https://rpc.helius.xyz/?api-key=${this.config.apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: 'id-1',
+        method: 'getAssetBatch',
+        params: { ids: mints },
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => res?.result ?? [])
+      .catch((err) => console.log(`getAssetsByMint: error: ${err}`))
+  }
 }

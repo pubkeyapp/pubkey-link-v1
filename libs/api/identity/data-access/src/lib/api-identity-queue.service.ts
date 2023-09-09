@@ -70,7 +70,7 @@ export class ApiIdentityQueueService implements OnModuleInit {
 
     this.logger.log(`${tag} -> getting assets...`)
     // Get the assets in these collections for this owner
-    const assetMap = await this.network.getOwnedAssets({
+    const assetMap = await this.network.getOwnedAndStakedAssets({
       ownerAccount: identity.providerId,
       collectionMap,
       identity,

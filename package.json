@@ -68,6 +68,7 @@
     "helius-sdk": "^1.0.13",
     "human-object-diff": "^3.0.0",
     "joi": "^17.9.2",
+    "lru-cache": "^10.0.1",
     "mantine-datatable": "^2.4.16",
     "necord": "^5.8.5",
     "passport": "^0.6.0",

@@ -107,8 +107,9 @@ input AdminUpdateCollectionComboInput {
 }
 
 input AdminUpdateCollectionInput {
-  account: String!
-  name: String!
+  account: String
+  name: String
+  vaultId: String
 }
 
 input AdminUpdateDiscordServerInput {
@@ -191,6 +192,7 @@ type Collection {
   name: String!
   network: NetworkType
   updatedAt: DateTime!
+  vaultId: String
 }
 
 type CollectionCombo {

@@ -4,6 +4,7 @@ fragment CollectionDetails on Collection {
   id
   name
   network
+  vaultId
   updatedAt
   assetCount
   combos {

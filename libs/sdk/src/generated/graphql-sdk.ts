@@ -127,8 +127,9 @@ export type AdminUpdateCollectionComboInput = {
 }
 
 export type AdminUpdateCollectionInput = {
-  account: Scalars['String']
-  name: Scalars['String']
+  account?: InputMaybe<Scalars['String']>
+  name?: InputMaybe<Scalars['String']>
+  vaultId?: InputMaybe<Scalars['String']>
 }
 
 export type AdminUpdateDiscordServerInput = {
@@ -216,6 +217,7 @@ export type Collection = {
   name: Scalars['String']
   network?: Maybe<NetworkType>
   updatedAt: Scalars['DateTime']
+  vaultId?: Maybe<Scalars['String']>
 }
 
 export type CollectionCombo = {
@@ -1078,6 +1080,7 @@ export type UserFindManyAssetQuery = {
         id: string
         name: string
         network?: NetworkType | null
+        vaultId?: string | null
         updatedAt: Date
         assetCount?: number | null
         combos?: Array<{
@@ -1173,6 +1176,7 @@ export type UserFindOneAssetQuery = {
       id: string
       name: string
       network?: NetworkType | null
+      vaultId?: string | null
       updatedAt: Date
       assetCount?: number | null
       combos?: Array<{
@@ -1539,6 +1543,7 @@ export type CollectionDetailsFragment = {
   id: string
   name: string
   network?: NetworkType | null
+  vaultId?: string | null
   updatedAt: Date
   assetCount?: number | null
   combos?: Array<{
@@ -1576,6 +1581,7 @@ export type AdminFindManyCollectionQuery = {
       id: string
       name: string
       network?: NetworkType | null
+      vaultId?: string | null
       updatedAt: Date
       assetCount?: number | null
       combos?: Array<{
@@ -1623,6 +1629,7 @@ export type AdminFindOneCollectionQuery = {
     id: string
     name: string
     network?: NetworkType | null
+    vaultId?: string | null
     updatedAt: Date
     assetCount?: number | null
     attributes?: Array<{
@@ -1668,6 +1675,7 @@ export type AdminCreateCollectionMutation = {
     id: string
     name: string
     network?: NetworkType | null
+    vaultId?: string | null
     updatedAt: Date
     assetCount?: number | null
     combos?: Array<{
@@ -1705,6 +1713,7 @@ export type AdminUpdateCollectionMutation = {
     id: string
     name: string
     network?: NetworkType | null
+    vaultId?: string | null
     updatedAt: Date
     assetCount?: number | null
     combos?: Array<{
@@ -1759,6 +1768,7 @@ export type UserFindManyCollectionQuery = {
       id: string
       name: string
       network?: NetworkType | null
+      vaultId?: string | null
       updatedAt: Date
       assetCount?: number | null
       combos?: Array<{
@@ -1806,6 +1816,7 @@ export type UserFindOneCollectionQuery = {
     id: string
     name: string
     network?: NetworkType | null
+    vaultId?: string | null
     updatedAt: Date
     assetCount?: number | null
     combos?: Array<{
@@ -1889,6 +1900,7 @@ export type DiscordRoleConditionDetailsFragment = {
     id: string
     name: string
     network?: NetworkType | null
+    vaultId?: string | null
     updatedAt: Date
     assetCount?: number | null
     combos?: Array<{
@@ -1953,6 +1965,7 @@ export type DiscordRoleDetailsFragment = {
       id: string
       name: string
       network?: NetworkType | null
+      vaultId?: string | null
       updatedAt: Date
       assetCount?: number | null
       combos?: Array<{
@@ -2069,6 +2082,7 @@ export type AdminFindOneDiscordServerQuery = {
           id: string
           name: string
           network?: NetworkType | null
+          vaultId?: string | null
           updatedAt: Date
           assetCount?: number | null
           combos?: Array<{
@@ -2229,6 +2243,7 @@ export type UserFindManyDiscordServerQuery = {
           id: string
           name: string
           network?: NetworkType | null
+          vaultId?: string | null
           updatedAt: Date
           assetCount?: number | null
           combos?: Array<{
@@ -2600,6 +2615,7 @@ export type AdminFindOneNetworkQuery = {
       id: string
       name: string
       network?: NetworkType | null
+      vaultId?: string | null
       updatedAt: Date
       assetCount?: number | null
       combos?: Array<{
@@ -3112,6 +3128,7 @@ export const CollectionDetailsFragmentDoc = gql`
     id
     name
     network
+    vaultId
     updatedAt
     assetCount
     combos {

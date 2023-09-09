@@ -9,12 +9,14 @@ export class Collection {
   createdAt!: Date
   @Field()
   updatedAt!: Date
-  @Field()
-  name?: string | null
   @Field({ nullable: true })
   account!: string
   @Field(() => Int, { nullable: true })
   assetCount!: number
+  @Field()
+  name?: string | null
+  @Field({ nullable: true })
+  vaultId?: string | null
   @Field(() => NetworkType, { nullable: true })
   network!: NetworkType
   attributes?: unknown[]

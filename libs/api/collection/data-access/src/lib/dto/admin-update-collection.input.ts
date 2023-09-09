@@ -2,8 +2,10 @@ import { Field, InputType } from '@nestjs/graphql'
 
 @InputType()
 export class AdminUpdateCollectionInput {
-  @Field()
+  @Field({ nullable: true })
   account?: string
-  @Field()
+  @Field({ nullable: true })
   name?: string
+  @Field({ nullable: true })
+  vaultId?: string | null
 }

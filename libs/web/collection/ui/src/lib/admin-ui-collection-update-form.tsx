@@ -11,6 +11,7 @@ export function AuthUiCollectionUpdateForm({ collection, submit }: AuthUiCollect
   const model: AdminUpdateCollectionInput = {
     name: collection.name ?? '',
     account: collection.account ?? '',
+    vaultId: collection.vaultId,
   }
 
   const fields: UiFormField<AdminUpdateCollectionInput>[] = [
@@ -19,6 +20,10 @@ export function AuthUiCollectionUpdateForm({ collection, submit }: AuthUiCollect
     }),
     formFieldText('account', {
       label: 'Account',
+    }),
+    formFieldText('vaultId', {
+      label: 'Vault ID',
+      description: 'ID of the vault on anybodies.com',
     }),
   ]
   return (
