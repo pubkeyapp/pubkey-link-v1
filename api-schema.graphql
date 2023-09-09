@@ -14,6 +14,11 @@ input AdminCreateCollectionInput {
   network: NetworkType
 }
 
+input AdminCreateDiscordRoleInput {
+  name: String!
+  serverId: String!
+}
+
 input AdminCreateEmailInput {
   email: String!
   ownerId: String!
@@ -41,6 +46,11 @@ input AdminCreateNetworkTokenInput {
 input AdminCreateUserInput {
   password: String
   username: String!
+}
+
+input AdminDeleteDiscordRoleInput {
+  roleId: String!
+  serverId: String!
 }
 
 input AdminFindEmailsInput {
@@ -225,10 +235,10 @@ type DiscordRole {
   color: Float
   conditions: [DiscordRoleCondition!]
   hoist: Boolean
-  id: String
+  id: String!
   managed: Boolean
   mentionable: Boolean
-  name: String
+  name: String!
   permissions: String
   position: Float
   serverId: String
@@ -358,6 +368,7 @@ type Mutation {
   adminCleanQueue(type: QueueType!): Boolean
   adminCreateCollection(input: AdminCreateCollectionInput!): Collection
   adminCreateCollectionCombo(input: AdminCreateCollectionComboInput!): CollectionCombo
+  adminCreateDiscordRole(input: AdminCreateDiscordRoleInput!): Boolean
   adminCreateDiscordRoleCondition(roleId: String!): Boolean
   adminCreateEmail(input: AdminCreateEmailInput!): Email
   adminCreateIdentity(input: AdminCreateIdentityInput!): Identity
@@ -367,6 +378,7 @@ type Mutation {
   adminDeleteAsset(assetId: String!): Boolean
   adminDeleteCollection(collectionId: String!): Boolean
   adminDeleteCollectionCombo(collectionComboId: String!): Boolean
+  adminDeleteDiscordRole(input: AdminDeleteDiscordRoleInput!): Boolean
   adminDeleteDiscordRoleCondition(conditionId: String!): Boolean
   adminDeleteEmail(emailId: String!): Boolean
   adminDeleteIdentity(identityId: String!): Boolean

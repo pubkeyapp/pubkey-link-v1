@@ -34,6 +34,11 @@ export type AdminCreateCollectionInput = {
   network?: InputMaybe<NetworkType>
 }
 
+export type AdminCreateDiscordRoleInput = {
+  name: Scalars['String']
+  serverId: Scalars['String']
+}
+
 export type AdminCreateEmailInput = {
   email: Scalars['String']
   ownerId: Scalars['String']
@@ -61,6 +66,11 @@ export type AdminCreateNetworkTokenInput = {
 export type AdminCreateUserInput = {
   password?: InputMaybe<Scalars['String']>
   username: Scalars['String']
+}
+
+export type AdminDeleteDiscordRoleInput = {
+  roleId: Scalars['String']
+  serverId: Scalars['String']
 }
 
 export type AdminFindEmailsInput = {
@@ -249,10 +259,10 @@ export type DiscordRole = {
   color?: Maybe<Scalars['Float']>
   conditions?: Maybe<Array<DiscordRoleCondition>>
   hoist?: Maybe<Scalars['Boolean']>
-  id?: Maybe<Scalars['String']>
+  id: Scalars['String']
   managed?: Maybe<Scalars['Boolean']>
   mentionable?: Maybe<Scalars['Boolean']>
-  name?: Maybe<Scalars['String']>
+  name: Scalars['String']
   permissions?: Maybe<Scalars['String']>
   position?: Maybe<Scalars['Float']>
   serverId?: Maybe<Scalars['String']>
@@ -386,6 +396,7 @@ export type Mutation = {
   adminCleanQueue?: Maybe<Scalars['Boolean']>
   adminCreateCollection?: Maybe<Collection>
   adminCreateCollectionCombo?: Maybe<CollectionCombo>
+  adminCreateDiscordRole?: Maybe<Scalars['Boolean']>
   adminCreateDiscordRoleCondition?: Maybe<Scalars['Boolean']>
   adminCreateEmail?: Maybe<Email>
   adminCreateIdentity?: Maybe<Identity>
@@ -395,6 +406,7 @@ export type Mutation = {
   adminDeleteAsset?: Maybe<Scalars['Boolean']>
   adminDeleteCollection?: Maybe<Scalars['Boolean']>
   adminDeleteCollectionCombo?: Maybe<Scalars['Boolean']>
+  adminDeleteDiscordRole?: Maybe<Scalars['Boolean']>
   adminDeleteDiscordRoleCondition?: Maybe<Scalars['Boolean']>
   adminDeleteEmail?: Maybe<Scalars['Boolean']>
   adminDeleteIdentity?: Maybe<Scalars['Boolean']>
@@ -453,6 +465,10 @@ export type MutationAdminCreateCollectionComboArgs = {
   input: AdminCreateCollectionComboInput
 }
 
+export type MutationAdminCreateDiscordRoleArgs = {
+  input: AdminCreateDiscordRoleInput
+}
+
 export type MutationAdminCreateDiscordRoleConditionArgs = {
   roleId: Scalars['String']
 }
@@ -487,6 +503,10 @@ export type MutationAdminDeleteCollectionArgs = {
 
 export type MutationAdminDeleteCollectionComboArgs = {
   collectionComboId: Scalars['String']
+}
+
+export type MutationAdminDeleteDiscordRoleArgs = {
+  input: AdminDeleteDiscordRoleInput
 }
 
 export type MutationAdminDeleteDiscordRoleConditionArgs = {
@@ -1944,8 +1964,8 @@ export type DiscordRoleConditionDetailsFragment = {
 
 export type DiscordRoleDetailsFragment = {
   __typename?: 'DiscordRole'
-  id?: string | null
-  name?: string | null
+  id: string
+  name: string
   permissions?: string | null
   color?: number | null
   hoist?: boolean | null
@@ -2014,6 +2034,18 @@ export type AdminSyncDiscordRolesMutationVariables = Exact<{
 
 export type AdminSyncDiscordRolesMutation = { __typename?: 'Mutation'; adminSyncDiscordRoles?: boolean | null }
 
+export type AdminCreateDiscordRoleMutationVariables = Exact<{
+  input: AdminCreateDiscordRoleInput
+}>
+
+export type AdminCreateDiscordRoleMutation = { __typename?: 'Mutation'; created?: boolean | null }
+
+export type AdminDeleteDiscordRoleMutationVariables = Exact<{
+  input: AdminDeleteDiscordRoleInput
+}>
+
+export type AdminDeleteDiscordRoleMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
+
 export type DiscordServerChannelDetailsFragment = {
   __typename?: 'DiscordServerChannel'
   id: string
@@ -2061,8 +2093,8 @@ export type AdminFindOneDiscordServerQuery = {
     serverUrl?: string | null
     roles?: Array<{
       __typename?: 'DiscordRole'
-      id?: string | null
-      name?: string | null
+      id: string
+      name: string
       permissions?: string | null
       color?: number | null
       hoist?: boolean | null
@@ -2222,8 +2254,8 @@ export type UserFindManyDiscordServerQuery = {
     serverUrl?: string | null
     roles?: Array<{
       __typename?: 'DiscordRole'
-      id?: string | null
-      name?: string | null
+      id: string
+      name: string
       permissions?: string | null
       color?: number | null
       hoist?: boolean | null
@@ -3616,6 +3648,16 @@ export const AdminSyncDiscordRolesDocument = gql`
     adminSyncDiscordRoles(serverId: $serverId)
   }
 `
+export const AdminCreateDiscordRoleDocument = gql`
+  mutation adminCreateDiscordRole($input: AdminCreateDiscordRoleInput!) {
+    created: adminCreateDiscordRole(input: $input)
+  }
+`
+export const AdminDeleteDiscordRoleDocument = gql`
+  mutation adminDeleteDiscordRole($input: AdminDeleteDiscordRoleInput!) {
+    deleted: adminDeleteDiscordRole(input: $input)
+  }
+`
 export const AdminGetBotInviteUrlDocument = gql`
   query adminGetBotInviteUrl {
     url: adminGetBotInviteUrl
@@ -4017,6 +4059,8 @@ const AppConfigDocumentString = print(AppConfigDocument)
 const AdminDevCheckAccountDocumentString = print(AdminDevCheckAccountDocument)
 const AdminDevCheckIdentityDocumentString = print(AdminDevCheckIdentityDocument)
 const AdminSyncDiscordRolesDocumentString = print(AdminSyncDiscordRolesDocument)
+const AdminCreateDiscordRoleDocumentString = print(AdminCreateDiscordRoleDocument)
+const AdminDeleteDiscordRoleDocumentString = print(AdminDeleteDiscordRoleDocument)
 const AdminGetBotInviteUrlDocumentString = print(AdminGetBotInviteUrlDocument)
 const AdminFindOneDiscordServerDocumentString = print(AdminFindOneDiscordServerDocument)
 const AdminFindManyDiscordServerChannelDocumentString = print(AdminFindManyDiscordServerChannelDocument)
@@ -4607,6 +4651,34 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
             ...wrappedRequestHeaders,
           }),
         'adminSyncDiscordRoles',
+        'mutation',
+      )
+    },
+    adminCreateDiscordRole(
+      variables: AdminCreateDiscordRoleMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<{ data: AdminCreateDiscordRoleMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminCreateDiscordRoleMutation>(AdminCreateDiscordRoleDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminCreateDiscordRole',
+        'mutation',
+      )
+    },
+    adminDeleteDiscordRole(
+      variables: AdminDeleteDiscordRoleMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<{ data: AdminDeleteDiscordRoleMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminDeleteDiscordRoleMutation>(AdminDeleteDiscordRoleDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminDeleteDiscordRole',
         'mutation',
       )
     },

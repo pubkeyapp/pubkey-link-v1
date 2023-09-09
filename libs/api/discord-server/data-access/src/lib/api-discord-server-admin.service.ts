@@ -1,6 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { DiscordServer as PrismaDiscordServer } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
+import { AdminCreateDiscordRoleInput, AdminDeleteDiscordRoleInput } from '@pubkey-link/api/discord-server/data-access'
+import { ApiDiscordService } from '@pubkey-link/api/discord/data-access'
 import { AdminFindManyDiscordServerInput } from './dto/admin-find-many-discord-server-input'
 import { AdminUpdateDiscordServerInput } from './dto/admin-update-discord-server.input'
 import { DiscordServerPaging } from './entity/discord-server-paging'
@@ -8,9 +10,7 @@ import { getAdminDiscordServerInput } from './helpers/get-admin-discord-server-i
 
 @Injectable()
 export class ApiDiscordServerAdminService {
-  private readonly logger = new Logger(ApiDiscordServerAdminService.name)
-
-  constructor(private readonly core: ApiCoreService) {}
+  constructor(private readonly core: ApiCoreService, private readonly discord: ApiDiscordService) {}
 
   async findManyDiscordServer(adminId: string, input: AdminFindManyDiscordServerInput): Promise<DiscordServerPaging> {
     await this.core.ensureUserAdmin(adminId)
@@ -54,6 +54,16 @@ export class ApiDiscordServerAdminService {
     })
   }
 
+  async createDiscordRole(adminId: string, input: AdminCreateDiscordRoleInput) {
+    await this.core.ensureUserAdmin(adminId)
+    const created = await this.discord.bot.createRole({ serverId: input.serverId, name: input.name })
+    if (!created) {
+      throw new Error(`Could not create role`)
+    }
+    await this.discord.syncServers.syncServer(input.serverId)
+    return true
+  }
+
   async createDiscordRoleCondition(adminId: string, roleId: string) {
     await this.core.ensureUserAdmin(adminId)
     const created = await this.core.data.discordRoleCondition.create({
@@ -62,6 +72,16 @@ export class ApiDiscordServerAdminService {
       },
     })
     return !!created
+  }
+
+  async deleteDiscordRole(adminId: string, input: AdminDeleteDiscordRoleInput) {
+    await this.core.ensureUserAdmin(adminId)
+    const created = await this.discord.bot.deleteRole({ serverId: input.serverId, roleId: input.roleId })
+    if (!created) {
+      throw new Error(`Could not delete role`)
+    }
+    await this.discord.syncServers.syncServer(input.serverId)
+    return true
   }
 
   async addDiscordRoleConditionCollection(adminId: string, conditionId: string, collectionId: string) {
@@ -130,8 +150,8 @@ export class ApiDiscordServerAdminService {
 
   async syncDiscordRoles(adminId: string, serverId: string) {
     await this.core.ensureUserAdmin(adminId)
-
-    throw new Error(`Not implemented, ${serverId}`)
+    await this.discord.syncServers.syncServer(serverId)
+    return true
   }
 
   async updateDiscordServer(

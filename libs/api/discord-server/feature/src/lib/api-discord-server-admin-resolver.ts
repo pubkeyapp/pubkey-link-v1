@@ -2,6 +2,8 @@ import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { ApiAuthGraphqlGuard, CtxUser } from '@pubkey-link/api/auth/data-access'
 import {
+  AdminCreateDiscordRoleInput,
+  AdminDeleteDiscordRoleInput,
   AdminFindManyDiscordServerInput,
   AdminUpdateDiscordServerInput,
   ApiDiscordServerService,
@@ -40,8 +42,18 @@ export class ApiDiscordServerAdminResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  adminCreateDiscordRole(@CtxUser() user: User, @Args('input') input: AdminCreateDiscordRoleInput) {
+    return this.service.admin.createDiscordRole(user.id, input)
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
   adminCreateDiscordRoleCondition(@CtxUser() user: User, @Args('roleId') roleId: string) {
     return this.service.admin.createDiscordRoleCondition(user.id, roleId)
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
+  adminDeleteDiscordRole(@CtxUser() user: User, @Args('input') input: AdminDeleteDiscordRoleInput) {
+    return this.service.admin.deleteDiscordRole(user.id, input)
   }
 
   @Mutation(() => Boolean, { nullable: true })

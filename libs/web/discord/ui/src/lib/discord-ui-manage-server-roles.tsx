@@ -1,14 +1,24 @@
 import { Accordion, Group } from '@mantine/core'
 import { DiscordRole } from '@pubkey-link/sdk'
-import { UiDebugModal, UiPageHeader, UiStack, UiStatus } from '@pubkey-link/web/ui/core'
+import { UiDebugModal, UiStack, UiStatus } from '@pubkey-link/web/ui/core'
 import { DiscordUiRoleColor } from './discord-ui-role-color'
 import { DiscordUiRoleCreateCondition } from './discord-ui-role-create-condition'
+import { DiscordUiRoleDelete } from './discord-ui-role-delete'
 import { DiscordUiRoleListConditions } from './discord-ui-role-list-conditions'
 
-export function DiscordUiManageServerRoles({ roles, refresh }: { roles: DiscordRole[]; refresh: () => void }) {
+export function DiscordUiManageServerRoles({
+  createCondition,
+  deleteRole,
+  refresh,
+  roles,
+}: {
+  createCondition: (roleId: string) => void
+  deleteRole: (roleId: string) => void
+  refresh: () => void
+  roles: DiscordRole[]
+}) {
   return (
     <UiStack>
-      <UiPageHeader title={'Roles'} />
       <Accordion variant="separated" multiple>
         {roles.map((role) => {
           return (
@@ -24,7 +34,13 @@ export function DiscordUiManageServerRoles({ roles, refresh }: { roles: DiscordR
                   <DiscordUiRoleListConditions role={role} refresh={refresh} />
                   <Group position="right">
                     <UiDebugModal data={role} />
-                    <DiscordUiRoleCreateCondition role={role} refresh={refresh} />
+                    <DiscordUiRoleDelete
+                      deleteRole={() => {
+                        if (!window.confirm(`Are you sure you want to delete role ${role.name}?`)) return
+                        deleteRole(role.id)
+                      }}
+                    />
+                    <DiscordUiRoleCreateCondition createCondition={() => createCondition(role.id)} />
                   </Group>
                 </UiStack>
               </Accordion.Panel>

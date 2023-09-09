@@ -1,15 +1,13 @@
-import { Group } from '@mantine/core'
 import { DiscordServer } from '@pubkey-link/sdk'
-import { useAdminGetDiscordServer } from '@pubkey-link/web/discord/data-access'
-import { DiscordUiRoleCreateConditionModal, DiscordUiManageServerRoles } from '@pubkey-link/web/discord/ui'
-import { UiAlert, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
+import { useAdminFindOneDiscordServer } from '@pubkey-link/web/discord/data-access'
+import { DiscordUiManageServerRoles, DiscordUiRoleCreateConditionModal } from '@pubkey-link/web/discord/ui'
+import { UiAlert, UiLoader, UiPageHeader, UiStack } from '@pubkey-link/web/ui/core'
 import { useMemo } from 'react'
 
 export function DiscordServerDetailTabConditions({ server }: { server: DiscordServer }) {
-  const query = useAdminGetDiscordServer(server.id!)
-  const items = useMemo(() => {
-    return query.data?.item?.roles?.filter((role) => role.conditions?.length)
-  }, [query.data?.item?.roles])
+  const { query, roles, deleteRole, createCondition } = useAdminFindOneDiscordServer({ serverId: server.id })
+
+  const items = useMemo(() => roles?.filter((role) => role.conditions?.length), [roles])
 
   return (
     <UiStack>
@@ -17,14 +15,20 @@ export function DiscordServerDetailTabConditions({ server }: { server: DiscordSe
         <UiLoader />
       ) : (
         <UiStack>
+          <UiPageHeader
+            title="Conditions"
+            actions={<DiscordUiRoleCreateConditionModal refresh={() => query.refetch()} roles={server.roles ?? []} />}
+          />
           {items?.length ? (
-            <DiscordUiManageServerRoles roles={items ?? []} refresh={() => query.refetch()} />
+            <DiscordUiManageServerRoles
+              roles={items}
+              refresh={() => query.refetch()}
+              createCondition={createCondition}
+              deleteRole={deleteRole}
+            />
           ) : (
             <UiAlert message="Server has no role conditions" />
           )}
-          <Group position="right">
-            <DiscordUiRoleCreateConditionModal refresh={() => query.refetch()} roles={server.roles ?? []} />
-          </Group>
         </UiStack>
       )}
     </UiStack>

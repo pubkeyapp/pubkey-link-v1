@@ -4,7 +4,15 @@ import { useAdminFindManyCollection } from '@pubkey-link/web/collection/data-acc
 import { AdminUiCollectionTable } from '@pubkey-link/web/collection/ui'
 import { networkTypeOptions } from '@pubkey-link/web/network/ui'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
-import { UiAdminPage, UiAlert, UiBack, UiLoader, UiPagination, UiSearchField } from '@pubkey-link/web/ui/core'
+import {
+  UiAdminPage,
+  UiAlert,
+  UiBack,
+  UiDebugModal,
+  UiLoader,
+  UiPagination,
+  UiSearchField,
+} from '@pubkey-link/web/ui/core'
 import { Link } from 'react-router-dom'
 
 export function WebAdminCollectionListFeature() {
@@ -17,6 +25,7 @@ export function WebAdminCollectionListFeature() {
       leftAction={<UiBack />}
       rightAction={
         <Group>
+          <UiDebugModal data={items ?? []} />
           <Button onClick={syncCollections}>Sync Collections</Button>
           <Button component={Link} to="create">
             Create

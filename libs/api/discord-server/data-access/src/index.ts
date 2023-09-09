@@ -1,5 +1,7 @@
 export * from './lib/api-discord-server-data-access.module'
 export * from './lib/api-discord-server.service'
+export * from './lib/dto/admin-create-discord-role.input'
+export * from './lib/dto/admin-delete-discord-role-input'
 export * from './lib/dto/admin-find-many-discord-server-input'
 export * from './lib/dto/admin-update-discord-server.input'
 export * from './lib/entity/discord-role-condition.entity'

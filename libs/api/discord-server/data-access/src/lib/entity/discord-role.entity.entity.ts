@@ -3,9 +3,9 @@ import { DiscordRoleCondition } from './discord-role-condition.entity'
 
 @ObjectType()
 export class DiscordRole {
-  @Field({ nullable: true })
+  @Field()
   id!: string
-  @Field({ nullable: true })
+  @Field()
   name!: string
   @Field({ nullable: true })
   permissions!: string

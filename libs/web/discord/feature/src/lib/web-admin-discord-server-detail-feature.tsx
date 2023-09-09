@@ -1,10 +1,9 @@
 import { Button, Group } from '@mantine/core'
-import { useAdminGetDiscordServer } from '@pubkey-link/web/discord/data-access'
+import { useAdminFindOneDiscordServer } from '@pubkey-link/web/discord/data-access'
 import { DiscordUiServerAvatar, DiscordUiServerTitle } from '@pubkey-link/web/discord/ui'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
 import { UiAdminPage, UiAlert, UiBack, UiDebugModal, UiLoader, UiTabRoutes } from '@pubkey-link/web/ui/core'
 import { showNotificationError, showNotificationSuccess } from '@pubkey-link/web/ui/notifications'
-import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { DiscordServerDetailTabConditions } from './discord-server-detail-tab-conditions'
 import { DiscordServerDetailTabRoles } from './discord-server-detail-tab-roles'
@@ -12,26 +11,11 @@ import { DiscordServerDetailTabSettings } from './discord-server-detail-tab-sett
 
 export function WebAdminDiscordServerDetailFeature() {
   const { serverId } = useParams() as { serverId: string }
-  const [syncing, setSyncing] = useState(false)
-  const query = useAdminGetDiscordServer(serverId)
+
+  const { query } = useAdminFindOneDiscordServer({ serverId })
   const sdk = useWebSdk()
 
   const server = query.data?.item
-
-  function syncRoles() {
-    setSyncing(true)
-    sdk
-      .adminSyncDiscordRoles({ serverId })
-      .then((res) => {
-        showNotificationSuccess('Synced')
-        return query.refetch()
-      })
-      .catch((err) => {
-        console.log(err)
-        showNotificationError('An error occurred')
-      })
-      .finally(() => setSyncing(false))
-  }
 
   if (query.isLoading) {
     return <UiLoader />
@@ -70,9 +54,6 @@ export function WebAdminDiscordServerDetailFeature() {
             }
           >
             Test Bot Channel
-          </Button>
-          <Button disabled={!server?.enabled} loading={syncing} onClick={() => syncRoles()}>
-            Sync Roles
           </Button>
         </Group>
       }

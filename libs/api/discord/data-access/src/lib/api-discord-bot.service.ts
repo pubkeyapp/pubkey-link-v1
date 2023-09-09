@@ -169,4 +169,20 @@ export class ApiDiscordBotService {
 
     return result
   }
+
+  async createRole({ serverId, name }: { name: string; serverId: string }) {
+    const server = await this.ensureDiscordGuild(serverId)
+
+    return await server.roles.create({ name })
+  }
+
+  async deleteRole({ roleId, serverId }: { roleId: string; serverId: string }) {
+    const server = await this.ensureDiscordGuild(serverId)
+    const role = server.roles.cache.get(roleId)
+    if (!role) {
+      throw new Error(`Role not found`)
+    }
+    await role.delete()
+    return true
+  }
 }

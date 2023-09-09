@@ -1,15 +1,13 @@
-import { Group } from '@mantine/core'
+import { Button, Group } from '@mantine/core'
 import { DiscordServer } from '@pubkey-link/sdk'
-import { useAdminGetDiscordServer } from '@pubkey-link/web/discord/data-access'
-import { DiscordUiRoleCreateConditionModal, DiscordUiManageServerRoles } from '@pubkey-link/web/discord/ui'
-import { UiAlert, UiLoader, UiStack } from '@pubkey-link/web/ui/core'
-import { useMemo } from 'react'
+import { useAdminFindOneDiscordServer } from '@pubkey-link/web/discord/data-access'
+import { DiscordUiManageServerRoles, DiscordUiRoleCreateRoleModal } from '@pubkey-link/web/discord/ui'
+import { UiAlert, UiLoader, UiPageHeader, UiStack } from '@pubkey-link/web/ui/core'
 
 export function DiscordServerDetailTabRoles({ server }: { server: DiscordServer }) {
-  const query = useAdminGetDiscordServer(server.id!)
-  const items = useMemo(() => {
-    return query.data?.item?.roles ?? []
-  }, [query.data?.item?.roles])
+  const { syncing, syncRoles, query, roles, createCondition, deleteRole } = useAdminFindOneDiscordServer({
+    serverId: server.id,
+  })
 
   return (
     <UiStack>
@@ -17,14 +15,27 @@ export function DiscordServerDetailTabRoles({ server }: { server: DiscordServer 
         <UiLoader />
       ) : (
         <UiStack>
-          {items?.length ? (
-            <DiscordUiManageServerRoles roles={items ?? []} refresh={() => query.refetch()} />
+          <UiPageHeader
+            title="Roles"
+            actions={
+              <Group position="right">
+                <DiscordUiRoleCreateRoleModal server={server} />
+                <Button disabled={!server?.enabled} loading={syncing} onClick={() => syncRoles()}>
+                  Sync Roles
+                </Button>
+              </Group>
+            }
+          />
+          {roles?.length ? (
+            <DiscordUiManageServerRoles
+              roles={roles}
+              refresh={() => query.refetch()}
+              createCondition={createCondition}
+              deleteRole={deleteRole}
+            />
           ) : (
             <UiAlert message="Server has no roles" />
           )}
-          <Group position="right">
-            <DiscordUiRoleCreateConditionModal refresh={() => query.refetch()} roles={server.roles ?? []} />
-          </Group>
         </UiStack>
       )}
     </UiStack>

@@ -31,3 +31,11 @@ fragment DiscordRoleDetails on DiscordRole {
 mutation adminSyncDiscordRoles($serverId: String!) {
   adminSyncDiscordRoles(serverId: $serverId)
 }
+
+mutation adminCreateDiscordRole($input: AdminCreateDiscordRoleInput!) {
+  created: adminCreateDiscordRole(input: $input)
+}
+
+mutation adminDeleteDiscordRole($input: AdminDeleteDiscordRoleInput!) {
+  deleted: adminDeleteDiscordRole(input: $input)
+}
