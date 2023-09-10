@@ -13,7 +13,7 @@ export class Collection {
   account!: string
   @Field(() => Int, { nullable: true })
   assetCount!: number
-  @Field({ nullable: true })
+  @Field()
   name?: string | null
   @Field({ nullable: true })
   imageUrl?: string | null

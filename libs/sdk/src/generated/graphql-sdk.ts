@@ -230,7 +230,7 @@ export type Collection = {
   id: Scalars['String']
   imageUrl?: Maybe<Scalars['String']>
   metadataUrl?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
+  name: Scalars['String']
   network?: Maybe<NetworkType>
   symbol?: Maybe<Scalars['String']>
   updatedAt: Scalars['DateTime']
@@ -1111,7 +1111,7 @@ export type UserFindManyAssetQuery = {
         createdAt: Date
         account?: string | null
         id: string
-        name?: string | null
+        name: string
         imageUrl?: string | null
         metadataUrl?: string | null
         description?: string | null
@@ -1211,7 +1211,7 @@ export type UserFindOneAssetQuery = {
       createdAt: Date
       account?: string | null
       id: string
-      name?: string | null
+      name: string
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null
@@ -1582,7 +1582,7 @@ export type CollectionDetailsFragment = {
   createdAt: Date
   account?: string | null
   id: string
-  name?: string | null
+  name: string
   imageUrl?: string | null
   metadataUrl?: string | null
   description?: string | null
@@ -1624,7 +1624,7 @@ export type AdminFindManyCollectionQuery = {
       createdAt: Date
       account?: string | null
       id: string
-      name?: string | null
+      name: string
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null
@@ -1676,7 +1676,7 @@ export type AdminFindOneCollectionQuery = {
     createdAt: Date
     account?: string | null
     id: string
-    name?: string | null
+    name: string
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
@@ -1726,7 +1726,7 @@ export type AdminCreateCollectionMutation = {
     createdAt: Date
     account?: string | null
     id: string
-    name?: string | null
+    name: string
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
@@ -1768,7 +1768,7 @@ export type AdminUpdateCollectionMutation = {
     createdAt: Date
     account?: string | null
     id: string
-    name?: string | null
+    name: string
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
@@ -1827,7 +1827,7 @@ export type UserFindManyCollectionQuery = {
       createdAt: Date
       account?: string | null
       id: string
-      name?: string | null
+      name: string
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null
@@ -1879,7 +1879,7 @@ export type UserFindOneCollectionQuery = {
     createdAt: Date
     account?: string | null
     id: string
-    name?: string | null
+    name: string
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
@@ -1967,7 +1967,7 @@ export type DiscordRoleConditionDetailsFragment = {
     createdAt: Date
     account?: string | null
     id: string
-    name?: string | null
+    name: string
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
@@ -2036,7 +2036,7 @@ export type DiscordRoleDetailsFragment = {
       createdAt: Date
       account?: string | null
       id: string
-      name?: string | null
+      name: string
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null
@@ -2169,7 +2169,7 @@ export type AdminFindOneDiscordServerQuery = {
           createdAt: Date
           account?: string | null
           id: string
-          name?: string | null
+          name: string
           imageUrl?: string | null
           metadataUrl?: string | null
           description?: string | null
@@ -2334,7 +2334,7 @@ export type UserFindManyDiscordServerQuery = {
           createdAt: Date
           account?: string | null
           id: string
-          name?: string | null
+          name: string
           imageUrl?: string | null
           metadataUrl?: string | null
           description?: string | null
@@ -2710,7 +2710,7 @@ export type AdminFindOneNetworkQuery = {
       createdAt: Date
       account?: string | null
       id: string
-      name?: string | null
+      name: string
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null

@@ -25,7 +25,7 @@ export function WebCollectionUiDashboard() {
             ))
           ) : (
             <WebProfileUiAssetAttributes
-              name={collection.name ?? 'Unknown'}
+              name={collection.name}
               network={collection.network as NetworkType}
               collectionAccount={collection.account ?? ''}
             />

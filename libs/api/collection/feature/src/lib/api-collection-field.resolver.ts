@@ -14,4 +14,9 @@ export class ApiCollectionFieldResolver {
   combos(@Parent() collection: Collection) {
     return collection.combos ?? []
   }
+
+  @ResolveField(() => String)
+  name(@Parent() collection: Collection) {
+    return collection.name ?? collection.account ?? 'Unknown'
+  }
 }
