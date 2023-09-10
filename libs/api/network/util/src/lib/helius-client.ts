@@ -14,9 +14,9 @@ import {
 function getEndpoint(cluster: Cluster): { api: string; rpc: string } {
   switch (cluster) {
     case 'devnet':
-      return { api: 'https://api-devnet.helius.xyz', rpc: 'https://rpc-devnet.helius.xyz' }
+      return { api: 'https://api-devnet.helius.xyz', rpc: 'https://devnet.helius-rpc.com' }
     case 'mainnet-beta':
-      return { api: 'https://api.helius.xyz', rpc: 'https://rpc.helius.xyz' }
+      return { api: 'https://api.helius.xyz', rpc: 'https://mainnet.helius-rpc.com' }
     default:
       throw new Error(`Unknown cluster ${cluster}`)
   }
