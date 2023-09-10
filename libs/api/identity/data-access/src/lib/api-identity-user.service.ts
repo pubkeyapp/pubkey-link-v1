@@ -1,9 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Identity as PrismaIdentity, IdentityProvider } from '@prisma/client'
 import { ApiCoreService, BaseContext, getRequestDetails } from '@pubkey-link/api/core/data-access'
+import { verifySignature } from '@pubkeyapp/solana-verify-wallet'
 import { PublicKey } from '@solana/web3.js'
-import * as b58 from 'bs58'
-import * as nacl from 'tweetnacl'
 
 import { ApiIdentityQueueService } from './api-identity-queue.service'
 import { LinkIdentityInput } from './dto/link-identity-input'
@@ -74,7 +73,7 @@ export class ApiIdentityUserService {
   async verifyIdentityChallenge(
     ctx: BaseContext,
     userId: string,
-    { provider, providerId, challenge, signature }: VerifyIdentityChallengeInput,
+    { provider, providerId, challenge, signature, useLedger }: VerifyIdentityChallengeInput,
   ) {
     await this.core.ensureUserActive(userId)
     // Make sure we can link the given provider
@@ -107,11 +106,12 @@ export class ApiIdentityUserService {
     }
 
     // Verify the signature
-    const verified = nacl.sign.detached.verify(
-      Uint8Array.from(Buffer.from(found.challenge)),
-      b58.decode(signature),
-      new PublicKey(found.providerId).toBuffer(),
-    )
+    const verified = verifySignature({
+      challenge: found.challenge,
+      publicKey: found.identity.providerId,
+      signature,
+      useLedger,
+    })
 
     if (!verified) {
       throw new Error(`Identity challenge verification failed.`)

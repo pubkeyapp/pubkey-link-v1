@@ -940,6 +940,7 @@ export type VerifyIdentityChallengeInput = {
   provider: IdentityProvider
   providerId: Scalars['String']
   signature: Scalars['String']
+  useLedger?: InputMaybe<Scalars['Boolean']>
 }
 
 export type AssetDetailsFragment = {

@@ -1,9 +1,9 @@
 import { Button, Tooltip } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { ellipsify, Identity } from '@pubkey-link/sdk'
+import { IdentityProviderSolana } from '@pubkey-link/web/identity/data-access'
 import { SolanaClusterProvider } from '@pubkey-link/web/solana/data-access'
 import { IconAlertCircle } from '@tabler/icons-react'
-import { IdentityUiSolanaLinkProvider } from './identity-ui-solana-link-provider'
 import { IdentityUiSolanaVerifyWizard } from './identity-ui-solana-verify-wizard'
 
 export function IdentityUiSolanaVerifyButton({ identity, refresh }: { identity: Identity; refresh: () => void }) {
@@ -19,9 +19,9 @@ export function IdentityUiSolanaVerifyButton({ identity, refresh }: { identity: 
             title: 'Verify Identity',
             children: (
               <SolanaClusterProvider autoConnect={true}>
-                <IdentityUiSolanaLinkProvider identities={[]} refresh={refresh}>
+                <IdentityProviderSolana refresh={refresh}>
                   <IdentityUiSolanaVerifyWizard identity={identity} refresh={refresh} />
-                </IdentityUiSolanaLinkProvider>
+                </IdentityProviderSolana>
               </SolanaClusterProvider>
             ),
           })
