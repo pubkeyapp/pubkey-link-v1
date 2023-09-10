@@ -27,7 +27,7 @@ export class ApiCollectionSyncService {
 
   async syncCollection(adminId: string, collectionId: string) {
     await this.core.ensureUserAdmin(adminId)
-    await this.updateCollectionMetadata(adminId, collectionId)
+    await this.updateCollectionMetadata(collectionId)
     // FIXME: The deep syncing of the entire collection is currently disabled
     // throw new Error('Syncing collections is currently disabled')
     // const collection = await this.findOneCollection(adminId, collectionId)
@@ -38,20 +38,11 @@ export class ApiCollectionSyncService {
     return true
   }
 
-  private async findOneCollection(collectionId: string) {
-    const found = await this.core.data.collection.findUnique({
-      where: { id: collectionId },
-      include: { combos: { include: { attributes: true } }, attributes: true },
-    })
-    if (!found) {
+  private async updateCollectionMetadata(collectionId: string) {
+    const collection = await this.core.data.collection.findUnique({ where: { id: collectionId } })
+    if (!collection) {
       throw new Error(`Collection ${collectionId} not found`)
     }
-    return found
-  }
-
-  async updateCollectionMetadata(adminId: string, collectionId: string) {
-    await this.core.ensureUserAdmin(adminId)
-    const collection = await this.findOneCollection(collectionId)
     const metadata = await this.network.getTokenMetadata(collection.network, collection.account)
     if (!metadata || !metadata.length) {
       throw new Error(`Metadata for collection ${collectionId} not found`)
