@@ -65,7 +65,7 @@ export class ApiNetworkService {
     ])
 
     for (const network of networks) {
-      assets[network] = [...owned[network], ...staked[network]]
+      assets[network] = [...(owned[network] ?? []), ...(staked[network] ?? [])]
     }
 
     return assets
