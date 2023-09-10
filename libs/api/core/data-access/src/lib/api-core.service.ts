@@ -128,7 +128,7 @@ export class ApiCoreService {
 function getNetworks(provider: IdentityProvider): NetworkType[] {
   switch (provider) {
     case IdentityProvider.Solana:
-      return [NetworkType.SolanaMainnet]
+      return [NetworkType.SolanaDevnet, NetworkType.SolanaMainnet]
     default:
       throw new Error(`Provider ${provider} not supported`)
   }
