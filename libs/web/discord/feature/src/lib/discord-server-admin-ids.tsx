@@ -1,4 +1,4 @@
-import { ActionIcon, MultiSelect } from '@mantine/core'
+import { ActionIcon, MultiSelect, Tooltip } from '@mantine/core'
 import { DiscordServer } from '@pubkey-link/sdk'
 import { useAdminFindOneDiscordServer } from '@pubkey-link/web/discord/data-access'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
@@ -37,30 +37,32 @@ export function DiscordServerAdminIds({ server, refresh }: { server: DiscordServ
             value={value}
             onChange={setValue}
             rightSection={
-              <ActionIcon
-                disabled={!changed}
-                variant={'filled'}
-                color={changed ? 'green' : 'gray'}
-                onClick={async () => {
-                  return sdk
-                    .adminUpdateDiscordServer({
-                      serverId: server.id,
-                      input: { adminIds: value },
-                    })
-                    .then(() => {
-                      showNotificationSuccess('Updated')
-                      refresh()
-                      return true
-                    })
-                    .catch((err) => {
-                      console.error(err)
-                      showNotificationError('An error occurred')
-                      return false
-                    })
-                }}
-              >
-                <IconCheck />
-              </ActionIcon>
+              <Tooltip label={changed ? 'Save changes' : 'No changes'} position="left">
+                <ActionIcon
+                  disabled={!changed}
+                  variant={'filled'}
+                  color={changed ? 'green' : 'gray'}
+                  onClick={async () => {
+                    return sdk
+                      .adminUpdateDiscordServer({
+                        serverId: server.id,
+                        input: { adminIds: value },
+                      })
+                      .then(() => {
+                        showNotificationSuccess('Updated')
+                        refresh()
+                        return true
+                      })
+                      .catch((err) => {
+                        console.error(err)
+                        showNotificationError('An error occurred')
+                        return false
+                      })
+                  }}
+                >
+                  <IconCheck />
+                </ActionIcon>
+              </Tooltip>
             }
           />
         </UiStack>
