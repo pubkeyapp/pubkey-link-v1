@@ -3,8 +3,8 @@ import { modals } from '@mantine/modals'
 import { useAdminCollectionCombos } from '@pubkey-link/web/collection/data-access'
 import { AdminUiCollectionComboCreateForm } from './admin-ui-collection-combo-create-form'
 
-export function AdminUiCollectionComboCreateModal({collectionId}: { collectionId: string }) {
-  const {query, createCollectionCombo} = useAdminCollectionCombos({collectionId})
+export function AdminUiCollectionComboCreateModal({ collectionId }: { collectionId: string }) {
+  const { query, createCollectionCombo } = useAdminCollectionCombos({ collectionId })
   return (
     <Button
       onClick={() => {
