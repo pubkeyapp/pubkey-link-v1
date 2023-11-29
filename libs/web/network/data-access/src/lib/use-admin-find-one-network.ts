@@ -5,11 +5,11 @@ import { useQuery } from '@tanstack/react-query'
 
 export function useAdminFindOneNetwork({ networkId }: { networkId: string }) {
   const sdk = useWebSdk()
-  const query = useQuery(
-    ['admin', 'networks', 'get', networkId],
-    () => sdk.adminFindOneNetwork({ networkId }).then((res) => res.data),
-    { retry: 0 },
-  )
+  const query = useQuery({
+    queryKey: ['admin', 'networks', 'get', networkId],
+    queryFn: () => sdk.adminFindOneNetwork({ networkId }).then((res) => res.data),
+    retry: 0,
+  })
   const network = query.data?.item ?? undefined
 
   return {

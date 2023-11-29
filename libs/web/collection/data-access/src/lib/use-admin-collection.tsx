@@ -5,11 +5,11 @@ import { useQuery } from '@tanstack/react-query'
 
 export function useAdminCollection(collectionId: string) {
   const sdk = useWebSdk()
-  const query = useQuery(
-    ['admin', 'collections', 'get', collectionId],
-    () => sdk.adminFindOneCollection({ collectionId }).then((res) => res.data),
-    { retry: 0 },
-  )
+  const query = useQuery({
+    queryKey: ['admin', 'collections', 'get', collectionId],
+    queryFn: () => sdk.adminFindOneCollection({ collectionId }).then((res) => res.data),
+    retry: 0,
+  })
   const collection = query.data?.item ?? undefined
 
   return {

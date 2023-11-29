@@ -4,11 +4,11 @@ import { useQuery } from '@tanstack/react-query'
 
 export function useAdminReportDiscordMemberWallets(input: AdminReportDiscordMemberWalletsInput) {
   const sdk = useWebSdk()
-  const query = useQuery(
-    ['admin', 'report-discord-member-wallets', input],
-    () => sdk.adminReportDiscordMemberWallets({ input }).then((res) => res.data),
-    { retry: 0 },
-  )
+  const query = useQuery({
+    queryKey: ['admin', 'report-discord-member-wallets', input],
+    queryFn: () => sdk.adminReportDiscordMemberWallets({ input }).then((res) => res.data),
+    retry: 0,
+  })
 
   return {
     query,
