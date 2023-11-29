@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { WebUserUiAvatar } from './web-user-ui-avatar'
 
-export interface WebUserUiUserProps extends GroupProps {
+export interface WebUserUiUserProps extends Omit<GroupProps, 'content'> {
   action?: ReactNode
   avatar?: ReactNode
   children?: ReactNode

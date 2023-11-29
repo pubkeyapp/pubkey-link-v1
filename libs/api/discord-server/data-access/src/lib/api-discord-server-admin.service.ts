@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { DiscordServer as PrismaDiscordServer } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
-import { AdminCreateDiscordRoleInput, AdminDeleteDiscordRoleInput } from '@pubkey-link/api/discord-server/data-access'
+
 import { ApiDiscordService } from '@pubkey-link/api/discord/data-access'
 import { AdminFindManyDiscordServerInput } from './dto/admin-find-many-discord-server-input'
 import { AdminUpdateDiscordServerInput } from './dto/admin-update-discord-server.input'
 import { DiscordServerPaging } from './entity/discord-server-paging'
 import { getAdminDiscordServerInput } from './helpers/get-admin-discord-server-input'
+import { AdminCreateDiscordRoleInput } from './dto/admin-create-discord-role.input'
+import { AdminDeleteDiscordRoleInput } from './dto/admin-delete-discord-role-input'
 
 @Injectable()
 export class ApiDiscordServerAdminService {

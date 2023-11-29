@@ -1,5 +1,5 @@
 import { Button, Group, Select } from '@mantine/core'
-import { User, UserRole, UserStatus } from '@pubkey-link/sdk'
+import { UserRole, UserStatus } from '@pubkey-link/sdk'
 import { UiBack, UiAdminPage, UiAlert, UiLoader, UiPagination, UiSearchField } from '@pubkey-link/web/ui/core'
 import { useAdminFindManyUser } from '@pubkey-link/web/user/data-access'
 import { AdminUiUserTable, userRoleOptions, userStatusOptions } from '@pubkey-link/web/user/ui'

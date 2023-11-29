@@ -8,7 +8,6 @@ import { OgmaModule } from '@ogma/nestjs-module'
 import { join } from 'path'
 
 import { ApiCoreConfigService } from './api-core-config.service'
-import { ApiCoreDataService } from './api-core-data.service'
 import { ApiCoreOgmaConfig } from './api-core-ogma-config'
 import { ApiCoreProvisionService } from './api-core-provision.service'
 import { serveStaticFactory } from './api-core.helpers'
@@ -47,7 +46,7 @@ import { AppContext } from './entity/app-context'
     ScheduleModule.forRoot(),
     ServeStaticModule.forRootAsync({ useFactory: serveStaticFactory() }),
   ],
-  providers: [ApiCoreService, ApiCoreConfigService, ApiCoreDataService, ApiCoreProvisionService],
+  providers: [ApiCoreService, ApiCoreConfigService, ApiCoreProvisionService],
   exports: [ApiCoreService],
 })
 export class ApiCoreDataAccessModule {}

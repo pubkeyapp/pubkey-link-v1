@@ -1,4 +1,4 @@
-import { ActionIcon, Anchor, Avatar, Badge, Button, Code, Group, ScrollArea, Stack, Text } from '@mantine/core'
+import { ActionIcon, Anchor, Badge, Button, Code, Group, ScrollArea, Stack, Text } from '@mantine/core'
 import { Collection } from '@pubkey-link/sdk'
 
 import { IconTrash } from '@tabler/icons-react'
