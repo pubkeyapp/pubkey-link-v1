@@ -14,7 +14,7 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
       clientID: process.env['DISCORD_CLIENT_ID'],
       clientSecret: process.env['DISCORD_CLIENT_SECRET'],
       callbackURL: core.config.webUrl + '/api/auth/discord/callback',
-      scope: ['guilds', 'email', 'identify'],
+      scope: ['guilds', 'identify'],
       passReqToCallback: true,
     })
   }
@@ -56,7 +56,6 @@ function createDiscordProfile(profile: Profile) {
 
   return {
     externalId: profile.id,
-    email: profile.email,
     username: parseInt(profile.discriminator) > 0 ? `${profile.username}#${profile.discriminator}` : profile.username,
     avatarUrl,
     bannerUrl,
