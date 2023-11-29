@@ -146,6 +146,7 @@ export type AdminUpdateCollectionInput = {
 }
 
 export type AdminUpdateDiscordServerInput = {
+  adminIds?: InputMaybe<Array<Scalars['String']>>
   botChannel?: InputMaybe<Scalars['String']>
   enableSync?: InputMaybe<Scalars['Boolean']>
 }
@@ -288,6 +289,7 @@ export type DiscordRoleCondition = {
 
 export type DiscordServer = {
   __typename?: 'DiscordServer'
+  adminIds?: Maybe<Array<Scalars['String']>>
   botChannel?: Maybe<Scalars['String']>
   enableSync: Scalars['Boolean']
   enabled: Scalars['Boolean']
@@ -2119,6 +2121,7 @@ export type DiscordServerDetailsFragment = {
   id: string
   name?: string | null
   owner?: boolean | null
+  adminIds?: Array<string> | null
   enabled: boolean
   enableSync: boolean
   botChannel?: string | null
@@ -2144,6 +2147,7 @@ export type AdminFindOneDiscordServerQuery = {
     id: string
     name?: string | null
     owner?: boolean | null
+    adminIds?: Array<string> | null
     enabled: boolean
     enableSync: boolean
     botChannel?: string | null
@@ -2246,6 +2250,7 @@ export type AdminFindManyDiscordServerQuery = {
       id: string
       name?: string | null
       owner?: boolean | null
+      adminIds?: Array<string> | null
       enabled: boolean
       enableSync: boolean
       botChannel?: string | null
@@ -2289,6 +2294,7 @@ export type AdminUpdateDiscordServerMutation = {
     id: string
     name?: string | null
     owner?: boolean | null
+    adminIds?: Array<string> | null
     enabled: boolean
     enableSync: boolean
     botChannel?: string | null
@@ -2309,6 +2315,7 @@ export type UserFindManyDiscordServerQuery = {
     id: string
     name?: string | null
     owner?: boolean | null
+    adminIds?: Array<string> | null
     enabled: boolean
     enableSync: boolean
     botChannel?: string | null
@@ -3300,6 +3307,7 @@ export const DiscordServerDetailsFragmentDoc = gql`
     id
     name
     owner
+    adminIds
     enabled
     enableSync
     botChannel

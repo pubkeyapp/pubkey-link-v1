@@ -3,6 +3,7 @@ import { AuthUiDiscordServerUpdateForm } from '@pubkey-link/web/discord/ui'
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
 import { UiCard, UiStack } from '@pubkey-link/web/ui/core'
 import { showNotificationError, showNotificationSuccess } from '@pubkey-link/web/ui/notifications'
+import { DiscordServerAdminIds } from './discord-server-admin-ids'
 
 export function DiscordServerDetailTabSettings({ refresh, server }: { server: DiscordServer; refresh: () => void }) {
   const sdk = useWebSdk()
@@ -27,6 +28,9 @@ export function DiscordServerDetailTabSettings({ refresh, server }: { server: Di
               })
           }
         />
+      </UiCard>
+      <UiCard>
+        <DiscordServerAdminIds server={server} refresh={refresh} />
       </UiCard>
     </UiStack>
   )

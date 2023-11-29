@@ -92,6 +92,7 @@ model DiscordServer {
   icon        String?
   botChannel  String?
   permissions String?
+  adminIds    String[]
   enabled     Boolean       @default(false)
   enableSync  Boolean       @default(true)
   features    String[]

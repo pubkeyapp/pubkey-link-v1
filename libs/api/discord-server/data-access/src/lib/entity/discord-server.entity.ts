@@ -20,6 +20,8 @@ export class DiscordServer {
   @Field()
   enableSync!: boolean
   @Field(() => [String], { nullable: true })
+  adminIds!: string[]
+  @Field(() => [String], { nullable: true })
   features!: string[]
   @Field(() => [DiscordRole], { nullable: true })
   roles?: DiscordRole[]

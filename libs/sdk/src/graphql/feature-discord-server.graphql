@@ -10,6 +10,7 @@ fragment DiscordServerDetails on DiscordServer {
   id
   name
   owner
+  adminIds
   enabled
   enableSync
   botChannel
