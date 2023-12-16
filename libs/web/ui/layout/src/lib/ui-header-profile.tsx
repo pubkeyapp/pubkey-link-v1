@@ -1,15 +1,7 @@
-import { Avatar, Button, Group, Menu, rem, useMantineColorScheme } from '@mantine/core'
+import { Avatar, Button, Menu, useMantineColorScheme } from '@mantine/core'
 import { UserRole } from '@pubkey-link/sdk'
 import { useWebAuth } from '@pubkey-link/web/auth/data-access'
-import {
-  IconChevronDown,
-  IconLogout,
-  IconMoonStars,
-  IconSettings,
-  IconShield,
-  IconSun,
-  IconUser,
-} from '@tabler/icons-react'
+import { IconLogout, IconMoonStars, IconSettings, IconShield, IconSun, IconUser } from '@tabler/icons-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -28,11 +20,8 @@ export function UiHeaderProfile() {
       withArrow
     >
       <Menu.Target>
-        <Button py={0} pl={0} pr={4} variant={open ? 'light' : 'default'} radius="xl">
-          <Group spacing={4} p={0}>
-            <Avatar src={user?.avatarUrl} alt={user?.username ?? 'User Avatar'} radius={100} size={34} />
-            <IconChevronDown size={rem(12)} stroke={1.5} />
-          </Group>
+        <Button p={1} color="brand" variant={open ? 'filled' : 'subtle'} radius="xl">
+          <Avatar src={user?.avatarUrl} alt={user?.username ?? 'User Avatar'} radius={100} size={32} />
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
