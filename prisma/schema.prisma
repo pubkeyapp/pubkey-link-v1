@@ -22,7 +22,7 @@ model Asset {
   rawHash           String?
   name              String
   symbol            String?
-  collection        Collection        @relation(fields: [collectionAccount, network], references: [account, network])
+  collection        Collection        @relation(fields: [collectionAccount, network], references: [account, network], onDelete: Cascade)
   collectionAccount String
   identity          Identity?         @relation(fields: [identityProvider, identityId], references: [provider, providerId])
   identityProvider  IdentityProvider?
@@ -40,7 +40,7 @@ model AssetAttribute {
   value        String
   count        Int?
   combos       CollectionCombo[]
-  collection   Collection        @relation(fields: [collectionId], references: [id])
+  collection   Collection        @relation(fields: [collectionId], references: [id], onDelete: Cascade)
   collectionId String
 
   @@unique([key, value, collectionId])
@@ -75,7 +75,7 @@ model CollectionCombo {
   name              String
   description       String?
   attributes        AssetAttribute[]
-  collection        Collection             @relation(fields: [collectionAccount, network], references: [account, network])
+  collection        Collection             @relation(fields: [collectionAccount, network], references: [account, network], onDelete: Cascade)
   collectionAccount String
   conditions        DiscordRoleCondition[]
   Network           Network                @relation(fields: [network], references: [type])
@@ -112,7 +112,7 @@ model DiscordRole {
   permissions String
   managed     Boolean
   mentionable Boolean
-  server      DiscordServer          @relation(fields: [serverId], references: [id])
+  server      DiscordServer          @relation(fields: [serverId], references: [id], onDelete: Cascade)
   serverId    String
   conditions  DiscordRoleCondition[]
 }
@@ -121,7 +121,7 @@ model DiscordRoleCondition {
   id                String            @id @default(cuid())
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @default(now()) @updatedAt
-  role              DiscordRole       @relation(fields: [roleId], references: [id])
+  role              DiscordRole       @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId            String
   collectionsAmount Int               @default(1)
   collections       Collection[]
