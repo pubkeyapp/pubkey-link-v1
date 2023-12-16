@@ -5,6 +5,7 @@ import { FindDiscordIdentityCommand } from './find-discord.command'
 import { FindSolanaIdentityCommand } from './find-solana.command'
 import { PingCommand } from './ping.command'
 import { SyncCommand } from './sync.command'
+import { VerifyCommand } from './verify.command'
 import { WhoamiCommand } from './whoami.command'
 
 export const commands = [
@@ -15,5 +16,6 @@ export const commands = [
   FindDiscordIdentityCommand,
   PingCommand,
   SyncCommand,
+  VerifyCommand,
   WhoamiCommand,
 ]
