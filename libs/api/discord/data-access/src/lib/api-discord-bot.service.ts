@@ -20,8 +20,13 @@ export class ApiDiscordBotService {
     this.logger.verbose(`Bot synced servers`)
 
     client.user.setPresence({ activities: [{ type: ActivityType.Watching, name: 'YOU 👀 on Solana' }] })
-    const channel = this.ensureCommandChannel()
-    this.logger.verbose(`Found bot command channel: ${channel?.url}`)
+    try {
+      const channel = this.ensureCommandChannel()
+      this.logger.verbose(`Found bot command channel: ${channel?.url}`)
+    } catch (error) {
+      this.logger.error(`Bot command channel not found`)
+      this.logger.error(error)
+    }
 
     this.logger.verbose(`Bot Invite url: ${this.inviteUrl()}`)
   }
