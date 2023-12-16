@@ -52,6 +52,10 @@ mutation adminTestDiscordServerBotChannel($serverId: String!) {
   adminTestDiscordServerBotChannel(serverId: $serverId)
 }
 
+mutation adminDeleteDiscordServer($serverId: String!) {
+  deleted: adminDeleteDiscordServer(serverId: $serverId)
+}
+
 mutation adminUpdateDiscordServer($serverId: String!, $input: AdminUpdateDiscordServerInput!) {
   updated: adminUpdateDiscordServer(serverId: $serverId, input: $input) {
     ...DiscordServerDetails

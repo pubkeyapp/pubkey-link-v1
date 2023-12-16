@@ -57,6 +57,11 @@ export class ApiDiscordServerAdminResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
+  adminDeleteDiscordServer(@CtxUser() user: User, @Args('serverId') serverId: string) {
+    return this.service.admin.deleteDiscordServer(user.id, serverId)
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
   adminDeleteDiscordRoleCondition(@CtxUser() user: User, @Args('conditionId') conditionId: string) {
     return this.service.admin.deleteDiscordRoleCondition(user.id, conditionId)
   }

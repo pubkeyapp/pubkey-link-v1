@@ -4,12 +4,13 @@ import { DiscordUiServerAvatar, DiscordUiServerTitle } from '@pubkey-link/web/di
 import { useWebSdk } from '@pubkey-link/web/shell/data-access'
 import { UiAdminPage, UiAlert, UiBack, UiDebugModal, UiLoader, UiTabRoutes } from '@pubkey-link/web/ui/core'
 import { showNotificationError, showNotificationSuccess } from '@pubkey-link/web/ui/notifications'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { DiscordServerDetailTabConditions } from './discord-server-detail-tab-conditions'
 import { DiscordServerDetailTabRoles } from './discord-server-detail-tab-roles'
 import { DiscordServerDetailTabSettings } from './discord-server-detail-tab-settings'
 
 export function WebAdminDiscordServerDetailFeature() {
+  const navigate = useNavigate()
   const { serverId } = useParams() as { serverId: string }
 
   const { query } = useAdminFindOneDiscordServer({ serverId })
@@ -37,6 +38,27 @@ export function WebAdminDiscordServerDetailFeature() {
       rightAction={
         <Group>
           <UiDebugModal data={server} />
+          <Button
+            disabled={server?.enabled}
+            onClick={() =>
+              sdk
+                .adminDeleteDiscordServer({ serverId: server?.id as string })
+                .then((res) => {
+                  if (res) {
+                    navigate('/admin/discord-servers')
+                  }
+                  showNotificationSuccess('Server deleted')
+                  return true
+                })
+                .catch((err) => {
+                  console.error(err)
+                  showNotificationError('An error occurred')
+                  return false
+                })
+            }
+          >
+            Delete Server
+          </Button>
           <Button
             disabled={!server?.botChannel}
             onClick={() =>

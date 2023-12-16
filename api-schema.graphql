@@ -389,6 +389,7 @@ type Mutation {
   adminDeleteCollectionCombo(collectionComboId: String!): Boolean
   adminDeleteDiscordRole(input: AdminDeleteDiscordRoleInput!): Boolean
   adminDeleteDiscordRoleCondition(conditionId: String!): Boolean
+  adminDeleteDiscordServer(serverId: String!): Boolean
   adminDeleteEmail(emailId: String!): Boolean
   adminDeleteIdentity(identityId: String!): Boolean
   adminDeleteNetwork(networkId: String!): Boolean

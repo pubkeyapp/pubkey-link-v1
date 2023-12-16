@@ -1,217 +1,219 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { GraphQLClient } from 'graphql-request'
-import * as Dom from 'graphql-request/dist/types.dom'
-import { print } from 'graphql'
+import { GraphQLClientRequestHeaders } from 'graphql-request/build/cjs/types'
+import { GraphQLError, print } from 'graphql'
 import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never }
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string
-  String: string
-  Boolean: boolean
-  Int: number
-  Float: number
+  ID: { input: string; output: string }
+  String: { input: string; output: string }
+  Boolean: { input: boolean; output: boolean }
+  Int: { input: number; output: number }
+  Float: { input: number; output: number }
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: Date
+  DateTime: { input: Date; output: Date }
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
-  JSON: any
+  JSON: { input: any; output: any }
 }
 
 export type AdminCreateCollectionComboInput = {
-  collectionId: Scalars['String']
-  description?: InputMaybe<Scalars['String']>
-  name: Scalars['String']
+  collectionId: Scalars['String']['input']
+  description?: InputMaybe<Scalars['String']['input']>
+  name: Scalars['String']['input']
 }
 
 export type AdminCreateCollectionInput = {
-  account: Scalars['String']
+  account: Scalars['String']['input']
   network?: InputMaybe<NetworkType>
 }
 
 export type AdminCreateDiscordRoleInput = {
-  name: Scalars['String']
-  serverId: Scalars['String']
+  name: Scalars['String']['input']
+  serverId: Scalars['String']['input']
 }
 
 export type AdminCreateEmailInput = {
-  email: Scalars['String']
-  ownerId: Scalars['String']
+  email: Scalars['String']['input']
+  ownerId: Scalars['String']['input']
 }
 
 export type AdminCreateIdentityInput = {
-  ownerId: Scalars['String']
+  ownerId: Scalars['String']['input']
   provider: IdentityProvider
-  providerId: Scalars['String']
+  providerId: Scalars['String']['input']
 }
 
 export type AdminCreateNetworkInput = {
-  endpoint: Scalars['String']
-  name: Scalars['String']
+  endpoint: Scalars['String']['input']
+  name: Scalars['String']['input']
   type?: InputMaybe<NetworkType>
 }
 
 export type AdminCreateNetworkTokenInput = {
-  address: Scalars['String']
-  decimals?: InputMaybe<Scalars['Int']>
+  address: Scalars['String']['input']
+  decimals?: InputMaybe<Scalars['Int']['input']>
   network?: InputMaybe<NetworkType>
-  symbol: Scalars['String']
+  symbol: Scalars['String']['input']
 }
 
 export type AdminCreateUserInput = {
-  password?: InputMaybe<Scalars['String']>
-  username: Scalars['String']
+  password?: InputMaybe<Scalars['String']['input']>
+  username: Scalars['String']['input']
 }
 
 export type AdminDeleteDiscordRoleInput = {
-  roleId: Scalars['String']
-  serverId: Scalars['String']
+  roleId: Scalars['String']['input']
+  serverId: Scalars['String']['input']
 }
 
 export type AdminFindEmailsInput = {
-  ownerId: Scalars['String']
+  ownerId: Scalars['String']['input']
 }
 
 export type AdminFindManyAssetInput = {
-  collectionAccount?: InputMaybe<Scalars['String']>
-  limit?: InputMaybe<Scalars['Int']>
+  collectionAccount?: InputMaybe<Scalars['String']['input']>
+  limit?: InputMaybe<Scalars['Int']['input']>
   network?: InputMaybe<NetworkType>
-  page?: InputMaybe<Scalars['Int']>
-  search?: InputMaybe<Scalars['String']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
 }
 
 export type AdminFindManyCollectionComboInput = {
-  collectionId: Scalars['String']
-  limit?: InputMaybe<Scalars['Int']>
+  collectionId: Scalars['String']['input']
+  limit?: InputMaybe<Scalars['Int']['input']>
   network?: InputMaybe<NetworkType>
-  page?: InputMaybe<Scalars['Int']>
-  search?: InputMaybe<Scalars['String']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
 }
 
 export type AdminFindManyCollectionInput = {
-  limit?: InputMaybe<Scalars['Int']>
+  limit?: InputMaybe<Scalars['Int']['input']>
   network?: InputMaybe<NetworkType>
-  page?: InputMaybe<Scalars['Int']>
-  search?: InputMaybe<Scalars['String']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
 }
 
 export type AdminFindManyDiscordServerInput = {
-  limit?: InputMaybe<Scalars['Int']>
-  page?: InputMaybe<Scalars['Int']>
-  search?: InputMaybe<Scalars['String']>
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
 }
 
 export type AdminFindManyIdentityInput = {
-  ownerId?: InputMaybe<Scalars['String']>
+  ownerId?: InputMaybe<Scalars['String']['input']>
   provider?: InputMaybe<IdentityProvider>
 }
 
 export type AdminFindManyNetworkInput = {
-  limit?: InputMaybe<Scalars['Int']>
-  page?: InputMaybe<Scalars['Int']>
-  search?: InputMaybe<Scalars['String']>
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
   type?: InputMaybe<NetworkType>
 }
 
 export type AdminFindManyUserInput = {
-  limit?: InputMaybe<Scalars['Int']>
-  page?: InputMaybe<Scalars['Int']>
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
   role?: InputMaybe<UserRole>
-  search?: InputMaybe<Scalars['String']>
+  search?: InputMaybe<Scalars['String']['input']>
   status?: InputMaybe<UserStatus>
 }
 
 export type AdminReportDiscordMemberWalletsInput = {
-  collectionAccount: Scalars['String']
-  serverId: Scalars['String']
+  collectionAccount: Scalars['String']['input']
+  serverId: Scalars['String']['input']
 }
 
 export type AdminUpdateCollectionComboInput = {
-  description?: InputMaybe<Scalars['String']>
-  name?: InputMaybe<Scalars['String']>
+  description?: InputMaybe<Scalars['String']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
 }
 
 export type AdminUpdateCollectionInput = {
-  account?: InputMaybe<Scalars['String']>
-  description: Scalars['String']
-  imageUrl: Scalars['String']
-  metadataUrl: Scalars['String']
-  name?: InputMaybe<Scalars['String']>
-  symbol: Scalars['String']
-  vaultId?: InputMaybe<Scalars['String']>
+  account?: InputMaybe<Scalars['String']['input']>
+  description: Scalars['String']['input']
+  imageUrl: Scalars['String']['input']
+  metadataUrl: Scalars['String']['input']
+  name?: InputMaybe<Scalars['String']['input']>
+  symbol: Scalars['String']['input']
+  vaultId?: InputMaybe<Scalars['String']['input']>
 }
 
 export type AdminUpdateDiscordServerInput = {
-  adminIds?: InputMaybe<Array<Scalars['String']>>
-  botChannel?: InputMaybe<Scalars['String']>
-  enableSync?: InputMaybe<Scalars['Boolean']>
+  adminIds?: InputMaybe<Array<Scalars['String']['input']>>
+  botChannel?: InputMaybe<Scalars['String']['input']>
+  enableSync?: InputMaybe<Scalars['Boolean']['input']>
 }
 
 export type AdminUpdateEmailInput = {
-  default?: InputMaybe<Scalars['Boolean']>
-  email?: InputMaybe<Scalars['String']>
-  private?: InputMaybe<Scalars['Boolean']>
-  verified?: InputMaybe<Scalars['Boolean']>
+  default?: InputMaybe<Scalars['Boolean']['input']>
+  email?: InputMaybe<Scalars['String']['input']>
+  private?: InputMaybe<Scalars['Boolean']['input']>
+  verified?: InputMaybe<Scalars['Boolean']['input']>
 }
 
 export type AdminUpdateNetworkInput = {
-  endpoint: Scalars['String']
-  name: Scalars['String']
+  endpoint: Scalars['String']['input']
+  name: Scalars['String']['input']
 }
 
 export type AdminUpdateUserInput = {
-  avatarUrl?: InputMaybe<Scalars['String']>
-  developer?: InputMaybe<Scalars['Boolean']>
-  name?: InputMaybe<Scalars['String']>
+  avatarUrl?: InputMaybe<Scalars['String']['input']>
+  developer?: InputMaybe<Scalars['Boolean']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
   role?: InputMaybe<UserRole>
   status?: InputMaybe<UserStatus>
-  username?: InputMaybe<Scalars['String']>
+  username?: InputMaybe<Scalars['String']['input']>
 }
 
 export type AppConfig = {
   __typename?: 'AppConfig'
-  authDiscordEnabled: Scalars['Boolean']
-  authPasswordEnabled: Scalars['Boolean']
-  authRegisterEnabled: Scalars['Boolean']
+  authDiscordEnabled: Scalars['Boolean']['output']
+  authPasswordEnabled: Scalars['Boolean']['output']
+  authRegisterEnabled: Scalars['Boolean']['output']
 }
 
 export type Asset = {
   __typename?: 'Asset'
-  account?: Maybe<Scalars['String']>
-  attributeMap?: Maybe<Scalars['JSON']>
+  account?: Maybe<Scalars['String']['output']>
+  attributeMap?: Maybe<Scalars['JSON']['output']>
   attributes?: Maybe<Array<AssetAttribute>>
   collection?: Maybe<Collection>
-  createdAt: Scalars['DateTime']
-  id: Scalars['String']
+  createdAt: Scalars['DateTime']['output']
+  id: Scalars['String']['output']
   identity?: Maybe<Identity>
-  image?: Maybe<Scalars['String']>
-  metadata?: Maybe<Scalars['JSON']>
-  name: Scalars['String']
+  image?: Maybe<Scalars['String']['output']>
+  metadata?: Maybe<Scalars['JSON']['output']>
+  name: Scalars['String']['output']
   network?: Maybe<NetworkType>
-  owner?: Maybe<Scalars['String']>
-  raw?: Maybe<Scalars['JSON']>
-  symbol?: Maybe<Scalars['String']>
-  updatedAt: Scalars['DateTime']
+  owner?: Maybe<Scalars['String']['output']>
+  raw?: Maybe<Scalars['JSON']['output']>
+  symbol?: Maybe<Scalars['String']['output']>
+  updatedAt: Scalars['DateTime']['output']
 }
 
 export type AssetAttribute = {
   __typename?: 'AssetAttribute'
-  count?: Maybe<Scalars['Int']>
-  createdAt?: Maybe<Scalars['DateTime']>
-  id?: Maybe<Scalars['String']>
-  key: Scalars['String']
-  updatedAt?: Maybe<Scalars['DateTime']>
-  value: Scalars['String']
+  count?: Maybe<Scalars['Int']['output']>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  id?: Maybe<Scalars['String']['output']>
+  key: Scalars['String']['output']
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  value: Scalars['String']['output']
 }
 
 export type AssetAttributeInput = {
-  count?: InputMaybe<Scalars['Int']>
-  key: Scalars['String']
-  value: Scalars['String']
+  count?: InputMaybe<Scalars['Int']['input']>
+  key: Scalars['String']['input']
+  value: Scalars['String']['input']
 }
 
 export type AssetPaging = {
@@ -222,32 +224,32 @@ export type AssetPaging = {
 
 export type Collection = {
   __typename?: 'Collection'
-  account?: Maybe<Scalars['String']>
-  assetCount?: Maybe<Scalars['Int']>
+  account?: Maybe<Scalars['String']['output']>
+  assetCount?: Maybe<Scalars['Int']['output']>
   attributes?: Maybe<Array<AssetAttribute>>
   combos?: Maybe<Array<CollectionCombo>>
-  createdAt: Scalars['DateTime']
-  description?: Maybe<Scalars['String']>
-  id: Scalars['String']
-  imageUrl?: Maybe<Scalars['String']>
-  metadataUrl?: Maybe<Scalars['String']>
-  name: Scalars['String']
+  createdAt: Scalars['DateTime']['output']
+  description?: Maybe<Scalars['String']['output']>
+  id: Scalars['String']['output']
+  imageUrl?: Maybe<Scalars['String']['output']>
+  metadataUrl?: Maybe<Scalars['String']['output']>
+  name: Scalars['String']['output']
   network?: Maybe<NetworkType>
-  symbol?: Maybe<Scalars['String']>
-  updatedAt: Scalars['DateTime']
-  vaultId?: Maybe<Scalars['String']>
+  symbol?: Maybe<Scalars['String']['output']>
+  updatedAt: Scalars['DateTime']['output']
+  vaultId?: Maybe<Scalars['String']['output']>
 }
 
 export type CollectionCombo = {
   __typename?: 'CollectionCombo'
   attributes?: Maybe<Array<AssetAttribute>>
-  collectionAccount?: Maybe<Scalars['String']>
-  createdAt: Scalars['DateTime']
-  description?: Maybe<Scalars['String']>
-  id: Scalars['String']
-  name: Scalars['String']
+  collectionAccount?: Maybe<Scalars['String']['output']>
+  createdAt: Scalars['DateTime']['output']
+  description?: Maybe<Scalars['String']['output']>
+  id: Scalars['String']['output']
+  name: Scalars['String']['output']
   network?: Maybe<NetworkType>
-  updatedAt: Scalars['DateTime']
+  updatedAt: Scalars['DateTime']['output']
 }
 
 export type CollectionComboPaging = {
@@ -264,51 +266,51 @@ export type CollectionPaging = {
 
 export type DiscordRole = {
   __typename?: 'DiscordRole'
-  color?: Maybe<Scalars['Float']>
+  color?: Maybe<Scalars['Float']['output']>
   conditions?: Maybe<Array<DiscordRoleCondition>>
-  hoist?: Maybe<Scalars['Boolean']>
-  id: Scalars['String']
-  managed?: Maybe<Scalars['Boolean']>
-  mentionable?: Maybe<Scalars['Boolean']>
-  name: Scalars['String']
-  permissions?: Maybe<Scalars['String']>
-  position?: Maybe<Scalars['Float']>
-  serverId?: Maybe<Scalars['String']>
+  hoist?: Maybe<Scalars['Boolean']['output']>
+  id: Scalars['String']['output']
+  managed?: Maybe<Scalars['Boolean']['output']>
+  mentionable?: Maybe<Scalars['Boolean']['output']>
+  name: Scalars['String']['output']
+  permissions?: Maybe<Scalars['String']['output']>
+  position?: Maybe<Scalars['Float']['output']>
+  serverId?: Maybe<Scalars['String']['output']>
 }
 
 export type DiscordRoleCondition = {
   __typename?: 'DiscordRoleCondition'
   collections?: Maybe<Array<Collection>>
-  collectionsAmount?: Maybe<Scalars['Int']>
+  collectionsAmount?: Maybe<Scalars['Int']['output']>
   combos?: Maybe<Array<CollectionCombo>>
-  combosAmount?: Maybe<Scalars['Int']>
-  createdAt?: Maybe<Scalars['DateTime']>
-  id?: Maybe<Scalars['String']>
-  updatedAt?: Maybe<Scalars['DateTime']>
+  combosAmount?: Maybe<Scalars['Int']['output']>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  id?: Maybe<Scalars['String']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
 }
 
 export type DiscordServer = {
   __typename?: 'DiscordServer'
-  adminIds?: Maybe<Array<Scalars['String']>>
-  botChannel?: Maybe<Scalars['String']>
-  enableSync: Scalars['Boolean']
-  enabled: Scalars['Boolean']
-  features?: Maybe<Array<Scalars['String']>>
-  icon?: Maybe<Scalars['String']>
-  iconUrl?: Maybe<Scalars['String']>
-  id: Scalars['String']
-  name?: Maybe<Scalars['String']>
-  owner?: Maybe<Scalars['Boolean']>
-  permissions?: Maybe<Scalars['String']>
+  adminIds?: Maybe<Array<Scalars['String']['output']>>
+  botChannel?: Maybe<Scalars['String']['output']>
+  enableSync: Scalars['Boolean']['output']
+  enabled: Scalars['Boolean']['output']
+  features?: Maybe<Array<Scalars['String']['output']>>
+  icon?: Maybe<Scalars['String']['output']>
+  iconUrl?: Maybe<Scalars['String']['output']>
+  id: Scalars['String']['output']
+  name?: Maybe<Scalars['String']['output']>
+  owner?: Maybe<Scalars['Boolean']['output']>
+  permissions?: Maybe<Scalars['String']['output']>
   roles?: Maybe<Array<DiscordRole>>
-  serverUrl?: Maybe<Scalars['String']>
+  serverUrl?: Maybe<Scalars['String']['output']>
 }
 
 export type DiscordServerChannel = {
   __typename?: 'DiscordServerChannel'
-  id: Scalars['String']
-  name: Scalars['String']
-  type: Scalars['String']
+  id: Scalars['String']['output']
+  name: Scalars['String']['output']
+  type: Scalars['String']['output']
 }
 
 export type DiscordServerPaging = {
@@ -319,42 +321,42 @@ export type DiscordServerPaging = {
 
 export type Email = {
   __typename?: 'Email'
-  createdAt: Scalars['DateTime']
-  default?: Maybe<Scalars['Boolean']>
-  email: Scalars['String']
-  id: Scalars['String']
-  private?: Maybe<Scalars['Boolean']>
-  updatedAt: Scalars['DateTime']
-  verified?: Maybe<Scalars['Boolean']>
+  createdAt: Scalars['DateTime']['output']
+  default?: Maybe<Scalars['Boolean']['output']>
+  email: Scalars['String']['output']
+  id: Scalars['String']['output']
+  private?: Maybe<Scalars['Boolean']['output']>
+  updatedAt: Scalars['DateTime']['output']
+  verified?: Maybe<Scalars['Boolean']['output']>
 }
 
 export type Identity = {
   __typename?: 'Identity'
   challenges?: Maybe<Array<IdentityChallenge>>
-  createdAt: Scalars['DateTime']
-  expired?: Maybe<Scalars['Boolean']>
-  id: Scalars['String']
-  name?: Maybe<Scalars['String']>
+  createdAt: Scalars['DateTime']['output']
+  expired?: Maybe<Scalars['Boolean']['output']>
+  id: Scalars['String']['output']
+  name?: Maybe<Scalars['String']['output']>
   owner?: Maybe<User>
-  profile?: Maybe<Scalars['JSON']>
+  profile?: Maybe<Scalars['JSON']['output']>
   provider: IdentityProvider
-  providerId: Scalars['String']
-  updatedAt: Scalars['DateTime']
-  verified?: Maybe<Scalars['Boolean']>
+  providerId: Scalars['String']['output']
+  updatedAt: Scalars['DateTime']['output']
+  verified?: Maybe<Scalars['Boolean']['output']>
 }
 
 export type IdentityChallenge = {
   __typename?: 'IdentityChallenge'
-  challenge: Scalars['String']
-  createdAt: Scalars['DateTime']
-  id: Scalars['String']
-  ip: Scalars['String']
+  challenge: Scalars['String']['output']
+  createdAt: Scalars['DateTime']['output']
+  id: Scalars['String']['output']
+  ip: Scalars['String']['output']
   provider: IdentityProvider
-  providerId: Scalars['String']
-  signature?: Maybe<Scalars['String']>
-  updatedAt: Scalars['DateTime']
-  userAgent: Scalars['String']
-  verified: Scalars['Boolean']
+  providerId: Scalars['String']['output']
+  signature?: Maybe<Scalars['String']['output']>
+  updatedAt: Scalars['DateTime']['output']
+  userAgent: Scalars['String']['output']
+  verified: Scalars['Boolean']['output']
 }
 
 export enum IdentityProvider {
@@ -364,18 +366,18 @@ export enum IdentityProvider {
 
 export type Job = {
   __typename?: 'Job'
-  attemptsMade?: Maybe<Scalars['Int']>
-  data?: Maybe<Scalars['JSON']>
-  duration?: Maybe<Scalars['Int']>
-  failedReason?: Maybe<Scalars['String']>
-  finishedOn?: Maybe<Scalars['DateTime']>
-  id?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
-  opts?: Maybe<Scalars['JSON']>
-  processedOn?: Maybe<Scalars['DateTime']>
-  returnvalue?: Maybe<Scalars['JSON']>
-  stacktrace?: Maybe<Array<Scalars['String']>>
-  timestamp?: Maybe<Scalars['DateTime']>
+  attemptsMade?: Maybe<Scalars['Int']['output']>
+  data?: Maybe<Scalars['JSON']['output']>
+  duration?: Maybe<Scalars['Int']['output']>
+  failedReason?: Maybe<Scalars['String']['output']>
+  finishedOn?: Maybe<Scalars['DateTime']['output']>
+  id?: Maybe<Scalars['String']['output']>
+  name?: Maybe<Scalars['String']['output']>
+  opts?: Maybe<Scalars['JSON']['output']>
+  processedOn?: Maybe<Scalars['DateTime']['output']>
+  returnvalue?: Maybe<Scalars['JSON']['output']>
+  stacktrace?: Maybe<Array<Scalars['String']['output']>>
+  timestamp?: Maybe<Scalars['DateTime']['output']>
 }
 
 export enum JobStatus {
@@ -389,49 +391,50 @@ export enum JobStatus {
 
 export type LinkIdentityInput = {
   provider: IdentityProvider
-  providerId: Scalars['String']
+  providerId: Scalars['String']['input']
 }
 
 export type LoginInput = {
-  password: Scalars['String']
-  username: Scalars['String']
+  password: Scalars['String']['input']
+  username: Scalars['String']['input']
 }
 
 export type Mutation = {
   __typename?: 'Mutation'
   adminAddCollectionComboAttribute?: Maybe<CollectionCombo>
-  adminAddDiscordRoleConditionCollection?: Maybe<Scalars['Boolean']>
-  adminAddDiscordRoleConditionCombo?: Maybe<Scalars['Boolean']>
-  adminCleanQueue?: Maybe<Scalars['Boolean']>
+  adminAddDiscordRoleConditionCollection?: Maybe<Scalars['Boolean']['output']>
+  adminAddDiscordRoleConditionCombo?: Maybe<Scalars['Boolean']['output']>
+  adminCleanQueue?: Maybe<Scalars['Boolean']['output']>
   adminCreateCollection?: Maybe<Collection>
   adminCreateCollectionCombo?: Maybe<CollectionCombo>
-  adminCreateDiscordRole?: Maybe<Scalars['Boolean']>
-  adminCreateDiscordRoleCondition?: Maybe<Scalars['Boolean']>
+  adminCreateDiscordRole?: Maybe<Scalars['Boolean']['output']>
+  adminCreateDiscordRoleCondition?: Maybe<Scalars['Boolean']['output']>
   adminCreateEmail?: Maybe<Email>
   adminCreateIdentity?: Maybe<Identity>
   adminCreateNetwork?: Maybe<Network>
   adminCreateNetworkToken?: Maybe<NetworkToken>
   adminCreateUser?: Maybe<User>
-  adminDeleteAsset?: Maybe<Scalars['Boolean']>
-  adminDeleteCollection?: Maybe<Scalars['Boolean']>
-  adminDeleteCollectionCombo?: Maybe<Scalars['Boolean']>
-  adminDeleteDiscordRole?: Maybe<Scalars['Boolean']>
-  adminDeleteDiscordRoleCondition?: Maybe<Scalars['Boolean']>
-  adminDeleteEmail?: Maybe<Scalars['Boolean']>
-  adminDeleteIdentity?: Maybe<Scalars['Boolean']>
-  adminDeleteNetwork?: Maybe<Scalars['Boolean']>
-  adminDeleteNetworkToken?: Maybe<Scalars['Boolean']>
-  adminDeleteQueueJob?: Maybe<Scalars['Boolean']>
-  adminDeleteUser?: Maybe<Scalars['Boolean']>
-  adminPauseQueue?: Maybe<Scalars['Boolean']>
+  adminDeleteAsset?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteCollection?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteCollectionCombo?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteDiscordRole?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteDiscordRoleCondition?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteDiscordServer?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteEmail?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteIdentity?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteNetwork?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteNetworkToken?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteQueueJob?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteUser?: Maybe<Scalars['Boolean']['output']>
+  adminPauseQueue?: Maybe<Scalars['Boolean']['output']>
   adminRemoveCollectionComboAttribute?: Maybe<CollectionCombo>
-  adminRemoveDiscordRoleConditionCollection?: Maybe<Scalars['Boolean']>
-  adminRemoveDiscordRoleConditionCombo?: Maybe<Scalars['Boolean']>
-  adminResumeQueue?: Maybe<Scalars['Boolean']>
-  adminSyncCollection?: Maybe<Scalars['Boolean']>
-  adminSyncCollections?: Maybe<Scalars['Boolean']>
-  adminSyncDiscordRoles?: Maybe<Scalars['Boolean']>
-  adminTestDiscordServerBotChannel?: Maybe<Scalars['Boolean']>
+  adminRemoveDiscordRoleConditionCollection?: Maybe<Scalars['Boolean']['output']>
+  adminRemoveDiscordRoleConditionCombo?: Maybe<Scalars['Boolean']['output']>
+  adminResumeQueue?: Maybe<Scalars['Boolean']['output']>
+  adminSyncCollection?: Maybe<Scalars['Boolean']['output']>
+  adminSyncCollections?: Maybe<Scalars['Boolean']['output']>
+  adminSyncDiscordRoles?: Maybe<Scalars['Boolean']['output']>
+  adminTestDiscordServerBotChannel?: Maybe<Scalars['Boolean']['output']>
   adminUpdateCollection?: Maybe<Collection>
   adminUpdateCollectionCombo?: Maybe<CollectionCombo>
   adminUpdateDiscordServer?: Maybe<DiscordServer>
@@ -439,27 +442,27 @@ export type Mutation = {
   adminUpdateNetwork?: Maybe<Network>
   adminUpdateUser?: Maybe<User>
   login?: Maybe<User>
-  logout?: Maybe<Scalars['Boolean']>
+  logout?: Maybe<Scalars['Boolean']['output']>
   register?: Maybe<User>
-  userDeleteIdentity?: Maybe<Scalars['Boolean']>
+  userDeleteIdentity?: Maybe<Scalars['Boolean']['output']>
   userLinkIdentity?: Maybe<Identity>
   userUpdateUser?: Maybe<User>
   userVerifyIdentityChallenge?: Maybe<IdentityChallenge>
 }
 
 export type MutationAdminAddCollectionComboAttributeArgs = {
-  collectionComboId: Scalars['String']
+  collectionComboId: Scalars['String']['input']
   input: AssetAttributeInput
 }
 
 export type MutationAdminAddDiscordRoleConditionCollectionArgs = {
-  collectionId: Scalars['String']
-  conditionId: Scalars['String']
+  collectionId: Scalars['String']['input']
+  conditionId: Scalars['String']['input']
 }
 
 export type MutationAdminAddDiscordRoleConditionComboArgs = {
-  comboId: Scalars['String']
-  conditionId: Scalars['String']
+  comboId: Scalars['String']['input']
+  conditionId: Scalars['String']['input']
 }
 
 export type MutationAdminCleanQueueArgs = {
@@ -479,7 +482,7 @@ export type MutationAdminCreateDiscordRoleArgs = {
 }
 
 export type MutationAdminCreateDiscordRoleConditionArgs = {
-  roleId: Scalars['String']
+  roleId: Scalars['String']['input']
 }
 
 export type MutationAdminCreateEmailArgs = {
@@ -503,15 +506,15 @@ export type MutationAdminCreateUserArgs = {
 }
 
 export type MutationAdminDeleteAssetArgs = {
-  assetId: Scalars['String']
+  assetId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteCollectionArgs = {
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteCollectionComboArgs = {
-  collectionComboId: Scalars['String']
+  collectionComboId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteDiscordRoleArgs = {
@@ -519,32 +522,36 @@ export type MutationAdminDeleteDiscordRoleArgs = {
 }
 
 export type MutationAdminDeleteDiscordRoleConditionArgs = {
-  conditionId: Scalars['String']
+  conditionId: Scalars['String']['input']
+}
+
+export type MutationAdminDeleteDiscordServerArgs = {
+  serverId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteEmailArgs = {
-  emailId: Scalars['String']
+  emailId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteIdentityArgs = {
-  identityId: Scalars['String']
+  identityId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteNetworkArgs = {
-  networkId: Scalars['String']
+  networkId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteNetworkTokenArgs = {
-  networkTokenId: Scalars['String']
+  networkTokenId: Scalars['String']['input']
 }
 
 export type MutationAdminDeleteQueueJobArgs = {
-  jobId: Scalars['String']
+  jobId: Scalars['String']['input']
   type: QueueType
 }
 
 export type MutationAdminDeleteUserArgs = {
-  userId: Scalars['String']
+  userId: Scalars['String']['input']
 }
 
 export type MutationAdminPauseQueueArgs = {
@@ -552,18 +559,18 @@ export type MutationAdminPauseQueueArgs = {
 }
 
 export type MutationAdminRemoveCollectionComboAttributeArgs = {
-  assetAttributeId: Scalars['String']
-  collectionComboId: Scalars['String']
+  assetAttributeId: Scalars['String']['input']
+  collectionComboId: Scalars['String']['input']
 }
 
 export type MutationAdminRemoveDiscordRoleConditionCollectionArgs = {
-  collectionId: Scalars['String']
-  conditionId: Scalars['String']
+  collectionId: Scalars['String']['input']
+  conditionId: Scalars['String']['input']
 }
 
 export type MutationAdminRemoveDiscordRoleConditionComboArgs = {
-  comboId: Scalars['String']
-  conditionId: Scalars['String']
+  comboId: Scalars['String']['input']
+  conditionId: Scalars['String']['input']
 }
 
 export type MutationAdminResumeQueueArgs = {
@@ -571,45 +578,45 @@ export type MutationAdminResumeQueueArgs = {
 }
 
 export type MutationAdminSyncCollectionArgs = {
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
 }
 
 export type MutationAdminSyncDiscordRolesArgs = {
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
 }
 
 export type MutationAdminTestDiscordServerBotChannelArgs = {
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
 }
 
 export type MutationAdminUpdateCollectionArgs = {
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
   input: AdminUpdateCollectionInput
 }
 
 export type MutationAdminUpdateCollectionComboArgs = {
-  collectionComboId: Scalars['String']
+  collectionComboId: Scalars['String']['input']
   input: AdminUpdateCollectionComboInput
 }
 
 export type MutationAdminUpdateDiscordServerArgs = {
   input: AdminUpdateDiscordServerInput
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
 }
 
 export type MutationAdminUpdateEmailArgs = {
-  emailId: Scalars['String']
+  emailId: Scalars['String']['input']
   input: AdminUpdateEmailInput
 }
 
 export type MutationAdminUpdateNetworkArgs = {
   input: AdminUpdateNetworkInput
-  networkId: Scalars['String']
+  networkId: Scalars['String']['input']
 }
 
 export type MutationAdminUpdateUserArgs = {
   input: AdminUpdateUserInput
-  userId: Scalars['String']
+  userId: Scalars['String']['input']
 }
 
 export type MutationLoginArgs = {
@@ -621,7 +628,7 @@ export type MutationRegisterArgs = {
 }
 
 export type MutationUserDeleteIdentityArgs = {
-  identityId: Scalars['String']
+  identityId: Scalars['String']['input']
 }
 
 export type MutationUserLinkIdentityArgs = {
@@ -639,13 +646,13 @@ export type MutationUserVerifyIdentityChallengeArgs = {
 export type Network = {
   __typename?: 'Network'
   collections?: Maybe<Array<Collection>>
-  createdAt: Scalars['DateTime']
-  endpoint?: Maybe<Scalars['String']>
-  id: Scalars['String']
-  name: Scalars['String']
+  createdAt: Scalars['DateTime']['output']
+  endpoint?: Maybe<Scalars['String']['output']>
+  id: Scalars['String']['output']
+  name: Scalars['String']['output']
   tokens?: Maybe<Array<NetworkToken>>
   type?: Maybe<NetworkType>
-  updatedAt: Scalars['DateTime']
+  updatedAt: Scalars['DateTime']['output']
 }
 
 export type NetworkPaging = {
@@ -656,16 +663,16 @@ export type NetworkPaging = {
 
 export type NetworkToken = {
   __typename?: 'NetworkToken'
-  address: Scalars['String']
-  createdAt: Scalars['DateTime']
-  decimals?: Maybe<Scalars['Int']>
-  id: Scalars['String']
-  name: Scalars['String']
+  address: Scalars['String']['output']
+  createdAt: Scalars['DateTime']['output']
+  decimals?: Maybe<Scalars['Int']['output']>
+  id: Scalars['String']['output']
+  name: Scalars['String']['output']
   network?: Maybe<NetworkType>
-  price?: Maybe<Scalars['Int']>
-  priceDate?: Maybe<Scalars['DateTime']>
-  symbol: Scalars['String']
-  updatedAt: Scalars['DateTime']
+  price?: Maybe<Scalars['Int']['output']>
+  priceDate?: Maybe<Scalars['DateTime']['output']>
+  symbol: Scalars['String']['output']
+  updatedAt: Scalars['DateTime']['output']
 }
 
 export enum NetworkType {
@@ -675,19 +682,19 @@ export enum NetworkType {
 
 export type PagingMeta = {
   __typename?: 'PagingMeta'
-  currentPage: Scalars['Int']
-  isFirstPage: Scalars['Boolean']
-  isLastPage: Scalars['Boolean']
-  nextPage?: Maybe<Scalars['Int']>
-  pageCount?: Maybe<Scalars['Int']>
-  previousPage?: Maybe<Scalars['Int']>
-  totalCount?: Maybe<Scalars['Int']>
+  currentPage: Scalars['Int']['output']
+  isFirstPage: Scalars['Boolean']['output']
+  isLastPage: Scalars['Boolean']['output']
+  nextPage?: Maybe<Scalars['Int']['output']>
+  pageCount?: Maybe<Scalars['Int']['output']>
+  previousPage?: Maybe<Scalars['Int']['output']>
+  totalCount?: Maybe<Scalars['Int']['output']>
 }
 
 export type Query = {
   __typename?: 'Query'
-  adminDevCheckAccount?: Maybe<Scalars['JSON']>
-  adminDevCheckIdentity?: Maybe<Scalars['JSON']>
+  adminDevCheckAccount?: Maybe<Scalars['JSON']['output']>
+  adminDevCheckIdentity?: Maybe<Scalars['JSON']['output']>
   adminFindEmails?: Maybe<Array<Email>>
   adminFindManyAsset: AssetPaging
   adminFindManyCollection: CollectionPaging
@@ -703,15 +710,15 @@ export type Query = {
   adminFindOneDiscordServer?: Maybe<DiscordServer>
   adminFindOneNetwork?: Maybe<Network>
   adminFindOneUser?: Maybe<User>
-  adminGetBotInviteUrl?: Maybe<Scalars['String']>
+  adminGetBotInviteUrl?: Maybe<Scalars['String']['output']>
   adminGetQueue?: Maybe<Queue>
   adminGetQueueJobs?: Maybe<Array<Job>>
   adminGetQueues?: Maybe<Array<Queue>>
-  adminReportDiscordMemberWallets?: Maybe<Scalars['JSON']>
-  adminSearchNetworkAsset?: Maybe<Scalars['JSON']>
+  adminReportDiscordMemberWallets?: Maybe<Scalars['JSON']['output']>
+  adminSearchNetworkAsset?: Maybe<Scalars['JSON']['output']>
   appConfig: AppConfig
   me?: Maybe<User>
-  uptime: Scalars['Float']
+  uptime: Scalars['Float']['output']
   userFindManyAsset: AssetPaging
   userFindManyCollection: CollectionPaging
   userFindManyDiscordServer?: Maybe<Array<DiscordServer>>
@@ -724,13 +731,13 @@ export type Query = {
 }
 
 export type QueryAdminDevCheckAccountArgs = {
-  address: Scalars['String']
+  address: Scalars['String']['input']
   type: NetworkType
 }
 
 export type QueryAdminDevCheckIdentityArgs = {
   provider: IdentityProvider
-  providerId: Scalars['String']
+  providerId: Scalars['String']['input']
 }
 
 export type QueryAdminFindEmailsArgs = {
@@ -754,7 +761,7 @@ export type QueryAdminFindManyDiscordServerArgs = {
 }
 
 export type QueryAdminFindManyDiscordServerChannelArgs = {
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
 }
 
 export type QueryAdminFindManyIdentityArgs = {
@@ -770,27 +777,27 @@ export type QueryAdminFindManyUserArgs = {
 }
 
 export type QueryAdminFindOneAssetArgs = {
-  assetId: Scalars['String']
+  assetId: Scalars['String']['input']
 }
 
 export type QueryAdminFindOneCollectionArgs = {
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
 }
 
 export type QueryAdminFindOneCollectionComboArgs = {
-  collectionComboId: Scalars['String']
+  collectionComboId: Scalars['String']['input']
 }
 
 export type QueryAdminFindOneDiscordServerArgs = {
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
 }
 
 export type QueryAdminFindOneNetworkArgs = {
-  networkId: Scalars['String']
+  networkId: Scalars['String']['input']
 }
 
 export type QueryAdminFindOneUserArgs = {
-  userId: Scalars['String']
+  userId: Scalars['String']['input']
 }
 
 export type QueryAdminGetQueueArgs = {
@@ -807,8 +814,8 @@ export type QueryAdminReportDiscordMemberWalletsArgs = {
 }
 
 export type QueryAdminSearchNetworkAssetArgs = {
-  mint: Scalars['String']
-  networkId: Scalars['String']
+  mint: Scalars['String']['input']
+  networkId: Scalars['String']['input']
 }
 
 export type QueryUserFindManyAssetArgs = {
@@ -824,15 +831,15 @@ export type QueryUserFindManyUserArgs = {
 }
 
 export type QueryUserFindOneAssetArgs = {
-  assetId: Scalars['String']
+  assetId: Scalars['String']['input']
 }
 
 export type QueryUserFindOneCollectionArgs = {
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
 }
 
 export type QueryUserFindOneUserArgs = {
-  username: Scalars['String']
+  username: Scalars['String']['input']
 }
 
 export type QueryUserRequestIdentityChallengeArgs = {
@@ -842,20 +849,20 @@ export type QueryUserRequestIdentityChallengeArgs = {
 export type Queue = {
   __typename?: 'Queue'
   count?: Maybe<QueueCount>
-  info?: Maybe<Scalars['JSON']>
-  isPaused?: Maybe<Scalars['Boolean']>
-  name: Scalars['String']
+  info?: Maybe<Scalars['JSON']['output']>
+  isPaused?: Maybe<Scalars['Boolean']['output']>
+  name: Scalars['String']['output']
   type: QueueType
 }
 
 export type QueueCount = {
   __typename?: 'QueueCount'
-  active?: Maybe<Scalars['Int']>
-  completed?: Maybe<Scalars['Int']>
-  delayed?: Maybe<Scalars['Int']>
-  failed?: Maybe<Scalars['Int']>
-  paused?: Maybe<Scalars['Int']>
-  waiting?: Maybe<Scalars['Int']>
+  active?: Maybe<Scalars['Int']['output']>
+  completed?: Maybe<Scalars['Int']['output']>
+  delayed?: Maybe<Scalars['Int']['output']>
+  failed?: Maybe<Scalars['Int']['output']>
+  paused?: Maybe<Scalars['Int']['output']>
+  waiting?: Maybe<Scalars['Int']['output']>
 }
 
 export enum QueueType {
@@ -868,50 +875,50 @@ export enum QueueType {
 }
 
 export type RegisterInput = {
-  password: Scalars['String']
-  username: Scalars['String']
+  password: Scalars['String']['input']
+  username: Scalars['String']['input']
 }
 
 export type RequestIdentityChallengeInput = {
   provider: IdentityProvider
-  providerId: Scalars['String']
+  providerId: Scalars['String']['input']
 }
 
 export type User = {
   __typename?: 'User'
-  avatarUrl?: Maybe<Scalars['String']>
-  createdAt?: Maybe<Scalars['DateTime']>
-  developer?: Maybe<Scalars['Boolean']>
-  id: Scalars['String']
-  name?: Maybe<Scalars['String']>
-  profileUrl?: Maybe<Scalars['String']>
+  avatarUrl?: Maybe<Scalars['String']['output']>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  developer?: Maybe<Scalars['Boolean']['output']>
+  id: Scalars['String']['output']
+  name?: Maybe<Scalars['String']['output']>
+  profileUrl?: Maybe<Scalars['String']['output']>
   role?: Maybe<UserRole>
   status?: Maybe<UserStatus>
-  updatedAt?: Maybe<Scalars['DateTime']>
-  username?: Maybe<Scalars['String']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  username?: Maybe<Scalars['String']['output']>
 }
 
 export type UserFindManyAssetInput = {
   attributes?: InputMaybe<Array<AssetAttributeInput>>
-  collectionAccount?: InputMaybe<Scalars['String']>
-  limit?: InputMaybe<Scalars['Int']>
+  collectionAccount?: InputMaybe<Scalars['String']['input']>
+  limit?: InputMaybe<Scalars['Int']['input']>
   network?: InputMaybe<NetworkType>
-  ownerId?: InputMaybe<Scalars['String']>
-  page?: InputMaybe<Scalars['Int']>
-  search?: InputMaybe<Scalars['String']>
+  ownerId?: InputMaybe<Scalars['String']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
 }
 
 export type UserFindManyCollectionInput = {
-  limit?: InputMaybe<Scalars['Int']>
+  limit?: InputMaybe<Scalars['Int']['input']>
   network?: InputMaybe<NetworkType>
-  page?: InputMaybe<Scalars['Int']>
-  search?: InputMaybe<Scalars['String']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
 }
 
 export type UserFindManyUserInput = {
-  limit?: InputMaybe<Scalars['Int']>
-  page?: InputMaybe<Scalars['Int']>
-  search?: InputMaybe<Scalars['String']>
+  limit?: InputMaybe<Scalars['Int']['input']>
+  page?: InputMaybe<Scalars['Int']['input']>
+  search?: InputMaybe<Scalars['String']['input']>
 }
 
 export type UserPaging = {
@@ -932,17 +939,17 @@ export enum UserStatus {
 }
 
 export type UserUpdateUserInput = {
-  avatarUrl?: InputMaybe<Scalars['String']>
-  developer?: InputMaybe<Scalars['Boolean']>
-  name?: InputMaybe<Scalars['String']>
+  avatarUrl?: InputMaybe<Scalars['String']['input']>
+  developer?: InputMaybe<Scalars['Boolean']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
 }
 
 export type VerifyIdentityChallengeInput = {
-  challenge: Scalars['String']
+  challenge: Scalars['String']['input']
   provider: IdentityProvider
-  providerId: Scalars['String']
-  signature: Scalars['String']
-  useLedger?: InputMaybe<Scalars['Boolean']>
+  providerId: Scalars['String']['input']
+  signature: Scalars['String']['input']
+  useLedger?: InputMaybe<Scalars['Boolean']['input']>
 }
 
 export type AssetDetailsFragment = {
@@ -1050,7 +1057,7 @@ export type AdminFindManyAssetQuery = {
 }
 
 export type AdminFindOneAssetQueryVariables = Exact<{
-  assetId: Scalars['String']
+  assetId: Scalars['String']['input']
 }>
 
 export type AdminFindOneAssetQuery = {
@@ -1082,7 +1089,7 @@ export type AdminFindOneAssetQuery = {
 }
 
 export type AdminDeleteAssetMutationVariables = Exact<{
-  assetId: Scalars['String']
+  assetId: Scalars['String']['input']
 }>
 
 export type AdminDeleteAssetMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
@@ -1190,7 +1197,7 @@ export type UserFindManyAssetQuery = {
 }
 
 export type UserFindOneAssetQueryVariables = Exact<{
-  assetId: Scalars['String']
+  assetId: Scalars['String']['input']
 }>
 
 export type UserFindOneAssetQuery = {
@@ -1402,7 +1409,7 @@ export type AdminFindManyCollectionComboQuery = {
 }
 
 export type AdminFindOneCollectionComboQueryVariables = Exact<{
-  collectionComboId: Scalars['String']
+  collectionComboId: Scalars['String']['input']
 }>
 
 export type AdminFindOneCollectionComboQuery = {
@@ -1454,7 +1461,7 @@ export type AdminCreateCollectionComboMutation = {
 }
 
 export type AdminUpdateCollectionComboMutationVariables = Exact<{
-  collectionComboId: Scalars['String']
+  collectionComboId: Scalars['String']['input']
   input: AdminUpdateCollectionComboInput
 }>
 
@@ -1481,13 +1488,13 @@ export type AdminUpdateCollectionComboMutation = {
 }
 
 export type AdminDeleteCollectionComboMutationVariables = Exact<{
-  collectionComboId: Scalars['String']
+  collectionComboId: Scalars['String']['input']
 }>
 
 export type AdminDeleteCollectionComboMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
 
 export type AdminAddCollectionComboAttributeMutationVariables = Exact<{
-  collectionComboId: Scalars['String']
+  collectionComboId: Scalars['String']['input']
   input: AssetAttributeInput
 }>
 
@@ -1514,8 +1521,8 @@ export type AdminAddCollectionComboAttributeMutation = {
 }
 
 export type AdminRemoveCollectionComboAttributeMutationVariables = Exact<{
-  collectionComboId: Scalars['String']
-  assetAttributeId: Scalars['String']
+  collectionComboId: Scalars['String']['input']
+  assetAttributeId: Scalars['String']['input']
 }>
 
 export type AdminRemoveCollectionComboAttributeMutation = {
@@ -1541,41 +1548,41 @@ export type AdminRemoveCollectionComboAttributeMutation = {
 }
 
 export type AdminCreateDiscordRoleConditionMutationVariables = Exact<{
-  roleId: Scalars['String']
+  roleId: Scalars['String']['input']
 }>
 
 export type AdminCreateDiscordRoleConditionMutation = { __typename?: 'Mutation'; added?: boolean | null }
 
 export type AdminDeleteDiscordRoleConditionMutationVariables = Exact<{
-  conditionId: Scalars['String']
+  conditionId: Scalars['String']['input']
 }>
 
 export type AdminDeleteDiscordRoleConditionMutation = { __typename?: 'Mutation'; added?: boolean | null }
 
 export type AdminAddDiscordRoleConditionCollectionMutationVariables = Exact<{
-  conditionId: Scalars['String']
-  collectionId: Scalars['String']
+  conditionId: Scalars['String']['input']
+  collectionId: Scalars['String']['input']
 }>
 
 export type AdminAddDiscordRoleConditionCollectionMutation = { __typename?: 'Mutation'; added?: boolean | null }
 
 export type AdminAddDiscordRoleConditionComboMutationVariables = Exact<{
-  conditionId: Scalars['String']
-  comboId: Scalars['String']
+  conditionId: Scalars['String']['input']
+  comboId: Scalars['String']['input']
 }>
 
 export type AdminAddDiscordRoleConditionComboMutation = { __typename?: 'Mutation'; added?: boolean | null }
 
 export type AdminRemoveDiscordRoleConditionCollectionMutationVariables = Exact<{
-  conditionId: Scalars['String']
-  collectionId: Scalars['String']
+  conditionId: Scalars['String']['input']
+  collectionId: Scalars['String']['input']
 }>
 
 export type AdminRemoveDiscordRoleConditionCollectionMutation = { __typename?: 'Mutation'; added?: boolean | null }
 
 export type AdminRemoveDiscordRoleConditionComboMutationVariables = Exact<{
-  conditionId: Scalars['String']
-  comboId: Scalars['String']
+  conditionId: Scalars['String']['input']
+  comboId: Scalars['String']['input']
 }>
 
 export type AdminRemoveDiscordRoleConditionComboMutation = { __typename?: 'Mutation'; added?: boolean | null }
@@ -1669,7 +1676,7 @@ export type AdminFindManyCollectionQuery = {
 }
 
 export type AdminFindOneCollectionQueryVariables = Exact<{
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
 }>
 
 export type AdminFindOneCollectionQuery = {
@@ -1760,7 +1767,7 @@ export type AdminCreateCollectionMutation = {
 }
 
 export type AdminUpdateCollectionMutationVariables = Exact<{
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
   input: AdminUpdateCollectionInput
 }>
 
@@ -1802,13 +1809,13 @@ export type AdminUpdateCollectionMutation = {
 }
 
 export type AdminDeleteCollectionMutationVariables = Exact<{
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
 }>
 
 export type AdminDeleteCollectionMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
 
 export type AdminSyncCollectionMutationVariables = Exact<{
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
 }>
 
 export type AdminSyncCollectionMutation = { __typename?: 'Mutation'; synced?: boolean | null }
@@ -1872,7 +1879,7 @@ export type UserFindManyCollectionQuery = {
 }
 
 export type UserFindOneCollectionQueryVariables = Exact<{
-  collectionId: Scalars['String']
+  collectionId: Scalars['String']['input']
 }>
 
 export type UserFindOneCollectionQuery = {
@@ -1948,14 +1955,14 @@ export type AppConfigQuery = {
 
 export type AdminDevCheckAccountQueryVariables = Exact<{
   type: NetworkType
-  address: Scalars['String']
+  address: Scalars['String']['input']
 }>
 
 export type AdminDevCheckAccountQuery = { __typename?: 'Query'; result?: any | null }
 
 export type AdminDevCheckIdentityQueryVariables = Exact<{
   provider: IdentityProvider
-  providerId: Scalars['String']
+  providerId: Scalars['String']['input']
 }>
 
 export type AdminDevCheckIdentityQuery = { __typename?: 'Query'; result?: any | null }
@@ -2089,7 +2096,7 @@ export type DiscordRoleDetailsFragment = {
 }
 
 export type AdminSyncDiscordRolesMutationVariables = Exact<{
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
 }>
 
 export type AdminSyncDiscordRolesMutation = { __typename?: 'Mutation'; adminSyncDiscordRoles?: boolean | null }
@@ -2134,7 +2141,7 @@ export type AdminGetBotInviteUrlQueryVariables = Exact<{ [key: string]: never }>
 export type AdminGetBotInviteUrlQuery = { __typename?: 'Query'; url?: string | null }
 
 export type AdminFindOneDiscordServerQueryVariables = Exact<{
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
 }>
 
 export type AdminFindOneDiscordServerQuery = {
@@ -2226,7 +2233,7 @@ export type AdminFindOneDiscordServerQuery = {
 }
 
 export type AdminFindManyDiscordServerChannelQueryVariables = Exact<{
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
 }>
 
 export type AdminFindManyDiscordServerChannelQuery = {
@@ -2271,7 +2278,7 @@ export type AdminFindManyDiscordServerQuery = {
 }
 
 export type AdminTestDiscordServerBotChannelMutationVariables = Exact<{
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
 }>
 
 export type AdminTestDiscordServerBotChannelMutation = {
@@ -2279,8 +2286,14 @@ export type AdminTestDiscordServerBotChannelMutation = {
   adminTestDiscordServerBotChannel?: boolean | null
 }
 
+export type AdminDeleteDiscordServerMutationVariables = Exact<{
+  serverId: Scalars['String']['input']
+}>
+
+export type AdminDeleteDiscordServerMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
+
 export type AdminUpdateDiscordServerMutationVariables = Exact<{
-  serverId: Scalars['String']
+  serverId: Scalars['String']['input']
   input: AdminUpdateDiscordServerInput
 }>
 
@@ -2441,7 +2454,7 @@ export type AdminCreateEmailMutation = {
 }
 
 export type AdminUpdateEmailMutationVariables = Exact<{
-  emailId: Scalars['String']
+  emailId: Scalars['String']['input']
   input: AdminUpdateEmailInput
 }>
 
@@ -2460,7 +2473,7 @@ export type AdminUpdateEmailMutation = {
 }
 
 export type AdminDeleteEmailMutationVariables = Exact<{
-  emailId: Scalars['String']
+  emailId: Scalars['String']['input']
 }>
 
 export type AdminDeleteEmailMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
@@ -2556,7 +2569,7 @@ export type AdminCreateIdentityMutation = {
 }
 
 export type AdminDeleteIdentityMutationVariables = Exact<{
-  identityId: Scalars['String']
+  identityId: Scalars['String']['input']
 }>
 
 export type AdminDeleteIdentityMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
@@ -2579,7 +2592,7 @@ export type UserFindManyIdentityQuery = {
 }
 
 export type UserDeleteIdentityMutationVariables = Exact<{
-  identityId: Scalars['String']
+  identityId: Scalars['String']['input']
 }>
 
 export type UserDeleteIdentityMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
@@ -2700,7 +2713,7 @@ export type AdminFindManyNetworkQuery = {
 }
 
 export type AdminFindOneNetworkQueryVariables = Exact<{
-  networkId: Scalars['String']
+  networkId: Scalars['String']['input']
 }>
 
 export type AdminFindOneNetworkQuery = {
@@ -2763,8 +2776,8 @@ export type AdminFindOneNetworkQuery = {
 }
 
 export type AdminSearchNetworkAssetQueryVariables = Exact<{
-  networkId: Scalars['String']
-  mint: Scalars['String']
+  networkId: Scalars['String']['input']
+  mint: Scalars['String']['input']
 }>
 
 export type AdminSearchNetworkAssetQuery = { __typename?: 'Query'; item?: any | null }
@@ -2808,7 +2821,7 @@ export type AdminCreateNetworkTokenMutation = {
 }
 
 export type AdminUpdateNetworkMutationVariables = Exact<{
-  networkId: Scalars['String']
+  networkId: Scalars['String']['input']
   input: AdminUpdateNetworkInput
 }>
 
@@ -2826,13 +2839,13 @@ export type AdminUpdateNetworkMutation = {
 }
 
 export type AdminDeleteNetworkMutationVariables = Exact<{
-  networkId: Scalars['String']
+  networkId: Scalars['String']['input']
 }>
 
 export type AdminDeleteNetworkMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
 
 export type AdminDeleteNetworkTokenMutationVariables = Exact<{
-  networkTokenId: Scalars['String']
+  networkTokenId: Scalars['String']['input']
 }>
 
 export type AdminDeleteNetworkTokenMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
@@ -2958,7 +2971,7 @@ export type AdminCleanQueueMutation = { __typename?: 'Mutation'; paused?: boolea
 
 export type AdminDeleteQueueJobMutationVariables = Exact<{
   type: QueueType
-  jobId: Scalars['String']
+  jobId: Scalars['String']['input']
 }>
 
 export type AdminDeleteQueueJobMutation = { __typename?: 'Mutation'; paused?: boolean | null }
@@ -3030,7 +3043,7 @@ export type AdminFindManyUserQuery = {
 }
 
 export type AdminFindOneUserQueryVariables = Exact<{
-  userId: Scalars['String']
+  userId: Scalars['String']['input']
 }>
 
 export type AdminFindOneUserQuery = {
@@ -3072,7 +3085,7 @@ export type AdminCreateUserMutation = {
 }
 
 export type AdminUpdateUserMutationVariables = Exact<{
-  userId: Scalars['String']
+  userId: Scalars['String']['input']
   input: AdminUpdateUserInput
 }>
 
@@ -3094,7 +3107,7 @@ export type AdminUpdateUserMutation = {
 }
 
 export type AdminDeleteUserMutationVariables = Exact<{
-  userId: Scalars['String']
+  userId: Scalars['String']['input']
 }>
 
 export type AdminDeleteUserMutation = { __typename?: 'Mutation'; deleted?: boolean | null }
@@ -3134,7 +3147,7 @@ export type UserFindManyUserQuery = {
 }
 
 export type UserFindOneUserQueryVariables = Exact<{
-  username: Scalars['String']
+  username: Scalars['String']['input']
 }>
 
 export type UserFindOneUserQuery = {
@@ -3791,6 +3804,11 @@ export const AdminTestDiscordServerBotChannelDocument = gql`
     adminTestDiscordServerBotChannel(serverId: $serverId)
   }
 `
+export const AdminDeleteDiscordServerDocument = gql`
+  mutation adminDeleteDiscordServer($serverId: String!) {
+    deleted: adminDeleteDiscordServer(serverId: $serverId)
+  }
+`
 export const AdminUpdateDiscordServerDocument = gql`
   mutation adminUpdateDiscordServer($serverId: String!, $input: AdminUpdateDiscordServerInput!) {
     updated: adminUpdateDiscordServer(serverId: $serverId, input: $input) {
@@ -4160,6 +4178,7 @@ const AdminFindOneDiscordServerDocumentString = print(AdminFindOneDiscordServerD
 const AdminFindManyDiscordServerChannelDocumentString = print(AdminFindManyDiscordServerChannelDocument)
 const AdminFindManyDiscordServerDocumentString = print(AdminFindManyDiscordServerDocument)
 const AdminTestDiscordServerBotChannelDocumentString = print(AdminTestDiscordServerBotChannelDocument)
+const AdminDeleteDiscordServerDocumentString = print(AdminDeleteDiscordServerDocument)
 const AdminUpdateDiscordServerDocumentString = print(AdminUpdateDiscordServerDocument)
 const UserFindManyDiscordServerDocumentString = print(UserFindManyDiscordServerDocument)
 const AdminFindEmailsDocumentString = print(AdminFindEmailsDocument)
@@ -4202,8 +4221,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     adminFindManyAsset(
       variables: AdminFindManyAssetQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindManyAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyAssetQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindManyAssetQuery>(AdminFindManyAssetDocumentString, variables, {
@@ -4216,8 +4241,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindOneAsset(
       variables: AdminFindOneAssetQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindOneAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneAssetQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindOneAssetQuery>(AdminFindOneAssetDocumentString, variables, {
@@ -4230,8 +4261,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteAsset(
       variables: AdminDeleteAssetMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteAssetMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteAssetMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteAssetMutation>(AdminDeleteAssetDocumentString, variables, {
@@ -4244,8 +4281,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userFindManyAsset(
       variables: UserFindManyAssetQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindManyAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindManyAssetQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserFindManyAssetQuery>(UserFindManyAssetDocumentString, variables, {
@@ -4258,8 +4301,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userFindOneAsset(
       variables: UserFindOneAssetQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindOneAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindOneAssetQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserFindOneAssetQuery>(UserFindOneAssetDocumentString, variables, {
@@ -4272,8 +4321,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     login(
       variables: LoginMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: LoginMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{ data: LoginMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<LoginMutation>(LoginDocumentString, variables, {
@@ -4286,8 +4335,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     logout(
       variables?: LogoutMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: LogoutMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{ data: LogoutMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<LogoutMutation>(LogoutDocumentString, variables, {
@@ -4300,8 +4349,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     register(
       variables: RegisterMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: RegisterMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: RegisterMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<RegisterMutation>(RegisterDocumentString, variables, {
@@ -4314,8 +4369,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     me(
       variables?: MeQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: MeQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{ data: MeQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<MeQuery>(MeDocumentString, variables, { ...requestHeaders, ...wrappedRequestHeaders }),
@@ -4325,8 +4380,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindManyCollectionCombo(
       variables: AdminFindManyCollectionComboQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindManyCollectionComboQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyCollectionComboQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindManyCollectionComboQuery>(AdminFindManyCollectionComboDocumentString, variables, {
@@ -4339,8 +4400,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindOneCollectionCombo(
       variables: AdminFindOneCollectionComboQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindOneCollectionComboQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneCollectionComboQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindOneCollectionComboQuery>(AdminFindOneCollectionComboDocumentString, variables, {
@@ -4353,8 +4420,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCreateCollectionCombo(
       variables: AdminCreateCollectionComboMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminCreateCollectionComboMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateCollectionComboMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminCreateCollectionComboMutation>(AdminCreateCollectionComboDocumentString, variables, {
@@ -4367,8 +4440,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminUpdateCollectionCombo(
       variables: AdminUpdateCollectionComboMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminUpdateCollectionComboMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminUpdateCollectionComboMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminUpdateCollectionComboMutation>(AdminUpdateCollectionComboDocumentString, variables, {
@@ -4381,8 +4460,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteCollectionCombo(
       variables: AdminDeleteCollectionComboMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteCollectionComboMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteCollectionComboMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteCollectionComboMutation>(AdminDeleteCollectionComboDocumentString, variables, {
@@ -4395,11 +4480,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminAddCollectionComboAttribute(
       variables: AdminAddCollectionComboAttributeMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminAddCollectionComboAttributeMutation
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4415,11 +4501,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminRemoveCollectionComboAttribute(
       variables: AdminRemoveCollectionComboAttributeMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminRemoveCollectionComboAttributeMutation
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4435,11 +4522,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCreateDiscordRoleCondition(
       variables: AdminCreateDiscordRoleConditionMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminCreateDiscordRoleConditionMutation
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4455,11 +4543,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteDiscordRoleCondition(
       variables: AdminDeleteDiscordRoleConditionMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminDeleteDiscordRoleConditionMutation
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4475,11 +4564,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminAddDiscordRoleConditionCollection(
       variables: AdminAddDiscordRoleConditionCollectionMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminAddDiscordRoleConditionCollectionMutation
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4495,11 +4585,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminAddDiscordRoleConditionCombo(
       variables: AdminAddDiscordRoleConditionComboMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminAddDiscordRoleConditionComboMutation
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4515,11 +4606,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminRemoveDiscordRoleConditionCollection(
       variables: AdminRemoveDiscordRoleConditionCollectionMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminRemoveDiscordRoleConditionCollectionMutation
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4535,11 +4627,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminRemoveDiscordRoleConditionCombo(
       variables: AdminRemoveDiscordRoleConditionComboMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminRemoveDiscordRoleConditionComboMutation
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4555,8 +4648,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindManyCollection(
       variables: AdminFindManyCollectionQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindManyCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyCollectionQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindManyCollectionQuery>(AdminFindManyCollectionDocumentString, variables, {
@@ -4569,8 +4668,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindOneCollection(
       variables: AdminFindOneCollectionQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindOneCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneCollectionQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindOneCollectionQuery>(AdminFindOneCollectionDocumentString, variables, {
@@ -4583,8 +4688,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCreateCollection(
       variables: AdminCreateCollectionMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminCreateCollectionMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateCollectionMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminCreateCollectionMutation>(AdminCreateCollectionDocumentString, variables, {
@@ -4597,8 +4708,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminUpdateCollection(
       variables: AdminUpdateCollectionMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminUpdateCollectionMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminUpdateCollectionMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminUpdateCollectionMutation>(AdminUpdateCollectionDocumentString, variables, {
@@ -4611,8 +4728,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteCollection(
       variables: AdminDeleteCollectionMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteCollectionMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteCollectionMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteCollectionMutation>(AdminDeleteCollectionDocumentString, variables, {
@@ -4625,8 +4748,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminSyncCollection(
       variables: AdminSyncCollectionMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminSyncCollectionMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminSyncCollectionMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminSyncCollectionMutation>(AdminSyncCollectionDocumentString, variables, {
@@ -4639,8 +4768,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminSyncCollections(
       variables?: AdminSyncCollectionsMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminSyncCollectionsMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminSyncCollectionsMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminSyncCollectionsMutation>(AdminSyncCollectionsDocumentString, variables, {
@@ -4653,8 +4788,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userFindManyCollection(
       variables: UserFindManyCollectionQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindManyCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindManyCollectionQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserFindManyCollectionQuery>(UserFindManyCollectionDocumentString, variables, {
@@ -4667,8 +4808,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userFindOneCollection(
       variables: UserFindOneCollectionQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindOneCollectionQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindOneCollectionQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserFindOneCollectionQuery>(UserFindOneCollectionDocumentString, variables, {
@@ -4681,8 +4828,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     uptime(
       variables?: UptimeQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UptimeQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{ data: UptimeQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UptimeQuery>(UptimeDocumentString, variables, {
@@ -4695,8 +4842,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     appConfig(
       variables?: AppConfigQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AppConfigQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{ data: AppConfigQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AppConfigQuery>(AppConfigDocumentString, variables, {
@@ -4709,8 +4856,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDevCheckAccount(
       variables: AdminDevCheckAccountQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDevCheckAccountQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDevCheckAccountQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDevCheckAccountQuery>(AdminDevCheckAccountDocumentString, variables, {
@@ -4723,8 +4876,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDevCheckIdentity(
       variables: AdminDevCheckIdentityQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDevCheckIdentityQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDevCheckIdentityQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDevCheckIdentityQuery>(AdminDevCheckIdentityDocumentString, variables, {
@@ -4737,8 +4896,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminSyncDiscordRoles(
       variables: AdminSyncDiscordRolesMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminSyncDiscordRolesMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminSyncDiscordRolesMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminSyncDiscordRolesMutation>(AdminSyncDiscordRolesDocumentString, variables, {
@@ -4751,8 +4916,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCreateDiscordRole(
       variables: AdminCreateDiscordRoleMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminCreateDiscordRoleMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateDiscordRoleMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminCreateDiscordRoleMutation>(AdminCreateDiscordRoleDocumentString, variables, {
@@ -4765,8 +4936,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteDiscordRole(
       variables: AdminDeleteDiscordRoleMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteDiscordRoleMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteDiscordRoleMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteDiscordRoleMutation>(AdminDeleteDiscordRoleDocumentString, variables, {
@@ -4779,8 +4956,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminGetBotInviteUrl(
       variables?: AdminGetBotInviteUrlQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetBotInviteUrlQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminGetBotInviteUrlQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminGetBotInviteUrlQuery>(AdminGetBotInviteUrlDocumentString, variables, {
@@ -4793,8 +4976,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindOneDiscordServer(
       variables: AdminFindOneDiscordServerQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindOneDiscordServerQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneDiscordServerQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindOneDiscordServerQuery>(AdminFindOneDiscordServerDocumentString, variables, {
@@ -4807,11 +4996,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindManyDiscordServerChannel(
       variables: AdminFindManyDiscordServerChannelQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminFindManyDiscordServerChannelQuery
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4827,8 +5017,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindManyDiscordServer(
       variables: AdminFindManyDiscordServerQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindManyDiscordServerQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyDiscordServerQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindManyDiscordServerQuery>(AdminFindManyDiscordServerDocumentString, variables, {
@@ -4841,11 +5037,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminTestDiscordServerBotChannel(
       variables: AdminTestDiscordServerBotChannelMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<{
       data: AdminTestDiscordServerBotChannelMutation
+      errors?: GraphQLError[]
       extensions?: any
-      headers: Dom.Headers
+      headers: Headers
       status: number
     }> {
       return withWrapper(
@@ -4859,10 +5056,36 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
         'mutation',
       )
     },
+    adminDeleteDiscordServer(
+      variables: AdminDeleteDiscordServerMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteDiscordServerMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminDeleteDiscordServerMutation>(AdminDeleteDiscordServerDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminDeleteDiscordServer',
+        'mutation',
+      )
+    },
     adminUpdateDiscordServer(
       variables: AdminUpdateDiscordServerMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminUpdateDiscordServerMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminUpdateDiscordServerMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminUpdateDiscordServerMutation>(AdminUpdateDiscordServerDocumentString, variables, {
@@ -4875,8 +5098,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userFindManyDiscordServer(
       variables?: UserFindManyDiscordServerQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindManyDiscordServerQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindManyDiscordServerQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserFindManyDiscordServerQuery>(UserFindManyDiscordServerDocumentString, variables, {
@@ -4889,8 +5118,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindEmails(
       variables: AdminFindEmailsQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindEmailsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindEmailsQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindEmailsQuery>(AdminFindEmailsDocumentString, variables, {
@@ -4903,8 +5138,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCreateEmail(
       variables: AdminCreateEmailMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminCreateEmailMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateEmailMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminCreateEmailMutation>(AdminCreateEmailDocumentString, variables, {
@@ -4917,8 +5158,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminUpdateEmail(
       variables: AdminUpdateEmailMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminUpdateEmailMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminUpdateEmailMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminUpdateEmailMutation>(AdminUpdateEmailDocumentString, variables, {
@@ -4931,8 +5178,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteEmail(
       variables: AdminDeleteEmailMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteEmailMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteEmailMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteEmailMutation>(AdminDeleteEmailDocumentString, variables, {
@@ -4945,8 +5198,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindManyIdentity(
       variables: AdminFindManyIdentityQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindManyIdentityQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyIdentityQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindManyIdentityQuery>(AdminFindManyIdentityDocumentString, variables, {
@@ -4959,8 +5218,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCreateIdentity(
       variables: AdminCreateIdentityMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminCreateIdentityMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateIdentityMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminCreateIdentityMutation>(AdminCreateIdentityDocumentString, variables, {
@@ -4973,8 +5238,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteIdentity(
       variables: AdminDeleteIdentityMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteIdentityMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteIdentityMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteIdentityMutation>(AdminDeleteIdentityDocumentString, variables, {
@@ -4987,8 +5258,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userFindManyIdentity(
       variables?: UserFindManyIdentityQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindManyIdentityQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindManyIdentityQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserFindManyIdentityQuery>(UserFindManyIdentityDocumentString, variables, {
@@ -5001,8 +5278,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userDeleteIdentity(
       variables: UserDeleteIdentityMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserDeleteIdentityMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserDeleteIdentityMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserDeleteIdentityMutation>(UserDeleteIdentityDocumentString, variables, {
@@ -5015,8 +5298,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userRequestIdentityChallenge(
       variables: UserRequestIdentityChallengeQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserRequestIdentityChallengeQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserRequestIdentityChallengeQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserRequestIdentityChallengeQuery>(UserRequestIdentityChallengeDocumentString, variables, {
@@ -5029,8 +5318,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userVerifyIdentityChallenge(
       variables: UserVerifyIdentityChallengeMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserVerifyIdentityChallengeMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserVerifyIdentityChallengeMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserVerifyIdentityChallengeMutation>(UserVerifyIdentityChallengeDocumentString, variables, {
@@ -5043,8 +5338,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userLinkIdentity(
       variables: UserLinkIdentityMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserLinkIdentityMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserLinkIdentityMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserLinkIdentityMutation>(UserLinkIdentityDocumentString, variables, {
@@ -5057,8 +5358,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindManyNetwork(
       variables: AdminFindManyNetworkQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindManyNetworkQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyNetworkQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindManyNetworkQuery>(AdminFindManyNetworkDocumentString, variables, {
@@ -5071,8 +5378,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindOneNetwork(
       variables: AdminFindOneNetworkQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindOneNetworkQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneNetworkQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindOneNetworkQuery>(AdminFindOneNetworkDocumentString, variables, {
@@ -5085,8 +5398,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminSearchNetworkAsset(
       variables: AdminSearchNetworkAssetQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminSearchNetworkAssetQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminSearchNetworkAssetQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminSearchNetworkAssetQuery>(AdminSearchNetworkAssetDocumentString, variables, {
@@ -5099,8 +5418,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCreateNetwork(
       variables: AdminCreateNetworkMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminCreateNetworkMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateNetworkMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminCreateNetworkMutation>(AdminCreateNetworkDocumentString, variables, {
@@ -5113,8 +5438,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCreateNetworkToken(
       variables: AdminCreateNetworkTokenMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminCreateNetworkTokenMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateNetworkTokenMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminCreateNetworkTokenMutation>(AdminCreateNetworkTokenDocumentString, variables, {
@@ -5127,8 +5458,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminUpdateNetwork(
       variables: AdminUpdateNetworkMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminUpdateNetworkMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminUpdateNetworkMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminUpdateNetworkMutation>(AdminUpdateNetworkDocumentString, variables, {
@@ -5141,8 +5478,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteNetwork(
       variables: AdminDeleteNetworkMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteNetworkMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteNetworkMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteNetworkMutation>(AdminDeleteNetworkDocumentString, variables, {
@@ -5155,8 +5498,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteNetworkToken(
       variables: AdminDeleteNetworkTokenMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteNetworkTokenMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteNetworkTokenMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteNetworkTokenMutation>(AdminDeleteNetworkTokenDocumentString, variables, {
@@ -5169,8 +5518,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminGetQueues(
       variables?: AdminGetQueuesQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetQueuesQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminGetQueuesQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminGetQueuesQuery>(AdminGetQueuesDocumentString, variables, {
@@ -5183,8 +5538,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminGetQueue(
       variables: AdminGetQueueQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetQueueQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminGetQueueQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminGetQueueQuery>(AdminGetQueueDocumentString, variables, {
@@ -5197,8 +5558,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminGetQueueJobs(
       variables: AdminGetQueueJobsQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminGetQueueJobsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminGetQueueJobsQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminGetQueueJobsQuery>(AdminGetQueueJobsDocumentString, variables, {
@@ -5211,8 +5578,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCleanQueue(
       variables: AdminCleanQueueMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminCleanQueueMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCleanQueueMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminCleanQueueMutation>(AdminCleanQueueDocumentString, variables, {
@@ -5225,8 +5598,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteQueueJob(
       variables: AdminDeleteQueueJobMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteQueueJobMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteQueueJobMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteQueueJobMutation>(AdminDeleteQueueJobDocumentString, variables, {
@@ -5239,8 +5618,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminPauseQueue(
       variables: AdminPauseQueueMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminPauseQueueMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminPauseQueueMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminPauseQueueMutation>(AdminPauseQueueDocumentString, variables, {
@@ -5253,8 +5638,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminResumeQueue(
       variables: AdminResumeQueueMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminResumeQueueMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminResumeQueueMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminResumeQueueMutation>(AdminResumeQueueDocumentString, variables, {
@@ -5267,8 +5658,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminReportDiscordMemberWallets(
       variables: AdminReportDiscordMemberWalletsQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminReportDiscordMemberWalletsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminReportDiscordMemberWalletsQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminReportDiscordMemberWalletsQuery>(
@@ -5282,8 +5679,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindManyUser(
       variables: AdminFindManyUserQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindManyUserQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindManyUserQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindManyUserQuery>(AdminFindManyUserDocumentString, variables, {
@@ -5296,8 +5699,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminFindOneUser(
       variables: AdminFindOneUserQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminFindOneUserQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFindOneUserQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminFindOneUserQuery>(AdminFindOneUserDocumentString, variables, {
@@ -5310,8 +5719,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminCreateUser(
       variables: AdminCreateUserMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminCreateUserMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateUserMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminCreateUserMutation>(AdminCreateUserDocumentString, variables, {
@@ -5324,8 +5739,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminUpdateUser(
       variables: AdminUpdateUserMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminUpdateUserMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminUpdateUserMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminUpdateUserMutation>(AdminUpdateUserDocumentString, variables, {
@@ -5338,8 +5759,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     adminDeleteUser(
       variables: AdminDeleteUserMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: AdminDeleteUserMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteUserMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<AdminDeleteUserMutation>(AdminDeleteUserDocumentString, variables, {
@@ -5352,8 +5779,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userFindManyUser(
       variables: UserFindManyUserQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindManyUserQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindManyUserQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserFindManyUserQuery>(UserFindManyUserDocumentString, variables, {
@@ -5366,8 +5799,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userFindOneUser(
       variables: UserFindOneUserQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserFindOneUserQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserFindOneUserQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserFindOneUserQuery>(UserFindOneUserDocumentString, variables, {
@@ -5380,8 +5819,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     userUpdateUser(
       variables: UserUpdateUserMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<{ data: UserUpdateUserMutation; extensions?: any; headers: Dom.Headers; status: number }> {
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: UserUpdateUserMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.rawRequest<UserUpdateUserMutation>(UserUpdateUserDocumentString, variables, {

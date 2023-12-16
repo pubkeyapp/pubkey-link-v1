@@ -3,12 +3,12 @@ import { DiscordServer as PrismaDiscordServer } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 
 import { ApiDiscordService } from '@pubkey-link/api/discord/data-access'
+import { AdminCreateDiscordRoleInput } from './dto/admin-create-discord-role.input'
+import { AdminDeleteDiscordRoleInput } from './dto/admin-delete-discord-role-input'
 import { AdminFindManyDiscordServerInput } from './dto/admin-find-many-discord-server-input'
 import { AdminUpdateDiscordServerInput } from './dto/admin-update-discord-server.input'
 import { DiscordServerPaging } from './entity/discord-server-paging'
 import { getAdminDiscordServerInput } from './helpers/get-admin-discord-server-input'
-import { AdminCreateDiscordRoleInput } from './dto/admin-create-discord-role.input'
-import { AdminDeleteDiscordRoleInput } from './dto/admin-delete-discord-role-input'
 
 @Injectable()
 export class ApiDiscordServerAdminService {
@@ -174,5 +174,21 @@ export class ApiDiscordServerAdminService {
       throw new Error(`DiscordServer ${serverId} not updated`)
     }
     return updated
+  }
+
+  async deleteDiscordServer(adminId: string, serverId: string) {
+    await this.core.ensureUserAdmin(adminId)
+    const found = await this.core.data.discordServer.findUnique({ where: { id: serverId } })
+    if (!found) {
+      throw new Error(`DiscordServer ${serverId} not found`)
+    }
+    if (found.enabled) {
+      throw new Error(`DiscordServer ${serverId} is enabled, you can not delete it`)
+    }
+    const deleted = await this.core.data.discordServer.delete({ where: { id: serverId } })
+    if (!deleted) {
+      throw new Error(`DiscordServer ${serverId} not deleted`)
+    }
+    return true
   }
 }
