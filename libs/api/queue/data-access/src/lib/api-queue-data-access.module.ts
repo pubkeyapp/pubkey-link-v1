@@ -14,6 +14,9 @@ import { ApiQueueService } from './api-queue.service'
       useFactory: async ({ config }: ApiCoreService) => ({
         prefix: 'pubkey:api',
         redis: config.redisOptions,
+        defaultJobOptions: {
+          removeOnFail: { age: 24 * 3600 },
+        },
       }),
       inject: [ApiCoreService],
     }),
