@@ -19,7 +19,7 @@ export class ApiDiscordBotService {
     this.logger.verbose(`Bot logged in as ${client.user.username}`)
     this.logger.verbose(`Bot synced servers`)
 
-    client.user.setPresence({ activities: [{ type: ActivityType.Watching, name: 'YOU 👀 on Solana' }] })
+    client.user.setPresence({ activities: [{ type: ActivityType.Watching, name: 'the /verify command' }] })
     try {
       const channel = this.ensureCommandChannel()
       this.logger.verbose(`Found bot command channel: ${channel?.url}`)
