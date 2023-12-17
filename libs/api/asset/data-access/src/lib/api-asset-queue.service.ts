@@ -45,7 +45,7 @@ export class ApiAssetQueueService implements OnModuleInit {
   async processAssetSyncManyJob(job: Job<AssetSyncManyQueueData, void, string>) {
     const { type: network, identity } = job.data
     const tag = `processAssetSyncManyJob ${job.id}: [${identity?.providerId}] ->`
-    await this.discord.bot.debugLog(`${tag} processing ${job.data.assets.length} assets...`, true)
+    await this.discord.bot.debugLog(`${tag} processing ${job.data.assets.length} assets...`)
 
     await this.discord.bot.debugLog(`${tag} getting owned assets...`)
     const owned = await this.getOwnedAssets({ networkType: network, providerId: identity.providerId })
@@ -55,7 +55,7 @@ export class ApiAssetQueueService implements OnModuleInit {
     const toDisconnect = owned.filter((asset) => !job.data.assets.find((a) => a.account === asset.account))
 
     if (!toCreate.length && !toDisconnect.length) {
-      await this.discord.bot.debugLog(`${tag} nothing to do, exiting...`, true)
+      await this.discord.bot.debugLog(`${tag} nothing to do, exiting...`)
       return
     }
 
