@@ -22,6 +22,9 @@ export class ApiIdentityUserService {
     if (!found) {
       throw new Error(`Identity ${identityId} not found`)
     }
+    if (found.provider === IdentityProvider.Discord) {
+      throw new Error(`You cannot delete your Discord identity.`)
+    }
     await this.core.data.identityChallenge.deleteMany({ where: { identity: { id: identityId } } })
     const deleted = await this.core.data.identity.delete({ where: { id: identityId } })
     if (!deleted) {
