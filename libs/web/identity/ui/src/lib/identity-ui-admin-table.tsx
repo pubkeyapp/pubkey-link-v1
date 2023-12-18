@@ -1,3 +1,4 @@
+import { modals } from '@mantine/modals'
 import { Identity } from '@pubkey-link/sdk'
 import { UiDebugModal } from '@pubkey-link/web/ui/core'
 import { ActionIcon, Group, ScrollArea, Stack, Text } from '@mantine/core'
@@ -42,7 +43,24 @@ export function IdentityUiAdminTable({ deleteIdentity, identities = [] }: AdminI
             render: (item) => (
               <Group spacing={0} position="right" noWrap>
                 <UiDebugModal data={item} />
-                <ActionIcon color="red" onClick={() => deleteIdentity(item)}>
+                <ActionIcon
+                  color="red"
+                  onClick={() => {
+                    modals.openConfirmModal({
+                      title: 'Delete Identity',
+                      children: (
+                        <div>
+                          <Text>Are you sure you want to delete this identity?</Text>
+                          <Text size="sm" color="dimmed">
+                            {item.providerId}
+                          </Text>
+                        </div>
+                      ),
+                      labels: { confirm: 'Delete', cancel: 'Cancel' },
+                      onConfirm: () => deleteIdentity(item),
+                    })
+                  }}
+                >
                   <IconTrash size={16} />
                 </ActionIcon>
               </Group>

@@ -169,7 +169,7 @@ model IdentityChallenge {
   ip         String
   userAgent  String
   verified   Boolean          @default(false)
-  identity   Identity         @relation(fields: [provider, providerId], references: [provider, providerId])
+  identity   Identity         @relation(fields: [provider, providerId], references: [provider, providerId], onDelete: Cascade)
   provider   IdentityProvider
   providerId String
 }

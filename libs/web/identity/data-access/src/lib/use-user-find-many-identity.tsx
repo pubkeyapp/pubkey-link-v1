@@ -48,7 +48,7 @@ export function useUserFindManyIdentity() {
           showNotificationSuccess('Identity deleted')
         })
         .catch((res) => {
-          showNotificationError('Error deleting identity')
+          showNotificationError(`${res}`, { title: 'Error deleting identity' })
         })
         .finally(() => query.refetch())
     },
