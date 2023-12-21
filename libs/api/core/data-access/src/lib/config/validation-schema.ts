@@ -32,6 +32,8 @@ export const validationSchema = Joi.object({
   SYNC_ACTIVE: Joi.boolean().default(true),
   SYNC_ALL_DISCORD_SERVER_ROLES: Joi.string().default(CronExpression.EVERY_10_MINUTES),
   SYNC_BOT_SERVERS: Joi.string().default(CronExpression.EVERY_5_MINUTES),
+  SYNC_COLLECTIONS: Joi.boolean().default(false),
+  SYNC_COLLECTIONS_INTERVAL: Joi.string().default(CronExpression.EVERY_5_MINUTES),
   SYNC_DEBUG: Joi.boolean().default(false),
   SYNC_DRY_RUN: Joi.boolean().default(false),
   SYNC_DISCORD_IDENTITIES: Joi.string().default(CronExpression.EVERY_2_HOURS),

@@ -1,7 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common'
+import { Cron } from '@nestjs/schedule'
 import { Prisma } from '@prisma/client'
 import { ApiCoreService } from '@pubkey-link/api/core/data-access'
 import { ApiNetworkService } from '@pubkey-link/api/network/data-access'
+import { env } from 'node:process'
 import { ApiCollectionQueueService } from './api-collection-queue.service'
 
 @Injectable()
@@ -13,29 +15,42 @@ export class ApiCollectionSyncService {
     private readonly queue: ApiCollectionQueueService,
   ) {}
 
-  async syncCollections(adminId: string) {
-    await this.core.ensureUserAdmin(adminId)
-    throw new Error('Syncing collections is currently disabled')
-    // FIXME: The deep syncing of the entire collection is currently disabled
-    // const collections = await this.core.data.collection.findMany()
-    // if (!collections.length) {
-    //   throw new Error('No collections found')
-    // }
-    // await this.queue.scheduleCollectionSyncMany({ collections })
-    // return true
+  @Cron(env['SYNC_COLLECTIONS_INTERVAL'] as string)
+  async syncCollections() {
+    if (!this.core.config.syncCollections) {
+      this.logger.debug(`syncCollections: syncCollections is false, skipping`)
+      return
+    }
+    const collections = await this.core.data.collection.findMany({ where: { enableSync: true } })
+    if (!collections.length) {
+      this.logger.debug(`syncCollections: no collections found with enableSync=true, skipping`)
+      return
+    }
+    for (const collection of collections) {
+      this.logger.debug(`syncCollections: scheduling collection ${collection.id} sync`)
+      await this.queue.scheduleCollectionSyncOne({ collection })
+    }
   }
 
   async syncCollection(adminId: string, collectionId: string) {
     await this.core.ensureUserAdmin(adminId)
     await this.updateCollectionMetadata(collectionId)
-    // FIXME: The deep syncing of the entire collection is currently disabled
-    // throw new Error('Syncing collections is currently disabled')
-    // const collection = await this.findOneCollection(adminId, collectionId)
-    // if (!collection) {
-    //   throw new Error(`Collection ${collectionId} not found`)
-    // }
-    // await this.queue.scheduleCollectionSyncOne({ collection })
-    return true
+    if (!this.core.config.syncCollections) {
+      const msg = `Syncing collections is currently disabled for this server. Set SYNC_COLLECTIONS=true to enable.`
+      this.logger.verbose(msg)
+      return msg
+    }
+    const collection = await this.core.data.collection.findUnique({ where: { id: collectionId } })
+    if (!collection) {
+      throw new Error(`Collection ${collectionId} not found`)
+    }
+    if (!collection.enableSync) {
+      const msg = `Collection ${collectionId} sync is disabled. Set enableSync to enable.`
+      this.logger.verbose(msg)
+      return msg
+    }
+    await this.queue.scheduleCollectionSyncOne({ collection })
+    return `Syncing collection ${collectionId}`
   }
 
   private async updateCollectionMetadata(collectionId: string) {

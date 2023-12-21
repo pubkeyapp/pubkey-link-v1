@@ -118,6 +118,7 @@ input AdminUpdateCollectionComboInput {
 input AdminUpdateCollectionInput {
   account: String
   description: String!
+  enableSync: Boolean
   imageUrl: String!
   metadataUrl: String!
   name: String
@@ -203,6 +204,7 @@ type Collection {
   combos: [CollectionCombo!]
   createdAt: DateTime!
   description: String
+  enableSync: Boolean
   id: String!
   imageUrl: String
   metadataUrl: String
@@ -401,8 +403,7 @@ type Mutation {
   adminRemoveDiscordRoleConditionCollection(collectionId: String!, conditionId: String!): Boolean
   adminRemoveDiscordRoleConditionCombo(comboId: String!, conditionId: String!): Boolean
   adminResumeQueue(type: QueueType!): Boolean
-  adminSyncCollection(collectionId: String!): Boolean
-  adminSyncCollections: Boolean
+  adminSyncCollection(collectionId: String!): String
   adminSyncDiscordRoles(serverId: String!): Boolean
   adminTestDiscordServerBotChannel(serverId: String!): Boolean
   adminUpdateCollection(collectionId: String!, input: AdminUpdateCollectionInput!): Collection
@@ -522,7 +523,6 @@ type QueueCount {
 enum QueueType {
   AssetSyncMany
   AssetUpsertMany
-  CollectionSyncMany
   CollectionSyncOne
   IdentitySyncMany
   IdentitySyncOne

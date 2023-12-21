@@ -10,13 +10,12 @@ import { Job, Queue } from 'bullmq'
 import { DAS } from 'helius-sdk'
 import HumanDiff from 'human-object-diff'
 import { hasher } from 'node-object-hash'
-import { CollectionSyncManyQueueData, CollectionSyncOneQueueData } from './processors'
+import { CollectionSyncOneQueueData } from './processors'
 
 export class ApiCollectionQueueService implements OnModuleInit {
   private readonly hasher = hasher({ sort: true, coerce: false })
   private readonly logger = new Logger(ApiCollectionQueueService.name)
   constructor(
-    @InjectQueue(QueueType.CollectionSyncMany) readonly collectionSyncManyQueue: Queue<CollectionSyncManyQueueData>,
     @InjectQueue(QueueType.CollectionSyncOne) readonly collectionSyncOneQueue: Queue<CollectionSyncOneQueueData>,
 
     readonly core: ApiCoreService,
@@ -26,29 +25,13 @@ export class ApiCollectionQueueService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    this.queue.registerQueue(QueueType.CollectionSyncMany, this.collectionSyncManyQueue)
     this.queue.registerQueue(QueueType.CollectionSyncOne, this.collectionSyncOneQueue)
   }
 
-  async scheduleCollectionSyncMany(data: CollectionSyncManyQueueData) {
-    return this.collectionSyncManyQueue.add('sync-collections', data, { removeOnComplete: true }).catch((err) => {
-      this.logger.error(`An error occurred: ${err}`)
-    })
-  }
-
   async scheduleCollectionSyncOne(data: CollectionSyncOneQueueData) {
-    return this.collectionSyncOneQueue.add('sync-collections', data, { removeOnComplete: true }).catch((err) => {
+    return this.collectionSyncOneQueue.add('sync-collection', data, { removeOnComplete: true }).catch((err) => {
       this.logger.error(`An error occurred: ${err}`)
     })
-  }
-
-  async processCollectionSyncManyJob(job: Job<CollectionSyncManyQueueData, void, string>) {
-    this.logger.verbose(`Processing job ${job.id}`, job.data.collections.length)
-    const { collections } = job.data
-    for (const collection of collections) {
-      await this.scheduleCollectionSyncOne({ collection })
-    }
-    this.logger.verbose(`Processed job ${job.id}`, job.data.collections.length)
   }
 
   async processCollectionSyncOneJob(job: Job<CollectionSyncOneQueueData, void, string>) {

@@ -16,8 +16,7 @@ import {
 import { Link } from 'react-router-dom'
 
 export function WebAdminCollectionListFeature() {
-  const { deleteCollection, pagination, query, items, network, setNetwork, setSearch, syncCollections } =
-    useAdminFindManyCollection()
+  const { deleteCollection, pagination, query, items, network, setNetwork, setSearch } = useAdminFindManyCollection()
   const sdk = useWebSdk()
   return (
     <UiAdminPage
@@ -26,7 +25,6 @@ export function WebAdminCollectionListFeature() {
       rightAction={
         <Group>
           <UiDebugModal data={items ?? []} />
-          <Button onClick={syncCollections}>Sync Collections</Button>
           <Button component={Link} to="create">
             Create
           </Button>

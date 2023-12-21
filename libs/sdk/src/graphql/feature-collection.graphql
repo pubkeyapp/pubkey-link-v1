@@ -6,6 +6,7 @@ fragment CollectionDetails on Collection {
   imageUrl
   metadataUrl
   description
+  enableSync
   symbol
   network
   vaultId
@@ -54,9 +55,6 @@ mutation adminDeleteCollection($collectionId: String!) {
 
 mutation adminSyncCollection($collectionId: String!) {
   synced: adminSyncCollection(collectionId: $collectionId)
-}
-mutation adminSyncCollections {
-  synced: adminSyncCollections
 }
 
 query userFindManyCollection($input: UserFindManyCollectionInput!) {

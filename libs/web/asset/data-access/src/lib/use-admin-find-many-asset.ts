@@ -9,7 +9,7 @@ export function useAdminFindManyAsset(props: { network?: NetworkType | null; col
   const sdk = useWebSdk()
   const [network, setNetwork] = useState<NetworkType | undefined>(props.network ?? undefined)
   const [collectionAccount, setCollectionAccount] = useState<string | undefined>(props.collectionAccount ?? undefined)
-  const [limit, setLimit] = useState(12)
+  const [limit, setLimit] = useState(100)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState<string>('')
 

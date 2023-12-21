@@ -55,6 +55,7 @@ model Collection {
   imageUrl    String?
   metadataUrl String?
   description String?
+  enableSync  Boolean                @default(false)
   symbol      String?
   assets      Asset[]
   assetCount  Int                    @default(0)

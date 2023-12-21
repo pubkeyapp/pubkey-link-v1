@@ -35,14 +35,9 @@ export class ApiCollectionAdminResolver {
     return this.service.admin.findOneCollection(user.id, collectionId)
   }
 
-  @Mutation(() => Boolean, { nullable: true })
+  @Mutation(() => String, { nullable: true })
   adminSyncCollection(@CtxUser() user: User, @Args('collectionId') collectionId: string) {
     return this.service.sync.syncCollection(user.id, collectionId)
-  }
-
-  @Mutation(() => Boolean, { nullable: true })
-  adminSyncCollections(@CtxUser() user: User) {
-    return this.service.sync.syncCollections(user.id)
   }
 
   @Mutation(() => Collection, { nullable: true })

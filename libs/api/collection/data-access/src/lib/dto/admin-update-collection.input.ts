@@ -12,6 +12,8 @@ export class AdminUpdateCollectionInput {
   metadataUrl?: string | null
   @Field()
   description?: string | null
+  @Field({ nullable: true })
+  enableSync?: boolean
   @Field()
   symbol?: string | null
   @Field({ nullable: true })

@@ -60,18 +60,5 @@ export function useAdminFindManyCollection() {
         showNotificationSuccess('Collection deleted')
         return query.refetch()
       }),
-    syncCollections: () =>
-      sdk
-        .adminSyncCollections()
-        .then((res) => res.data)
-        .then((res) => {
-          if (res.synced) {
-            showNotificationSuccess(`Collections synced`)
-          } else {
-            showNotificationError(`Collections not synced`)
-          }
-          return res.synced
-        })
-        .catch((err) => showNotificationError(err.message)),
   }
 }

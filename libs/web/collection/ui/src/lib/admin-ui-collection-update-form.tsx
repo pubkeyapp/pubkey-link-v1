@@ -1,6 +1,6 @@
 import { Button, Group } from '@mantine/core'
 import { AdminUpdateCollectionInput, Collection } from '@pubkey-link/sdk'
-import { formFieldText, formFieldTextarea, UiForm, UiFormField } from '@pubkey-link/web/ui/core'
+import { formFieldCheckbox, formFieldText, formFieldTextarea, UiForm, UiFormField } from '@pubkey-link/web/ui/core'
 
 export interface AuthUiCollectionUpdateFormProps {
   collection: Collection
@@ -11,6 +11,7 @@ export function AuthUiCollectionUpdateForm({ collection, submit }: AuthUiCollect
   const model: AdminUpdateCollectionInput = {
     account: collection.account ?? '',
     description: collection.description ?? '',
+    enableSync: collection.enableSync ?? false,
     imageUrl: collection.imageUrl ?? '',
     metadataUrl: collection.metadataUrl ?? '',
     name: collection.name ?? '',
@@ -25,6 +26,10 @@ export function AuthUiCollectionUpdateForm({ collection, submit }: AuthUiCollect
     formFieldText('metadataUrl', { label: 'Metadata URL' }),
     formFieldTextarea('description', { label: 'Description' }),
     formFieldTextarea('symbol', { label: 'Symbol' }),
+    formFieldCheckbox('enableSync', {
+      label: 'Enable Synchronization',
+      description: 'Enabling this will synchronize the collection to observe changes.',
+    }),
     formFieldText('vaultId', {
       label: 'Vault ID',
       description: 'ID of the vault on anybodies.com',

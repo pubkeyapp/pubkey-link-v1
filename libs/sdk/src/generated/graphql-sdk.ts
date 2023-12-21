@@ -140,6 +140,7 @@ export type AdminUpdateCollectionComboInput = {
 export type AdminUpdateCollectionInput = {
   account?: InputMaybe<Scalars['String']['input']>
   description: Scalars['String']['input']
+  enableSync?: InputMaybe<Scalars['Boolean']['input']>
   imageUrl: Scalars['String']['input']
   metadataUrl: Scalars['String']['input']
   name?: InputMaybe<Scalars['String']['input']>
@@ -230,6 +231,7 @@ export type Collection = {
   combos?: Maybe<Array<CollectionCombo>>
   createdAt: Scalars['DateTime']['output']
   description?: Maybe<Scalars['String']['output']>
+  enableSync?: Maybe<Scalars['Boolean']['output']>
   id: Scalars['String']['output']
   imageUrl?: Maybe<Scalars['String']['output']>
   metadataUrl?: Maybe<Scalars['String']['output']>
@@ -431,8 +433,7 @@ export type Mutation = {
   adminRemoveDiscordRoleConditionCollection?: Maybe<Scalars['Boolean']['output']>
   adminRemoveDiscordRoleConditionCombo?: Maybe<Scalars['Boolean']['output']>
   adminResumeQueue?: Maybe<Scalars['Boolean']['output']>
-  adminSyncCollection?: Maybe<Scalars['Boolean']['output']>
-  adminSyncCollections?: Maybe<Scalars['Boolean']['output']>
+  adminSyncCollection?: Maybe<Scalars['String']['output']>
   adminSyncDiscordRoles?: Maybe<Scalars['Boolean']['output']>
   adminTestDiscordServerBotChannel?: Maybe<Scalars['Boolean']['output']>
   adminUpdateCollection?: Maybe<Collection>
@@ -868,7 +869,6 @@ export type QueueCount = {
 export enum QueueType {
   AssetSyncMany = 'AssetSyncMany',
   AssetUpsertMany = 'AssetUpsertMany',
-  CollectionSyncMany = 'CollectionSyncMany',
   CollectionSyncOne = 'CollectionSyncOne',
   IdentitySyncMany = 'IdentitySyncMany',
   IdentitySyncOne = 'IdentitySyncOne',
@@ -1125,6 +1125,7 @@ export type UserFindManyAssetQuery = {
         imageUrl?: string | null
         metadataUrl?: string | null
         description?: string | null
+        enableSync?: boolean | null
         symbol?: string | null
         network?: NetworkType | null
         vaultId?: string | null
@@ -1225,6 +1226,7 @@ export type UserFindOneAssetQuery = {
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null
+      enableSync?: boolean | null
       symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
@@ -1596,6 +1598,7 @@ export type CollectionDetailsFragment = {
   imageUrl?: string | null
   metadataUrl?: string | null
   description?: string | null
+  enableSync?: boolean | null
   symbol?: string | null
   network?: NetworkType | null
   vaultId?: string | null
@@ -1638,6 +1641,7 @@ export type AdminFindManyCollectionQuery = {
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null
+      enableSync?: boolean | null
       symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
@@ -1690,6 +1694,7 @@ export type AdminFindOneCollectionQuery = {
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
+    enableSync?: boolean | null
     symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
@@ -1740,6 +1745,7 @@ export type AdminCreateCollectionMutation = {
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
+    enableSync?: boolean | null
     symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
@@ -1782,6 +1788,7 @@ export type AdminUpdateCollectionMutation = {
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
+    enableSync?: boolean | null
     symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
@@ -1818,11 +1825,7 @@ export type AdminSyncCollectionMutationVariables = Exact<{
   collectionId: Scalars['String']['input']
 }>
 
-export type AdminSyncCollectionMutation = { __typename?: 'Mutation'; synced?: boolean | null }
-
-export type AdminSyncCollectionsMutationVariables = Exact<{ [key: string]: never }>
-
-export type AdminSyncCollectionsMutation = { __typename?: 'Mutation'; synced?: boolean | null }
+export type AdminSyncCollectionMutation = { __typename?: 'Mutation'; synced?: string | null }
 
 export type UserFindManyCollectionQueryVariables = Exact<{
   input: UserFindManyCollectionInput
@@ -1841,6 +1844,7 @@ export type UserFindManyCollectionQuery = {
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null
+      enableSync?: boolean | null
       symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
@@ -1893,6 +1897,7 @@ export type UserFindOneCollectionQuery = {
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
+    enableSync?: boolean | null
     symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
@@ -1981,6 +1986,7 @@ export type DiscordRoleConditionDetailsFragment = {
     imageUrl?: string | null
     metadataUrl?: string | null
     description?: string | null
+    enableSync?: boolean | null
     symbol?: string | null
     network?: NetworkType | null
     vaultId?: string | null
@@ -2050,6 +2056,7 @@ export type DiscordRoleDetailsFragment = {
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null
+      enableSync?: boolean | null
       symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
@@ -2185,6 +2192,7 @@ export type AdminFindOneDiscordServerQuery = {
           imageUrl?: string | null
           metadataUrl?: string | null
           description?: string | null
+          enableSync?: boolean | null
           symbol?: string | null
           network?: NetworkType | null
           vaultId?: string | null
@@ -2359,6 +2367,7 @@ export type UserFindManyDiscordServerQuery = {
           imageUrl?: string | null
           metadataUrl?: string | null
           description?: string | null
+          enableSync?: boolean | null
           symbol?: string | null
           network?: NetworkType | null
           vaultId?: string | null
@@ -2735,6 +2744,7 @@ export type AdminFindOneNetworkQuery = {
       imageUrl?: string | null
       metadataUrl?: string | null
       description?: string | null
+      enableSync?: boolean | null
       symbol?: string | null
       network?: NetworkType | null
       vaultId?: string | null
@@ -3259,6 +3269,7 @@ export const CollectionDetailsFragmentDoc = gql`
     imageUrl
     metadataUrl
     description
+    enableSync
     symbol
     network
     vaultId
@@ -3693,11 +3704,6 @@ export const AdminDeleteCollectionDocument = gql`
 export const AdminSyncCollectionDocument = gql`
   mutation adminSyncCollection($collectionId: String!) {
     synced: adminSyncCollection(collectionId: $collectionId)
-  }
-`
-export const AdminSyncCollectionsDocument = gql`
-  mutation adminSyncCollections {
-    synced: adminSyncCollections
   }
 `
 export const UserFindManyCollectionDocument = gql`
@@ -4163,7 +4169,6 @@ const AdminCreateCollectionDocumentString = print(AdminCreateCollectionDocument)
 const AdminUpdateCollectionDocumentString = print(AdminUpdateCollectionDocument)
 const AdminDeleteCollectionDocumentString = print(AdminDeleteCollectionDocument)
 const AdminSyncCollectionDocumentString = print(AdminSyncCollectionDocument)
-const AdminSyncCollectionsDocumentString = print(AdminSyncCollectionsDocument)
 const UserFindManyCollectionDocumentString = print(UserFindManyCollectionDocument)
 const UserFindOneCollectionDocumentString = print(UserFindOneCollectionDocument)
 const UptimeDocumentString = print(UptimeDocument)
@@ -4763,26 +4768,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
             ...wrappedRequestHeaders,
           }),
         'adminSyncCollection',
-        'mutation',
-      )
-    },
-    adminSyncCollections(
-      variables?: AdminSyncCollectionsMutationVariables,
-      requestHeaders?: GraphQLClientRequestHeaders,
-    ): Promise<{
-      data: AdminSyncCollectionsMutation
-      errors?: GraphQLError[]
-      extensions?: any
-      headers: Headers
-      status: number
-    }> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.rawRequest<AdminSyncCollectionsMutation>(AdminSyncCollectionsDocumentString, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'adminSyncCollections',
         'mutation',
       )
     },

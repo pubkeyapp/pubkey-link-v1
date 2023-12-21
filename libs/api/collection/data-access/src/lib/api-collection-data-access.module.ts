@@ -25,12 +25,6 @@ import { processors } from './processors'
     ApiNetworkDataAccessModule,
     ApiQueueDataAccessModule,
     BullModule.registerQueueAsync({
-      name: QueueType.CollectionSyncMany,
-      imports: [ApiCoreDataAccessModule],
-      inject: [ApiCoreService],
-      useFactory: ({ config }: ApiCoreService) => ({ connection: config.redisOptions }),
-    }),
-    BullModule.registerQueueAsync({
       name: QueueType.CollectionSyncOne,
       imports: [ApiCoreDataAccessModule],
       inject: [ApiCoreService],

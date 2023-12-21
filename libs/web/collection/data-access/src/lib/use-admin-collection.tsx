@@ -21,7 +21,9 @@ export function useAdminCollection(collectionId: string) {
         .then((res) => res.data)
         .then(async (res) => {
           if (res) {
-            showNotificationSuccess('Collection synced')
+            showNotificationSuccess(`${res.synced?.toString()}`, {
+              title: 'Collection synced',
+            })
             await query.refetch()
             return true
           }
