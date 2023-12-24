@@ -26,7 +26,7 @@ export class FindDiscordIdentityCommand {
 
     if (!found) {
       return interaction.reply({
-        content: `No ${provider} identity found for <@${user.id}>, they can sign up at ${this.core.config.webUrl}!`,
+        content: `No ${provider} identity found for <@${user.id}>, they can sign up at ${this.core.config.webUrl}`,
       })
     }
 
