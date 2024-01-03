@@ -6,11 +6,11 @@ import { showNotificationError, showNotificationSuccess } from '@pubkey-link/web
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-export function useAdminFindManyCollection() {
+export function useAdminFindManyCollection(props?: Partial<AdminFindManyCollectionInput>) {
   const sdk = useWebSdk()
   const [network, setNetwork] = useState<NetworkType | undefined>(undefined)
 
-  const [limit, setLimit] = useState(10)
+  const [limit, setLimit] = useState(props?.limit ?? 10)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState<string>('')
 

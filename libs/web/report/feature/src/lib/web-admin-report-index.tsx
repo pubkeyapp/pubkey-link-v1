@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 export function WebAdminReportIndex() {
   const { serverOptions, items } = useAdminFindManyDiscordServer({ input: {} })
-  const { collectionOptions } = useAdminFindManyCollection()
+  const { collectionOptions } = useAdminFindManyCollection({ limit: 50 })
   const [server, setServer] = useState<DiscordServer | undefined>(undefined)
   const [report, setReport] = useState<string | undefined>()
   const [collectionAccount, setCollectionAccount] = useState<string | undefined>()
