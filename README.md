@@ -1,6 +1,6 @@
 # PubKey Link
 
-For questions about this project, please join our [Discord](https://discord.gg/3uqfVWV).
+For questions about this project, please join our [Discord](https://discord.gg/XxuZQeDPNf).
 
 ## Getting Started
 
