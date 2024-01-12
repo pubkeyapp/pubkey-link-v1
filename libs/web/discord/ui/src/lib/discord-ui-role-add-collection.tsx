@@ -14,7 +14,7 @@ export function DiscordUiRoleAddCollection({
 }) {
   const sdk = useWebSdk()
   const [collectionId, setCollectionId] = useState<string | null>(null)
-  const { query } = useUserFindManyCollection()
+  const { query } = useUserFindManyCollection({ limit: 25 })
   const items = query.data?.paging.data ?? []
 
   const options = useMemo(

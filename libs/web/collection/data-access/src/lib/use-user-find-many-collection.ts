@@ -4,12 +4,12 @@ import { useUiPagination } from '@pubkey-link/web/ui/core'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-export function useUserFindManyCollection() {
+export function useUserFindManyCollection(props?: UserFindManyCollectionInput) {
   const sdk = useWebSdk()
   const [network, setNetwork] = useState<NetworkType | undefined>(undefined)
 
-  const [limit, setLimit] = useState(10)
-  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(props?.limit ?? 10)
+  const [page, setPage] = useState(props?.page ?? 1)
   const [search, setSearch] = useState<string>('')
 
   const input: UserFindManyCollectionInput = { network, page, limit, search }
