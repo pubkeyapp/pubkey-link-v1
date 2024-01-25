@@ -57,12 +57,36 @@ export class ApiBackupService {
       },
     })
 
+    const collections = await this.core.data.collection.findMany({
+      orderBy: { name: 'asc' },
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        name: true,
+        symbol: true,
+        account: true,
+        network: true,
+        description: true,
+        attributes: true,
+        imageUrl: true,
+        metadataUrl: true,
+        combos: {
+          select: {
+            id: true,
+            name: true,
+            conditions: true,
+          },
+        },
+      },
+    })
+
     await writeFile(
       backupPath,
       JSON.stringify(
         {
           meta: { secret, timestamp, backupName, backupPath },
-          data: { users, usersCount: users.length },
+          data: { users, usersCount: users.length, collections, collectionsCount: collections.length },
         },
         null,
         2,
@@ -111,6 +135,7 @@ export class ApiBackupService {
     return {
       meta: backup.meta,
       usersCount: backup.data.usersCount,
+      collectionsCount: backup.data.collectionsCount,
       download: this.core.config.apiUrl + `/backup/download?name=${name}&secret=${backup.meta.secret}`,
     }
   }
