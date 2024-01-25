@@ -407,6 +407,7 @@ export type Mutation = {
   adminAddDiscordRoleConditionCollection?: Maybe<Scalars['Boolean']['output']>
   adminAddDiscordRoleConditionCombo?: Maybe<Scalars['Boolean']['output']>
   adminCleanQueue?: Maybe<Scalars['Boolean']['output']>
+  adminCreateBackup: Scalars['Boolean']['output']
   adminCreateCollection?: Maybe<Collection>
   adminCreateCollectionCombo?: Maybe<CollectionCombo>
   adminCreateDiscordRole?: Maybe<Scalars['Boolean']['output']>
@@ -417,6 +418,7 @@ export type Mutation = {
   adminCreateNetworkToken?: Maybe<NetworkToken>
   adminCreateUser?: Maybe<User>
   adminDeleteAsset?: Maybe<Scalars['Boolean']['output']>
+  adminDeleteBackup: Scalars['Boolean']['output']
   adminDeleteCollection?: Maybe<Scalars['Boolean']['output']>
   adminDeleteCollectionCombo?: Maybe<Scalars['Boolean']['output']>
   adminDeleteDiscordRole?: Maybe<Scalars['Boolean']['output']>
@@ -428,10 +430,12 @@ export type Mutation = {
   adminDeleteNetworkToken?: Maybe<Scalars['Boolean']['output']>
   adminDeleteQueueJob?: Maybe<Scalars['Boolean']['output']>
   adminDeleteUser?: Maybe<Scalars['Boolean']['output']>
+  adminFetchBackup: Scalars['Boolean']['output']
   adminPauseQueue?: Maybe<Scalars['Boolean']['output']>
   adminRemoveCollectionComboAttribute?: Maybe<CollectionCombo>
   adminRemoveDiscordRoleConditionCollection?: Maybe<Scalars['Boolean']['output']>
   adminRemoveDiscordRoleConditionCombo?: Maybe<Scalars['Boolean']['output']>
+  adminRestoreBackup: Scalars['Boolean']['output']
   adminResumeQueue?: Maybe<Scalars['Boolean']['output']>
   adminSyncCollection?: Maybe<Scalars['String']['output']>
   adminSyncDiscordRoles?: Maybe<Scalars['Boolean']['output']>
@@ -510,6 +514,10 @@ export type MutationAdminDeleteAssetArgs = {
   assetId: Scalars['String']['input']
 }
 
+export type MutationAdminDeleteBackupArgs = {
+  name: Scalars['String']['input']
+}
+
 export type MutationAdminDeleteCollectionArgs = {
   collectionId: Scalars['String']['input']
 }
@@ -555,6 +563,10 @@ export type MutationAdminDeleteUserArgs = {
   userId: Scalars['String']['input']
 }
 
+export type MutationAdminFetchBackupArgs = {
+  url: Scalars['String']['input']
+}
+
 export type MutationAdminPauseQueueArgs = {
   type: QueueType
 }
@@ -572,6 +584,10 @@ export type MutationAdminRemoveDiscordRoleConditionCollectionArgs = {
 export type MutationAdminRemoveDiscordRoleConditionComboArgs = {
   comboId: Scalars['String']['input']
   conditionId: Scalars['String']['input']
+}
+
+export type MutationAdminRestoreBackupArgs = {
+  name: Scalars['String']['input']
 }
 
 export type MutationAdminResumeQueueArgs = {
@@ -711,6 +727,8 @@ export type Query = {
   adminFindOneDiscordServer?: Maybe<DiscordServer>
   adminFindOneNetwork?: Maybe<Network>
   adminFindOneUser?: Maybe<User>
+  adminGetBackup?: Maybe<Scalars['JSON']['output']>
+  adminGetBackups: Array<Scalars['String']['output']>
   adminGetBotInviteUrl?: Maybe<Scalars['String']['output']>
   adminGetQueue?: Maybe<Queue>
   adminGetQueueJobs?: Maybe<Array<Job>>
@@ -799,6 +817,10 @@ export type QueryAdminFindOneNetworkArgs = {
 
 export type QueryAdminFindOneUserArgs = {
   userId: Scalars['String']['input']
+}
+
+export type QueryAdminGetBackupArgs = {
+  name: Scalars['String']['input']
 }
 
 export type QueryAdminGetQueueArgs = {
@@ -1351,6 +1373,38 @@ export type MeQuery = {
     username?: string | null
   } | null
 }
+
+export type AdminCreateBackupMutationVariables = Exact<{ [key: string]: never }>
+
+export type AdminCreateBackupMutation = { __typename?: 'Mutation'; created: boolean }
+
+export type AdminDeleteBackupMutationVariables = Exact<{
+  name: Scalars['String']['input']
+}>
+
+export type AdminDeleteBackupMutation = { __typename?: 'Mutation'; deleted: boolean }
+
+export type AdminFetchBackupMutationVariables = Exact<{
+  url: Scalars['String']['input']
+}>
+
+export type AdminFetchBackupMutation = { __typename?: 'Mutation'; fetched: boolean }
+
+export type AdminGetBackupQueryVariables = Exact<{
+  name: Scalars['String']['input']
+}>
+
+export type AdminGetBackupQuery = { __typename?: 'Query'; item?: any | null }
+
+export type AdminGetBackupsQueryVariables = Exact<{ [key: string]: never }>
+
+export type AdminGetBackupsQuery = { __typename?: 'Query'; items: Array<string> }
+
+export type AdminRestoreBackupMutationVariables = Exact<{
+  name: Scalars['String']['input']
+}>
+
+export type AdminRestoreBackupMutation = { __typename?: 'Mutation'; restored: boolean }
 
 export type CollectionComboDetailsFragment = {
   __typename?: 'CollectionCombo'
@@ -3562,6 +3616,36 @@ export const MeDocument = gql`
   }
   ${UserDetailsFragmentDoc}
 `
+export const AdminCreateBackupDocument = gql`
+  mutation adminCreateBackup {
+    created: adminCreateBackup
+  }
+`
+export const AdminDeleteBackupDocument = gql`
+  mutation adminDeleteBackup($name: String!) {
+    deleted: adminDeleteBackup(name: $name)
+  }
+`
+export const AdminFetchBackupDocument = gql`
+  mutation adminFetchBackup($url: String!) {
+    fetched: adminFetchBackup(url: $url)
+  }
+`
+export const AdminGetBackupDocument = gql`
+  query adminGetBackup($name: String!) {
+    item: adminGetBackup(name: $name)
+  }
+`
+export const AdminGetBackupsDocument = gql`
+  query adminGetBackups {
+    items: adminGetBackups
+  }
+`
+export const AdminRestoreBackupDocument = gql`
+  mutation adminRestoreBackup($name: String!) {
+    restored: adminRestoreBackup(name: $name)
+  }
+`
 export const AdminFindManyCollectionComboDocument = gql`
   query adminFindManyCollectionCombo($input: AdminFindManyCollectionComboInput!) {
     paging: adminFindManyCollectionCombo(input: $input) {
@@ -4150,6 +4234,12 @@ const LoginDocumentString = print(LoginDocument)
 const LogoutDocumentString = print(LogoutDocument)
 const RegisterDocumentString = print(RegisterDocument)
 const MeDocumentString = print(MeDocument)
+const AdminCreateBackupDocumentString = print(AdminCreateBackupDocument)
+const AdminDeleteBackupDocumentString = print(AdminDeleteBackupDocument)
+const AdminFetchBackupDocumentString = print(AdminFetchBackupDocument)
+const AdminGetBackupDocumentString = print(AdminGetBackupDocument)
+const AdminGetBackupsDocumentString = print(AdminGetBackupsDocument)
+const AdminRestoreBackupDocumentString = print(AdminRestoreBackupDocument)
 const AdminFindManyCollectionComboDocumentString = print(AdminFindManyCollectionComboDocument)
 const AdminFindOneCollectionComboDocumentString = print(AdminFindOneCollectionComboDocument)
 const AdminCreateCollectionComboDocumentString = print(AdminCreateCollectionComboDocument)
@@ -4381,6 +4471,126 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
           client.rawRequest<MeQuery>(MeDocumentString, variables, { ...requestHeaders, ...wrappedRequestHeaders }),
         'me',
         'query',
+      )
+    },
+    adminCreateBackup(
+      variables?: AdminCreateBackupMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminCreateBackupMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminCreateBackupMutation>(AdminCreateBackupDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminCreateBackup',
+        'mutation',
+      )
+    },
+    adminDeleteBackup(
+      variables: AdminDeleteBackupMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminDeleteBackupMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminDeleteBackupMutation>(AdminDeleteBackupDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminDeleteBackup',
+        'mutation',
+      )
+    },
+    adminFetchBackup(
+      variables: AdminFetchBackupMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminFetchBackupMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminFetchBackupMutation>(AdminFetchBackupDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminFetchBackup',
+        'mutation',
+      )
+    },
+    adminGetBackup(
+      variables: AdminGetBackupQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminGetBackupQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminGetBackupQuery>(AdminGetBackupDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminGetBackup',
+        'query',
+      )
+    },
+    adminGetBackups(
+      variables?: AdminGetBackupsQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminGetBackupsQuery
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminGetBackupsQuery>(AdminGetBackupsDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminGetBackups',
+        'query',
+      )
+    },
+    adminRestoreBackup(
+      variables: AdminRestoreBackupMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<{
+      data: AdminRestoreBackupMutation
+      errors?: GraphQLError[]
+      extensions?: any
+      headers: Headers
+      status: number
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AdminRestoreBackupMutation>(AdminRestoreBackupDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'adminRestoreBackup',
+        'mutation',
       )
     },
     adminFindManyCollectionCombo(

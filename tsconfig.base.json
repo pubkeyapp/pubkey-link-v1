@@ -20,6 +20,8 @@
       "@pubkey-link/api/asset/util": ["libs/api/asset/util/src/index.ts"],
       "@pubkey-link/api/auth/data-access": ["libs/api/auth/data-access/src/index.ts"],
       "@pubkey-link/api/auth/feature": ["libs/api/auth/feature/src/index.ts"],
+      "@pubkey-link/api/backup/data-access": ["libs/api/backup/data-access/src/index.ts"],
+      "@pubkey-link/api/backup/feature": ["libs/api/backup/feature/src/index.ts"],
       "@pubkey-link/api/collection-combo/data-access": ["libs/api/collection-combo/data-access/src/index.ts"],
       "@pubkey-link/api/collection-combo/feature": ["libs/api/collection-combo/feature/src/index.ts"],
       "@pubkey-link/api/collection/data-access": ["libs/api/collection/data-access/src/index.ts"],

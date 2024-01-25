@@ -377,6 +377,7 @@ type Mutation {
   adminAddDiscordRoleConditionCollection(collectionId: String!, conditionId: String!): Boolean
   adminAddDiscordRoleConditionCombo(comboId: String!, conditionId: String!): Boolean
   adminCleanQueue(type: QueueType!): Boolean
+  adminCreateBackup: Boolean!
   adminCreateCollection(input: AdminCreateCollectionInput!): Collection
   adminCreateCollectionCombo(input: AdminCreateCollectionComboInput!): CollectionCombo
   adminCreateDiscordRole(input: AdminCreateDiscordRoleInput!): Boolean
@@ -387,6 +388,7 @@ type Mutation {
   adminCreateNetworkToken(input: AdminCreateNetworkTokenInput!): NetworkToken
   adminCreateUser(input: AdminCreateUserInput!): User
   adminDeleteAsset(assetId: String!): Boolean
+  adminDeleteBackup(name: String!): Boolean!
   adminDeleteCollection(collectionId: String!): Boolean
   adminDeleteCollectionCombo(collectionComboId: String!): Boolean
   adminDeleteDiscordRole(input: AdminDeleteDiscordRoleInput!): Boolean
@@ -398,10 +400,12 @@ type Mutation {
   adminDeleteNetworkToken(networkTokenId: String!): Boolean
   adminDeleteQueueJob(jobId: String!, type: QueueType!): Boolean
   adminDeleteUser(userId: String!): Boolean
+  adminFetchBackup(url: String!): Boolean!
   adminPauseQueue(type: QueueType!): Boolean
   adminRemoveCollectionComboAttribute(assetAttributeId: String!, collectionComboId: String!): CollectionCombo
   adminRemoveDiscordRoleConditionCollection(collectionId: String!, conditionId: String!): Boolean
   adminRemoveDiscordRoleConditionCombo(comboId: String!, conditionId: String!): Boolean
+  adminRestoreBackup(name: String!): Boolean!
   adminResumeQueue(type: QueueType!): Boolean
   adminSyncCollection(collectionId: String!): String
   adminSyncDiscordRoles(serverId: String!): Boolean
@@ -483,6 +487,8 @@ type Query {
   adminFindOneDiscordServer(serverId: String!): DiscordServer
   adminFindOneNetwork(networkId: String!): Network
   adminFindOneUser(userId: String!): User
+  adminGetBackup(name: String!): JSON
+  adminGetBackups: [String!]!
   adminGetBotInviteUrl: String
   adminGetQueue(type: QueueType!): Queue
   adminGetQueueJobs(statuses: [JobStatus!]!, type: QueueType!): [Job!]

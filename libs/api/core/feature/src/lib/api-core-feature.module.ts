@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ApiAssetFeatureModule } from '@pubkey-link/api/asset/feature'
 import { ApiAuthFeatureModule } from '@pubkey-link/api/auth/feature'
+import { ApiBackupFeatureModule } from '@pubkey-link/api/backup/feature'
 import { ApiCollectionComboFeatureModule } from '@pubkey-link/api/collection-combo/feature'
 import { ApiCollectionFeatureModule } from '@pubkey-link/api/collection/feature'
 import { ApiCoreDataAccessModule } from '@pubkey-link/api/core/data-access'
@@ -19,6 +20,7 @@ import { ApiCoreResolver } from './api-core.resolver'
 const imports = [
   ApiAssetFeatureModule,
   ApiAuthFeatureModule,
+  ApiBackupFeatureModule,
   ApiCollectionComboFeatureModule,
   ApiCollectionFeatureModule,
   ApiCoreDataAccessModule,
